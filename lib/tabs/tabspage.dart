@@ -36,6 +36,8 @@ class _TabsPageState extends State<TabsPage> {
           index: widget.selectedIndex,
           children: [
             for (final tabItem in TabNavigationItem.items) tabItem.page,
+
+
           ],
         ),
       ),

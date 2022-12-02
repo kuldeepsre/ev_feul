@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -18,7 +20,7 @@ class _HomeState extends State<Home> {
             return RotatedBox(
               quarterTurns: 1,
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.bar_chart_rounded,
                   color: Colors.black,
                 ),
@@ -29,16 +31,16 @@ class _HomeState extends State<Home> {
         ),
         backgroundColor: Colors.white,
         elevation: 0.0,
-        actions: [
+  /*      actions: [
           IconButton(
               color: Colors.black,
               icon: Icon(Icons.search),
               onPressed: () {
                 Navigator.pushNamed(context, '/search');
               }),
-        ],
+        ],*/
       ),
-      body: Center(
+      body: const Center(
         child: Text('Home Page'),
       ),
     );

@@ -12,6 +12,7 @@ class _SideMenuState extends State<SideMenu> {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+        shrinkWrap: true,
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
@@ -25,7 +26,7 @@ class _SideMenuState extends State<SideMenu> {
                     bottomRight: Radius.circular(10.0)),
                 color: Colors.white,
                 image: DecorationImage(
-                    fit: BoxFit.fill, image: AssetImage('assets/sideimg.jpg'))),
+                    fit: BoxFit.fill, image: AssetImage('assets/images/bg_img_login.png'))),
           ),
           ListTile(
           
@@ -45,6 +46,16 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => TabsPage(selectedIndex: 1)),
+                ),
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Profile'),
+            onTap: () => {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => TabsPage(selectedIndex: 2)),
                 ),
             },
           ),
