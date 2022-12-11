@@ -8,17 +8,17 @@ import '../../utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-class LoginNow extends StatefulWidget {
-  const LoginNow({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
   @override
-  _LoginNowState createState() => _LoginNowState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
- class _LoginNowState extends State<LoginNow> {
+ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => LoginBloc(LoginInitial()),
-      child: const LoginNow(),
+      child: const RegisterScreen(),
     );
   }
 }
@@ -30,13 +30,12 @@ class LoginScreenWidget extends StatefulWidget {
   _LoginWidgetState createState() => _LoginWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginNow> {
+class _LoginWidgetState extends State<RegisterScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   late bool _validate;
   late bool isLogin;
   var selectProject = "";
-  final statusDateControoler = TextEditingController();
 
   var emailController=TextEditingController(text: "Userid/Email");
   var passController=TextEditingController(text: "Userid/Email");
@@ -61,19 +60,7 @@ class _LoginWidgetState extends State<LoginNow> {
         ),
         body: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            /*       if (state is UserTokenExpired) {
-              CustomDialogs.showDialogRedirctLogin(
-                  context, state.message, state.title);
-            }
-            if (state is ConstructionDataSaved) {
-              CustomDialogs.showDialogMessageSiteProgressPhoto(
-                  context,
-                  "Construction data has been successfully added!",
-                  "Construction  ");
-              Future.delayed(Duration(seconds: 3), () {
-                LoginBloc.add(ConstructionEventInitial());
-              });
-            }*/
+
           },
           child: BlocBuilder(
             bloc: loginBloc,

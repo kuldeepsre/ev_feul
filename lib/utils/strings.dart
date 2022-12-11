@@ -81,4 +81,12 @@ class Strings {
   static const Driver_Name="Driver Name";
 
   static String redirect="";
+
+  static const forgotPass="Forgot Password?";
+
+  static const noAccount="Don’t Have An Account?";
+
+  static const registerNow="Register Now";
+
+  static const login="Log In Now";
 }

@@ -52,10 +52,21 @@ TextStyle bigHeadingStyle = TextStyle(
 );
 
 TextStyle headingStyle = TextStyle(
-  fontSize: 14.0,
-  color: blackColor,
+  fontSize: 18.0,
+  color: whiteColor,
   fontFamily: 'Poppins',
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w600,
+);TextStyle sideMenuStyle = TextStyle(
+  fontSize: 18.0,
+  color: whiteColor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+);
+TextStyle sideLogoutStyle = TextStyle(
+  fontSize: 18.0,
+  color: greencolor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
 );
  TextStyle whiteheadingStyle = const TextStyle(
   fontSize: 16.0,

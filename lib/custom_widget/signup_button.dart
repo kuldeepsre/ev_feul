@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../utils/color_utils.dart';
-class CustomButton extends StatelessWidget {
+class Signup extends StatelessWidget {
   final String text;
   final bool? isFullWidth;
 
 
   final Function() onClick;
 
-  const CustomButton(this.text,
+  const Signup(this.text,
       {Key? key, this.isFullWidth, required this.onClick})
       : super(key: key);
 
@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(15))   ,  gradient: LinearGradient(
         colors: [
          ColorUtils.green1,
-         ColorUtils.green1,
+         ColorUtils.green2,
 
         ],
       )
