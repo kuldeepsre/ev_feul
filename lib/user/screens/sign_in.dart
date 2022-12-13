@@ -81,10 +81,10 @@ class _SignInState extends State<SignIn> {
                 alignment: Alignment.center,
                 height: 50.0,
                 width: size.width * 0.5,
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(80.0),
-                    gradient: new LinearGradient(
-                        colors: [
+                    gradient: LinearGradient(
+                        colors: const [
                           Color.fromARGB(255, 255, 136, 34),
                           Color.fromARGB(255, 255, 177, 41)
                         ]

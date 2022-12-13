@@ -12,8 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'login_screen.dart';
 
-class LoginScreenMain extends StatelessWidget {
+class LoginScreenMain extends StatefulWidget {
   const LoginScreenMain({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreenMain> createState() => _LoginScreenMainState();
+}
+
+class _LoginScreenMainState extends State<LoginScreenMain> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
