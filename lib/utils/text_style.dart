@@ -52,7 +52,7 @@ TextStyle bigHeadingStyle = TextStyle(
 );
 
 TextStyle headingStyle = TextStyle(
-  fontSize: 18.0,
+  fontSize: 22.0,
   color: whiteColor,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w600,
@@ -81,8 +81,13 @@ TextStyle sideLogoutStyle = TextStyle(
 );
 
 TextStyle greyHeadingStyle = TextStyle(
-  fontSize: 16.0,
-  color: greyColor,
+  fontSize: 32.0,
+  color: Colors.black,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+);TextStyle greysubHeadingStyle = TextStyle(
+  fontSize: 24.0,
+  color: Colors.black,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w500,
 );

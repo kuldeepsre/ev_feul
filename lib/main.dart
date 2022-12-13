@@ -6,6 +6,7 @@ import 'package:ev_feul/user/screens/login_screen.dart';
 import 'package:ev_feul/user/screens/plan_list.dart';
 import 'package:ev_feul/user/screens/profile.dart';
 import 'package:ev_feul/user/screens/register_screen.dart';
+import 'package:ev_feul/user/screens/swap_stations.dart';
 import 'package:ev_feul/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +36,7 @@ void main() async {
 
 class MyAppWidget extends StatefulWidget {
   @override
-  MyApp createState() => new MyApp();
+  MyApp createState() => MyApp();
 }
 
 class MyApp extends State<MyAppWidget> {
@@ -76,11 +77,11 @@ class MyApp extends State<MyAppWidget> {
       case '/':
         return MaterialPageRoute(
             builder: (_) => SplashScreenView(
-              navigateRoute:  TabsPage(selectedIndex: 0,),
+              navigateRoute:   LoginScreenMain(),
               duration: 2000,
               imageSize: 130,
               imageSrc: "assets/images/logo.png",
-              text: "EV FEUL",
+              text: "EV FUEL",
               textType: TextType.ColorizeAnimationText,
               textStyle: const TextStyle(fontSize: 24.0),
               colors: [
@@ -96,10 +97,10 @@ class MyApp extends State<MyAppWidget> {
       case homeScreenRoute:
         return MaterialPageRoute(builder: (_) => const Home());
         break; case loginScreenRoute:
-        return MaterialPageRoute(builder: (_) => const LoginNow());
+        return MaterialPageRoute(builder: (_) =>  LoginNow());
         break;
       default:
-        return MaterialPageRoute(builder: (_) => const LoginScreenMain());
+        return MaterialPageRoute(builder: (_) =>  LoginScreenMain());
         break;
     }
   }

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginNow extends StatefulWidget {
   const LoginNow({Key? key}) : super(key: key);
+
+
   @override
   _LoginNowState createState() => _LoginNowState();
 }
@@ -18,7 +20,7 @@ class LoginNow extends StatefulWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => LoginBloc(LoginInitial()),
-      child: const LoginNow(),
+      child:  const LoginNow(),
     );
   }
 }

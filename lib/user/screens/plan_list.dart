@@ -151,7 +151,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const LoginNow();
+                                  return  LoginNow();
                                 }),
                               );
                             },
@@ -238,7 +238,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return const LoginNow();
+        return  LoginNow();
       }),
     );
   }

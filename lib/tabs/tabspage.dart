@@ -33,8 +33,10 @@ class _TabsPageState extends State<TabsPage> {
     return Scaffold(
       body: Scaffold(
         body: IndexedStack(
+
           index: widget.selectedIndex,
           children: [
+
             for (final tabItem in TabNavigationItem.items) tabItem.page,
 
 
@@ -48,16 +50,22 @@ class _TabsPageState extends State<TabsPage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
+            icon: Icon(Icons.grid_view_rounded),
+            title: Text('Subscription Plan'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.verified_user),
-            title: Text('Profile'),
+            icon: Icon(Icons.list),
+            title: Text('My Plan'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history_sharp,),
+            title: Text('Swap History',textScaleFactor:1,),
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.green[800],
+        unselectedItemColor:Colors.black,
+        showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
     );
