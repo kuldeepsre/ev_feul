@@ -56,7 +56,13 @@ TextStyle headingStyle = TextStyle(
   color: whiteColor,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w600,
-);TextStyle sideMenuStyle = TextStyle(
+);TextStyle subheadingStyle = TextStyle(
+  fontSize: 22.0,
+  color: whiteColor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+);
+TextStyle sideMenuStyle = TextStyle(
   fontSize: 18.0,
   color: whiteColor,
   fontFamily: 'Poppins',
@@ -74,10 +80,11 @@ TextStyle sideLogoutStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
   TextStyle redheadingStyle = const TextStyle(
-  fontSize: 18.0,
-  color: Colors.red,
+  fontSize: 9.0,
+  letterSpacing: .2,
+  color: Colors.white,
   fontFamily: 'Poppins',
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w500,
 );
 
 TextStyle greyHeadingStyle = TextStyle(
@@ -115,6 +122,11 @@ TextStyle whiteHeadingStyle = TextStyle(
 TextStyle whiteSubHeadingStyle = TextStyle(
   fontSize: 14.0,
   color: whiteColor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.bold,
+);TextStyle graySubHeadingStyle = TextStyle(
+  fontSize: 14.0,
+  color: greyColor,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.bold,
 );

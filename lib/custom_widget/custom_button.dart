@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(15))   ,  gradient: LinearGradient(
         colors: [
          ColorUtils.green1,
-         ColorUtils.green1,
+         ColorUtils.green2,
 
         ],
       )

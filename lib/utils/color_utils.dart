@@ -31,6 +31,9 @@ class ColorUtils {
   static var green2ln="#198D5A".toColor();
   static var Create1ln="#07424F".toColor();
   static var Create2ln="#000000".toColor();
+  static var card1ln="#DBFBE8".toColor();
+  static var card2ln="#FFFFFF".toColor();
+
 
 
 

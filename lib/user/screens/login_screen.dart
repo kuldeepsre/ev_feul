@@ -1,3 +1,7 @@
+import 'package:ev_feul/custom_widget/custom_text_blue.dart';
+import 'package:ev_feul/user/screens/registernow_in.dart';
+import 'package:ev_feul/user/screens/sign_in.dart';
+
 import '../../bloc/login/login_bloc.dart';
 import '../../custom_widget/custom_button.dart';
 import '../../custom_widget/custom_loader.dart';
@@ -40,8 +44,8 @@ class _LoginWidgetState extends State<LoginNow> {
   var selectProject = "";
   final statusDateControoler = TextEditingController();
 
-  var emailController=TextEditingController(text: "Userid/Email");
-  var passController=TextEditingController(text: "Userid/Email");
+  var emailController=TextEditingController(text: "");
+  var passController=TextEditingController(text: "");
 
   @override
   void initState() {
@@ -151,7 +155,7 @@ class _LoginWidgetState extends State<LoginNow> {
                               ),
                               labelStyle: TextStyle(
                                   color: ColorUtils.app_primary_color),
-                              hintText: "Password",
+                              hintText: "",
                               labelText: "Password",
                               hintStyle: const TextStyle(color: Colors.black),
                             ),
@@ -173,14 +177,27 @@ class _LoginWidgetState extends State<LoginNow> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: CustomButton(Strings.save, onClick: () {
-                             // _onSaveClick(context);
+                              if (formKey.currentState!.validate()){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const SignIn()),
+                                );
+                              }
+
                             }, isFullWidth: true),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: const [
+                            children:  [
                               CustomTextNormal(Strings.noAccount),
-                              CustomTextBold(Strings.registerNow),
+                              GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const RegisterNow()),
+                                    );
+                                  },
+                                  child: CustomTextBlue(Strings.registerNow)),
                             ],
                           )
                         ],

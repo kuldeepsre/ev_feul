@@ -1,12 +1,6 @@
-import 'dart:async';
-import 'package:ev_feul/tabs/tabspage.dart';
+
 import 'package:ev_feul/user/screens/first_screen.dart';
-import 'package:ev_feul/user/screens/home.dart';
-import 'package:ev_feul/user/screens/login_screen.dart';
-import 'package:ev_feul/user/screens/plan_list.dart';
-import 'package:ev_feul/user/screens/profile.dart';
-import 'package:ev_feul/user/screens/register_screen.dart';
-import 'package:ev_feul/user/screens/swap_stations.dart';
+
 import 'package:ev_feul/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'custom_widget/custom_error_widget.dart';
-import 'utils/navigation_service.dart';
-import 'utils/route_constants.dart';
+
 import 'utils/color_utils.dart';
 
 import 'package:splash_screen_view/SplashScreenView.dart';
@@ -34,21 +27,8 @@ void main() async {
   runApp(Phoenix(child: MyAppWidget()));
 }
 
-class MyAppWidget extends StatefulWidget {
-  @override
-  MyApp createState() => MyApp();
-}
-
-class MyApp extends State<MyAppWidget> {
-  late bool _jailbroken = false;
-  late bool _developerMode = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
+class MyAppWidget extends StatelessWidget {
+  const MyAppWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,51 +39,33 @@ class MyApp extends State<MyAppWidget> {
     );
     return MediaQuery(
         data: windowData,
-        child:  MaterialApp(
+        child: MaterialApp(
           title: Strings.projectname,
           debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
           theme: ThemeData(
             primarySwatch: Colors.blueGrey,
           ),
-          navigatorKey: NavigationService().navigationKey,
-          initialRoute: '/',
-          onGenerateRoute: _onGenerateRoutes,
+          home: SplashScreenView(
+            navigateRoute: const LoginScreenMain(),
+            duration: 2000,
+            imageSize: 130,
+            imageSrc: "assets/images/logo.png",
+            text: "EV FUEL",
+            textType: TextType.ColorizeAnimationText,
+            textStyle: const TextStyle(fontSize: 24.0),
+            colors: [
+              Colors.white,
+              ColorUtils.menu_selected_color,
+              ColorUtils.menu_item_bg_color,
+              Colors.yellow,
+              Colors.red,
+            ],
+            backgroundColor: ColorUtils.app_primary_color,
+          ),
+
         ));
   }
-
-  Route<dynamic> _onGenerateRoutes(RouteSettings settings) {
-    switch (settings.name) {
-      case '/':
-        return MaterialPageRoute(
-            builder: (_) => SplashScreenView(
-              navigateRoute:   LoginScreenMain(),
-              duration: 2000,
-              imageSize: 130,
-              imageSrc: "assets/images/logo.png",
-              text: "EV FUEL",
-              textType: TextType.ColorizeAnimationText,
-              textStyle: const TextStyle(fontSize: 24.0),
-              colors: [
-                Colors.white,
-                ColorUtils.menu_selected_color,
-                ColorUtils.menu_item_bg_color,
-                Colors.yellow,
-                Colors.red,
-              ],
-              backgroundColor: ColorUtils.app_primary_color,
-            ));
-        break;
-      case homeScreenRoute:
-        return MaterialPageRoute(builder: (_) => const Home());
-        break; case loginScreenRoute:
-        return MaterialPageRoute(builder: (_) =>  LoginNow());
-        break;
-      default:
-        return MaterialPageRoute(builder: (_) =>  LoginScreenMain());
-        break;
-    }
-  }
-
-
 }
+
+
