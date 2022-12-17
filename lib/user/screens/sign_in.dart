@@ -39,10 +39,7 @@ class _SignInState extends State<SignIn> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-      ),
+
 
       body: Form(
         key: formKey,

@@ -14,94 +14,64 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: SideMenu(),
-      appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return RotatedBox(
-              quarterTurns: 1,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.bar_chart_rounded,
-                  color: Colors.black,
+    return  Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Dashboard',textScaleFactor: 1,style: headingStyle,),
+        Text('Welcome User',textScaleFactor: 1,style: subheadingStyle,),
+        SizedBox(height: 10,),
+        Text('Nearest Swap Stations',textScaleFactor: 1,style: subheadingStyle,),
+        ListView.builder(
+          itemCount: 6,
+          itemBuilder: (context, i){
+            return  Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15))   ,  gradient: LinearGradient(
+                  colors: [
+                    ColorUtils.card1ln,
+                    ColorUtils.card2ln,
+
+                  ],
+                )
                 ),
-                onPressed: () => Scaffold.of(context).openDrawer(),
+                child: Column(
+
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(child: Text("Nearest Swap Stations",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,)),
+                        Expanded(child: Card(
+                            color: Colors.yellow,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text("1.5",softWrap: true,textScaleFactor: 1,style:sideMenuStyle,),
+                            ))),
+
+                      ],
+                    ),
+                    ListTile(
+
+                      leading: Icon(Icons.add_location,color: Colors.yellow,),
+                      title: Text("iThum Tower a, Noida Sector 62, Uttar Pradesh. (201301)",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                    ),
+                    SizedBox(height: 5,),
+                    ListTile(
+
+                      leading: Icon(Icons.directions,color: Colors.green,),
+                      title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                    ),
+                  ],
+                ),
               ),
             );
           },
         ),
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-
-      ),
-      body:Stack(
-       children: [
-       /*  SizedBox(
-             width: MediaQuery.of(context).size.width,
-             child: Image.asset("assets/images/bg_card.png",fit:BoxFit.fill,)),
-         Center(
-           child: Column(
-             mainAxisAlignment: MainAxisAlignment.start,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Text('Dashboard',textScaleFactor: 1,style: headingStyle,),
-               Text('Welcome User',textScaleFactor: 1,style: subheadingStyle,),
-               SizedBox(height: 10,),
-               Text('Nearest Swap Stations',textScaleFactor: 1,style: subheadingStyle,),
-                ListView.builder(
-             itemCount: 6,
-             itemBuilder: (context, i){
-              return  Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15))   ,  gradient: LinearGradient(
-                    colors: [
-                      ColorUtils.card1ln,
-                      ColorUtils.card2ln,
-
-                    ],
-                  )
-                  ),
-                    child: Column(
-
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(child: Text("Nearest Swap Stations",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,)),
-                            Expanded(child: Card(
-                                 color: Colors.yellow,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text("1.5",softWrap: true,textScaleFactor: 1,style:sideMenuStyle,),
-                                ))),
-
-                          ],
-                        ),
-                        ListTile(
-
-                        leading: Icon(Icons.add_location,color: Colors.yellow,),
-                        title: Text("iThum Tower a, Noida Sector 62, Uttar Pradesh. (201301)",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
-                    ),
-                        SizedBox(height: 5,),
-                        ListTile(
-
-                        leading: Icon(Icons.directions,color: Colors.green,),
-                        title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
-                    ),
-                  ],
-                    ),
-                ),
-              );
-             },
-           ),
 
 
-             ],),),*/
-       ],
-      )
-    );
+      ],);
   }
 }

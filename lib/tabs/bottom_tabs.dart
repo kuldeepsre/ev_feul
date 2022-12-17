@@ -1,6 +1,6 @@
 
 import 'package:ev_feul/user/screens/home.dart';
-import 'package:ev_feul/user/screens/profile.dart';
+import 'package:ev_feul/user/screens/subscriptions.dart';
 import 'package:ev_feul/user/screens/search.dart';
 import 'package:ev_feul/user/screens/swap_stations.dart';
 import 'package:flutter/material.dart';

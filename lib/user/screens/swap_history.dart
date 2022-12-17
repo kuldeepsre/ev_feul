@@ -74,81 +74,104 @@ class _GateWidgetState extends State<Gate2Widget> {
               if (state is GateLoading) {
                 return const Center(child: CustomLoader());
               }
-              return SingleChildScrollView(
-                child: Column(
-                  children:  <Widget>[
-                    Container(
-                      height: 120,
-                      color: ColorUtils.clip,
-                      child: Center(child: Text("Swap History".toUpperCase(),textScaleFactor: 1,style: HeadingStyle,)),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Card(
-                            elevation: 15,
-                            child: Container(
+              return Stack(
+                children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset("assets/images/bg.png",fit: BoxFit.fill,)),
+                  SingleChildScrollView(
+                    child: Column(
+                      children:  <Widget>[
+                        SizedBox(height: 30,),
+                        Card(
+                          elevation: 15,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                              side: BorderSide(width: 1, color: Colors.white)),
+                          child: Column(
+                            children: [
 
-                              decoration: BoxDecoration(
-                                color: ColorUtils.tablleHColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-                                  children: [
-                                    Text("Date",textScaleFactor:1,style: sideMenu14Style,),
-                                    Text("Battery Serial No",textScaleFactor:1,style: sideMenu14Style,),
-                                    Text("Swap Date",textScaleFactor:1,style: sideMenu14Style,),
-                                    Text("EV. No",textScaleFactor:1,style: sideMenu14Style,),
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: 100,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return Container(
-
-                                color:( index%2==0)?Colors.white:ColorUtils.even,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 30),
+                                child: Card(
+                                  elevation: 15,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15),
+                                          topRight: Radius.circular(15)),
+                                      side: BorderSide(width: 1, color: Colors.black)),
+                                  child: Column(
                                     children: [
-                                      Text("24 Nov 22",style: buttonBlackTextStyle,),
-                                      Text("#786542",style: buttonBlackTextStyle,),
-                                      Text("24 Nov 22",style: buttonBlackTextStyle,),
-                                      Text("#786542",style: buttonBlackTextStyle,),
+                                      Card(
+                                        elevation: 15,
+                                        child: Container(
+
+                                          decoration: BoxDecoration(
+                                            color: ColorUtils.tablleHColor,
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 18.0),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+                                              children: [
+                                                Text("Date",textScaleFactor:1,style: sideMenu14Style,),
+                                                Text("Battery Serial No",textScaleFactor:1,style: sideMenu14Style,),
+                                                Text("Swap Date",textScaleFactor:1,style: sideMenu14Style,),
+                                                Text("EV. No",textScaleFactor:1,style: sideMenu14Style,),
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      ListView.separated(
+                                        shrinkWrap: true,
+                                        itemCount: 100,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          return Container(
+
+                                            color:( index%2==0)?Colors.white:ColorUtils.even,
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+                                                children: [
+                                                  Text("24 Nov 22",style: buttonBlackTextStyle,),
+                                                  Text("#786542",style: buttonBlackTextStyle,),
+                                                  Text("24 Nov 22",style: buttonBlackTextStyle,),
+                                                  Text("#786542",style: buttonBlackTextStyle,),
 
 
 
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          ;
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(thickness: 0.5,);
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
                               )
-                              ;
-                            },
-                            separatorBuilder: (context, index) {
-                              return Divider(thickness: 0.5,);
-                            },
+                            ],
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        )
+
+                      ],
+                    ),
+                  )
+                ],
+
               );
             },
           ),

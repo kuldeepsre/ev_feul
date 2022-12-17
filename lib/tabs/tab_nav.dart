@@ -1,5 +1,5 @@
 import 'package:ev_feul/user/screens/home.dart';
-import 'package:ev_feul/user/screens/profile.dart';
+import 'package:ev_feul/user/screens/subscriptions.dart';
 import 'package:ev_feul/user/screens/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,7 +24,7 @@ class TabNavigationItem {
       title: Text("Search"),
     ),
     TabNavigationItem(
-      page: Profile(),
+      page: SubscriptionPlan(),
       icon: Icon(Icons.home),
       title: Text("Home"),
     ),

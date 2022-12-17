@@ -5,7 +5,7 @@ import 'bottom_tabs.dart';
 class TabsPage extends StatefulWidget {
   int selectedIndex = 0;
 
-  TabsPage({Key? key, required this.selectedIndex}) : super(key: key);
+  TabsPage({required this.selectedIndex});
 
   @override
   _TabsPageState createState() => _TabsPageState();
@@ -45,12 +45,16 @@ class _TabsPageState extends State<TabsPage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
+            icon: Icon(Icons.grid_view_rounded),
+            title: Text('Subscription Plan'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.verified_user),
-            title: Text('Profile'),
+            icon: Icon(Icons.list),
+            title: Text('My Plan'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history_sharp,),
+            title: Text('Swap History',textScaleFactor:1,),
           ),
         ],
         currentIndex: _selectedIndex,

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ev_feul/bloc/login/login_bloc.dart';
 
-import 'package:ev_feul/user/screens/profile.dart';
+import 'package:ev_feul/user/screens/subscriptions.dart';
 import 'package:ev_feul/user/screens/registernow_in.dart';
 import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
@@ -101,7 +101,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) {
-                                    return const Profile();
+                                    return const SubscriptionPlan();
                                   }),
                                 );
                               },

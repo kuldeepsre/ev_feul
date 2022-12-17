@@ -1,246 +1,230 @@
-import 'dart:async';
-import 'package:ev_feul/custom_widget/custom_button.dart';
-import 'package:ev_feul/user/screens/profile.dart';
+import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
+import 'package:ev_feul/custom_widget/custom_loader.dart';
 import 'package:ev_feul/utils/color_utils.dart';
-import 'package:ev_feul/utils/strings.dart';
-import 'package:flutter/services.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:connectivity/connectivity.dart';
-import '../../bloc/login/login_bloc.dart';
+import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+
+
+
 class PlanList extends StatefulWidget {
   const PlanList({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _GateScreenState createState() => _GateScreenState();
 }
-class _LoginScreenState extends State<PlanList> {
+
+class _GateScreenState extends State<PlanList> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => LoginBloc(LoginInitial()),
-      child: const LoginWidget(),
+      create: (BuildContext context) => GateBloc(GateInitial()),
+      child: const Gate2Widget(),
     );
   }
 }
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+
+class Gate2Widget extends StatefulWidget {
+  const Gate2Widget({Key? key}) : super(key: key);
 
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  _GateWidgetState createState() => _GateWidgetState();
 }
-class _LoginWidgetState extends State<LoginWidget> {
+
+class _GateWidgetState extends State<Gate2Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  final TextEditingController _userIdController = TextEditingController(text:'N17160933');
-  final TextEditingController _passwordController = TextEditingController(text: 'N!lesh@@');
   late bool _validate;
   late bool isLogin;
-  bool hidePassword = true;
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  var circleRadius = 60;
-  String versionCode = "";
-  bool isInternetConnected = false;
-  late LoginBloc loginBloc;
-
-
-  // internet
-  String _connectionStatus = 'Unknown';
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-
+  var FullNameController = TextEditingController();
+  var DateController = TextEditingController();
+  var AddressController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _validate = false;
     isLogin = false;
-    initConnectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
+    final gateBloc = BlocProvider.of<GateBloc>(context);
+    gateBloc.add(ParkingDataData(master_name: "parking_allotment"));
+    gateBloc.add(ParkingGetListData(parking_allotment: " "));
   }
-
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    _connectivitySubscription.cancel();
-    super.deactivate();
-  }
-
 
   @override
   Widget build(BuildContext context) {
-    loginBloc = BlocProvider.of<LoginBloc>(context);
-    return WillPopScope(
-      onWillPop: () => Future.value(false),
-      child: Scaffold(
+    var widgetMinWidth = 650;
+    var totalWidth = MediaQuery.of(context).size.width;
+    var totalPadding = 14;
+    final gateBloc = BlocProvider.of<GateBloc>(context);
+    ScrollController? _scrollController =
+    ScrollController(initialScrollOffset: 0);
+    return Scaffold(
         resizeToAvoidBottomInset:false,
-        key: _scaffoldKey,
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
 
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    HexColor("#4ECDC4"),
-                    HexColor("#556270"),
-                  ],
-                )
-            ),
+        body: BlocListener<GateBloc, GateState>(
+          listener: (context, state) {
 
-            child: BlocListener<LoginBloc, LoginState>(
-              listener: (context, state) async {
+          },
+          child: BlocBuilder(
+            bloc: gateBloc,
+            builder: (BuildContext context, GateState state) {
+              if (state is GateLoading) {
+                return const Center(child: CustomLoader());
+              }
+              return Stack(
+                children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset("assets/images/bg.png",fit: BoxFit.fill,)),
+                  SingleChildScrollView(
+                    child: Column(
+                      children:  <Widget>[
+                        Center(child: Text("My Plans",textScaleFactor: 1,style:sideMenuStyle,)),
 
-              },
-              child: BlocBuilder(
-                bloc: loginBloc,
-                builder: (BuildContext context, LoginState state) {
-                  if (state is LoginLoding) {
-                    return Center(
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 32),
-                        child: Center(
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 32),
-                            height: 70.0,
-                            width: 70.0,
-                            child: CircularProgressIndicator(
-                              backgroundColor: ColorUtils.menu_selected_color,
-                            ),
+                        const SizedBox(height: 30,),
+                        Card(
+                          elevation: 15,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                              side: BorderSide(width: 1, color: Colors.white)),
+                          child: Column(
+                            children: [
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 30),
+                                child: Column(
+                                  children: [
+
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: 6,
+                                      itemBuilder: (context, i){
+                                        return           Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: <Widget>[
+
+                                              Card(
+                                                elevation: 5,
+                                                shape: const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.only(
+                                                        bottomRight: Radius.circular(1),
+                                                        bottomLeft: Radius.circular(1),
+                                                        topLeft: Radius.circular(1),
+                                                        topRight: Radius.circular(1)),
+                                                    side: BorderSide(width:1, color: Colors.white)),
+                                                child: Column(
+                                                  children: [
+
+                                                    Container(
+
+
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(1)   ,
+                                                          gradient: LinearGradient(
+                                                            colors: [
+                                                             i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+                                                             i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+
+
+                                                            ],
+                                                          )
+
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Column(
+                                                          children: [
+                                                            Center(child: Text("Package Name: Platinum",textScaleFactor: 1,style:sideMenuStyle,)),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 2,),
+
+
+                                                    Center(child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text("10 Batteries Consumed",textScaleFactor: 1,style:sideMenuBlack,),
+
+                                                      ],
+
+                                                    )),
+                                                    SizedBox(height: 32,),
+                                                  ],
+                                                ),
+                                              ),
+                                              Positioned(
+                                                child:
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 50),
+                                                  child: Container(
+                                                    height: MediaQuery.of(context).size.height*.06,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.all(Radius.circular(15))   ,  gradient: LinearGradient(
+                                                      colors: [
+                                                        i%2==0? ColorUtils.redColor: ColorUtils.redColor,
+                                                        i%2==0? ColorUtils.redColor: ColorUtils.redColor,
+
+
+                                                      ],
+                                                    )
+
+                                                    ),
+
+                                                    child:  Center(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                        child: const Text(
+                                                          "Subscribe Now",
+                                                          textAlign: TextAlign.center,
+                                                          textScaleFactor: 1,
+                                                          style: TextStyle(
+
+                                                            color: Colors.white,
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Poppins',
+                                                            fontWeight: FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                right: 0,
+                                                left: 0,
+                                                bottom: -20,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      ),
-                    );
-                  }
-                  if (state is LoginInitial) {
-                    return Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return Profile();
-                                }),
-                              );
-                            },
-                            child: SizedBox(
-                              width:MediaQuery.of(context).size.width*.42,
-                              height:MediaQuery.of(context).size.height*.32,
-                              child:Image.asset(
-                                "assets/images/ril_logo.png",
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return  LoginNow();
-                                }),
-                              );
-                            },
-                            child: SizedBox(
-                              width:MediaQuery.of(context).size.width*.42,
-                              height:MediaQuery.of(context).size.height*.32,
-                              child:Image.asset(
-                                "assets/images/ril_logo.png",
-                              ),
-                            ),
-                          ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: CustomButton(Strings.save, onClick: () {
-                                _onSaveClick(context);
-                              }, isFullWidth: true),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ),
+                        )
+
+                      ],
+                    ),
+                  )
+                ],
+
+              );
+            },
           ),
-        ),
-      ),
-    );
-  }
-  void showInSnackBar(String value) {
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(
-        content: Text(
-          value,
-          style: const TextStyle(color: Colors.red, fontSize: 16),
-        )));
+        ));
   }
 
-  Future<void> initConnectivity() async {
-    ConnectivityResult result = ConnectivityResult.none;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {}
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return Future.value(null);
-    }
-    return _updateConnectionStatus(result);
-  }
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    switch (result) {
-      case ConnectivityResult.wifi:
-        setState(() {
-          isInternetConnected = true;
-        });
-        loginBloc.add(InternetConnectionStatus(internetStatus: true));
-        break;
-      case ConnectivityResult.mobile:
-        setState(() {
-          isInternetConnected = true;
-        });
-        loginBloc.add(InternetConnectionStatus(internetStatus: true));
-        break;
-      case ConnectivityResult.none:
-        setState(() {
-          isInternetConnected = false;
-          _connectionStatus = result.toString();
-        });
-        loginBloc.add(InternetConnectionStatus(internetStatus: false));
-
-        break;
-      default:
-        setState(() => _connectionStatus = 'Failed to get connectivity.');
-        break;
-    }
-  }
-
-  void _onSaveClick(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return  LoginNow();
-      }),
-    );
-  }
 }
-

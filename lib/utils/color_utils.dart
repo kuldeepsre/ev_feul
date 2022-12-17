@@ -41,6 +41,8 @@ class ColorUtils {
   static var table1="#ABFFD9".toColor();
   static var table2="#ECECEC".toColor();
   static var textFill="#F4F4F4".toColor();
+  static var appbar="#28559E".toColor();
+  static var appbar2="#1F4B93".toColor();
 
 
 
