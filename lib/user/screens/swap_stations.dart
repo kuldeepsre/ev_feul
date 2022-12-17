@@ -117,7 +117,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Expanded(
+                                            const Expanded(
                                                flex: 2,
                                                 child: Text("AKS Swap Station",softWrap: true,textScaleFactor: 1,style:TextStyle(
                                               color: Colors.lightBlue,
