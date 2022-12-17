@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'bottom_tabs.dart';
 
-
 class TabsPage extends StatefulWidget {
   int selectedIndex = 0;
 
-  TabsPage({required this.selectedIndex});
+  TabsPage({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   _TabsPageState createState() => _TabsPageState();
@@ -14,7 +13,7 @@ class TabsPage extends StatefulWidget {
 
 class _TabsPageState extends State<TabsPage> {
   int _selectedIndex = 0;
-  
+
   void _onItemTapped(int index) {
     setState(() {
       widget.selectedIndex = index;
@@ -33,13 +32,9 @@ class _TabsPageState extends State<TabsPage> {
     return Scaffold(
       body: Scaffold(
         body: IndexedStack(
-
           index: widget.selectedIndex,
           children: [
-
             for (final tabItem in TabNavigationItem.items) tabItem.page,
-
-
           ],
         ),
       ),
@@ -50,22 +45,16 @@ class _TabsPageState extends State<TabsPage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view_rounded),
-            title: Text('Subscription Plan'),
+            icon: Icon(Icons.search),
+            title: Text('Search'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            title: Text('My Plan'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_sharp,),
-            title: Text('Swap History',textScaleFactor:1,),
+            icon: Icon(Icons.verified_user),
+            title: Text('Profile'),
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[800],
-        unselectedItemColor:Colors.black,
-        showUnselectedLabels: true,
+        selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
     );

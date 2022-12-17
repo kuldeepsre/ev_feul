@@ -33,13 +33,27 @@ class ColorUtils {
   static var Create2ln="#000000".toColor();
   static var card1ln="#DBFBE8".toColor();
   static var card2ln="#FFFFFF".toColor();
+  static var bgText="#050F2B".toColor();
+  static var appBarColor="#0D1B40".toColor();
+  static var tablleHColor="#0D1B40".toColor();
+  static var clip="#2FDC8D".toColor();
+  static var even="#DAEDFF".toColor();
+  static var table1="#ABFFD9".toColor();
+  static var table2="#ECECEC".toColor();
+  static var textFill="#F4F4F4".toColor();
+
+
+
+
+
+
 
 
 
 
 }
- //#4ECDC4
-  extension ColorExtension on String {
+//#4ECDC4
+extension ColorExtension on String {
   toColor() {
     var hexColor = this.replaceAll("#", "");
     if (hexColor.length == 6) {

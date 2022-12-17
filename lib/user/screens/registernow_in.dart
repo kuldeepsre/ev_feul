@@ -3,11 +3,16 @@
 import 'package:ev_feul/custom_widget/custom_button.dart';
 import 'package:ev_feul/custom_widget/custom_text_blue.dart';
 import 'package:ev_feul/custom_widget/custom_text_normal.dart';
+import 'package:ev_feul/custom_widget/custom_text_white_normal.dart';
+import 'package:ev_feul/tabs/home_scrrem.dart';
+import 'package:ev_feul/tabs/tabspage.dart';
 import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/strings.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/material.dart';
+
+import 'drawermenunav.dart';
 
 class RegisterNow extends StatefulWidget {
   const RegisterNow({Key? key}) : super(key: key);
@@ -27,578 +32,328 @@ class _RegisterNowState extends State<RegisterNow> {
   var emailController = TextEditingController(text: "");
   var passController = TextEditingController(text: "");
 
+  var idController=TextEditingController(text: "");
+  var addressController=TextEditingController(text: "");
+  var phoneController=TextEditingController(text: "");
+  var ownerController=TextEditingController(text: "");
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(),
         backgroundColor: Colors.white,
-        body: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * .30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        "assets/images/loginlogo.png",
-                        fit: BoxFit.fill,
-                      ),
+        body:Stack(
+
+          children: [
+
+            Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:  <Widget>[
+                    SizedBox(
+                      width:MediaQuery.of(context).size.width,
+                      height:MediaQuery.of(context).size.height*.30,
+                      child: Image.asset("assets/images/login.png",fit: BoxFit.fill,),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Register Now".toUpperCase(),
-                    textScaleFactor: 1,
-                    style: blueTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Please Register to get credential",
-                    textScaleFactor: 1,
-                    style: graySubHeadingStyle,
-                  ),
-                  const SizedBox(
-                height: 2,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "EV Number",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle
+                    Text(
+                      "Register Now".toUpperCase(),
+                      textScaleFactor: 1,
+                      style: blueTextStyle,
+                    ),
+                    const SizedBox(height: 20,),
+                    Text(
+                      "Please Register to get credential",
+                      textScaleFactor: 1,
+                      style: listTextStyle,
+                    ),
+                    const SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          TextFormField(
+                            controller: ownerController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ColorUtils.textFill,
+
+
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue,
+                                      width: 0.5) //This is Ignored,
+
                               ),
-                              autocorrect: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please Enter EV Number";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
+
+                              labelStyle: TextStyle(
+                                  color: ColorUtils.bgText),
+                              hintText: "",
+                              labelText: "Owner Name",
+                              hintStyle: const TextStyle(color: Colors.white),
                             ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "Password",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle
-                              ),
-                              autocorrect: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please Enter Password";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "Confirm Password",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle
-                              ),
-                              autocorrect: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please Enter Confirm Password";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "Owner Name",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle,
-                                errorText: "ffffff"
 
-                              ),
-                              autocorrect: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please Enter Owner Name";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: TextFormField(
-                                    controller: passController,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      hoverColor: ColorUtils.fillColor,
-                                      fillColor: ColorUtils.fillColor,
-
-                                      /*       focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor)),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor,
-                                          width: 0.5) //This is Ignored,
-
-                                  ),*/
-                                      labelStyle: TextStyle(
-                                          color: ColorUtils.app_primary_color),
-                                      hintText: "",
-                                      labelText: "EV RC Copy",
-                                      border: InputBorder.none,
-                                      hintStyle:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    autocorrect: true,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "EV RC Copy  Cannot be null";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (text) {
-                                      setState(() {});
-                                      // do something with text
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Browse",
-                                      textScaleFactor: 1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                      height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: TextFormField(
-                                    controller: passController,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      hoverColor: ColorUtils.fillColor,
-                                      fillColor: ColorUtils.fillColor,
-                                      enabled: false,
-                                      border: InputBorder.none,
-
-                                      /*       focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor)),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor,
-                                          width: 0.5) //This is Ignored,
-
-                                  ),*/
-                                      labelStyle: TextStyle(
-                                          color: ColorUtils.app_primary_color),
-                                      hintText: "",
-                                      labelText: "ID Proof",
-                                      hintStyle:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    autocorrect: true,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "ID Proof Cannot be null";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (text) {
-                                      setState(() {});
-                                      // do something with text
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Browse",
-                                      textScaleFactor: 1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                      height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: TextFormField(
-                                    controller: passController,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      hoverColor: ColorUtils.fillColor,
-                                      fillColor: ColorUtils.fillColor,
-                                      enabled: false,
-                                      border: InputBorder.none,
-
-                                      /*       focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor)),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor,
-                                          width: 0.5) //This is Ignored,
-
-                                  ),*/
-                                      labelStyle: TextStyle(
-                                          color: ColorUtils.app_primary_color),
-                                      hintText: "",
-                                      labelText: "Vehicle Photo",
-                                      hintStyle:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    autocorrect: true,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "Vehicle Photo Cannot be null";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (text) {
-                                      setState(() {});
-                                      // do something with text
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Browse",
-                                      textScaleFactor: 1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                      height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 8.0),
-                            child: TextField(
-                              controller: passController,
-                              textAlign: TextAlign.justify,
-                              maxLines: null,
-                              expands: true,
-                              keyboardType: TextInputType.text,
-
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-
-                                /*       focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor)),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: ColorUtils.whiteColor,
-                                          width: 0.5) //This is Ignored,
-
-                                  ),*/
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "Address",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle
-                              ),
-                              autocorrect: true,
-                              /*     validator: (value) {
+                            autocorrect: true,
+                            style:
+                           listTextStyle,
+                            validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Vehicle Photo Cannot be null";
+                                return "Please Enter Owner Name";
                               } else {
                                 return null;
-                              }*/
-                              // },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                      height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "Phone Number",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle
-                              ),
-                              autocorrect: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please Enter Confirm Password";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Card(
-                          color: ColorUtils.fillColor,
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: ColorUtils.fillColor,
-                                fillColor: ColorUtils.fillColor,
-                                enabled: false,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                    color: ColorUtils.app_primary_color),
-                                hintText: "",
-                                labelText: "Email ID",
-                                  hintStyle: const TextStyle(color: Colors.black),
-                                errorStyle: redheadingStyle
-                              ),
-                              autocorrect: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please Enter Email ID";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (text) {
-                                setState(() {});
-                                // do something with text
-                              },
-                            ),
-                          ),
-                        ),
+                              }
+                            },
 
+                          ),
+                          const SizedBox(height: 20,),
+                          TextFormField(
+                            controller: passController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ColorUtils.textFill,
 
-                        const SizedBox(
-                      height:10,
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: CustomButton("Register".toUpperCase(),
-                              onClick: () {
-                                if (formKey.currentState!.validate()){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const SignIn()),
-                                  );
-                                }
-                          }, isFullWidth: true),
-                        ),
-                        const SizedBox(
-                      height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomTextNormal("Already Have An Account ?"),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignIn()),
-                                  );
-                                },
-                                child: CustomTextBlue(" Login Now")),
-                          ],
-                        )
-                      ],
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue,
+                                      width: 0.5) //This is Ignored,
+
+                              ),
+                              labelStyle: TextStyle(
+                                  color: ColorUtils.bgText),
+                              hintText: "",
+                              labelText: "Password",
+
+                              hintStyle: const TextStyle(color: Colors.white),
+                            ),
+                            autocorrect: true,
+                            style:
+                           listTextStyle,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter password";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (text) {
+                              setState(() {});
+                              // do something with text
+                            },
+                          ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            controller: idController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ColorUtils.textFill,
+
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue,
+                                      width: 0.5) //This is Ignored,
+
+                              ),
+                              labelStyle: TextStyle(
+                                  color: ColorUtils.bgText),
+                              hintText: "",
+                              labelText: "Owner ID Proof any",
+                              hintStyle: const TextStyle(color: Colors.white),
+                            ),
+                            autocorrect: true,
+                            style:
+                           listTextStyle,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter Owner ID Proof any";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (text) {
+                              setState(() {});
+                              // do something with text
+                            },
+                          ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            controller: addressController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ColorUtils.textFill,
+
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue,
+                                      width: 0.5) //This is Ignored,
+
+                              ),
+                              labelStyle: TextStyle(
+                                  color: ColorUtils.bgText),
+                              hintText: "",
+                              labelText: "Address",
+                              hintStyle: const TextStyle(color: Colors.white),
+                            ),
+                            autocorrect: true,
+                            style:
+                           listTextStyle,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Address";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (text) {
+                              setState(() {});
+                              // do something with text
+                            },
+                          ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            controller: phoneController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ColorUtils.textFill,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue,
+                                      width: 0.5) //This is Ignored,
+
+                              ),
+                              labelStyle: TextStyle(
+                                  color: ColorUtils.bgText),
+                              hintText: "",
+                              labelText: "Phone Number",
+                              hintStyle: const TextStyle(color: Colors.white),
+                            ),
+                            autocorrect: true,
+                            style:
+                           listTextStyle,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Phone Number";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (text) {
+                              setState(() {});
+                              // do something with text
+                            },
+                          ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            controller: emailController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ColorUtils.textFill,
+
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue)),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: ColorUtils.btnBlue,
+                                      width: 0.5) //This is Ignored,
+
+                              ),
+                              labelStyle: TextStyle(
+                                  color: ColorUtils.bgText),
+                              hintText: "",
+                              labelText: "Email ID",
+                              hintStyle: const TextStyle(color: Colors.white),
+                            ),
+                            autocorrect: true,
+                            style:
+                           listTextStyle,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Email ID";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (text) {
+                              setState(() {});
+                              // do something with text
+                            },
+                          ),
+                          const SizedBox(height: 10,),
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: const CustomTextWhiteNormal(Strings.forgotPass)),
+                          const SizedBox(height: 10,),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: CustomButton("Register", onClick: () {
+                           //   save(context);
+                            /*   if (formKey.currentState!.validate()){
+
+                            }*/
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  MyStatefulWidget()),
+                              );
+
+                            }, isFullWidth: true),
+                          ),
+                          const SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:  [
+                              Text(Strings.account,textScaleFactor: 1,style: listTextStyle,),
+                              GestureDetector(
+                                  onTap: (){
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SignIn()),
+                                            (Route<dynamic> route) => route.isFirst);
+                                  },
+                                  child: CustomTextBlue(Strings.login)),
+                            ],
+                          ),
+                          const SizedBox(height: 10,),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+
+
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ));
   }
+
+
+
 }

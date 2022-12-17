@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ev_feul/bloc/login/login_bloc.dart';
-import 'package:ev_feul/tabs/tabspage.dart';
+
 import 'package:ev_feul/user/screens/profile.dart';
 import 'package:ev_feul/user/screens/registernow_in.dart';
 import 'package:ev_feul/user/screens/sign_in.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'login_screen.dart';
+
 
 class LoginScreenMain extends StatefulWidget {
   const LoginScreenMain({Key? key}) : super(key: key);
@@ -190,7 +190,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 onTap:(){
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) =>  TabsPage(selectedIndex: 0,)),
+                                    MaterialPageRoute(builder: (context) => const RegisterNow()),
                                   );
                                 },
                                 child: const Text(

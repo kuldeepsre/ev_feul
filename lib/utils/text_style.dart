@@ -37,9 +37,14 @@ TextStyle bottomBarItemStyle = TextStyle(
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w500,
 );
-TextStyle centerHeadingStyle = TextStyle(
-  fontSize: 36.0,
-  color: primaryColor,
+TextStyle HeadingStyle = TextStyle(
+  fontSize: 23.0,
+  color: whiteColor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+);TextStyle centerHeadingStyle = TextStyle(
+  fontSize: 42.0,
+  color: greencolor,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w600,
 );
@@ -67,6 +72,17 @@ TextStyle sideMenuStyle = TextStyle(
   color: whiteColor,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w600,
+);TextStyle sideMenu14Style = TextStyle(
+  fontSize: 14.0,
+  color: whiteColor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+);
+TextStyle sideMenuBlack = TextStyle(
+  fontSize: 18.0,
+  color: blackColor,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
 );
 TextStyle sideLogoutStyle = TextStyle(
   fontSize: 18.0,
@@ -74,12 +90,12 @@ TextStyle sideLogoutStyle = TextStyle(
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w600,
 );
- TextStyle whiteheadingStyle = const TextStyle(
+TextStyle whiteheadingStyle = const TextStyle(
   fontSize: 16.0,
   color: Colors.white,
   fontWeight: FontWeight.bold,
 );
-  TextStyle redheadingStyle = const TextStyle(
+TextStyle redheadingStyle = const TextStyle(
   fontSize: 9.0,
   letterSpacing: .2,
   color: Colors.white,
@@ -95,6 +111,11 @@ TextStyle greyHeadingStyle = TextStyle(
 );TextStyle greysubHeadingStyle = TextStyle(
   fontSize: 24.0,
   color: Colors.black,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+);TextStyle redStyle = TextStyle(
+  fontSize: 14.0,
+  color: Colors.red,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w500,
 );
@@ -217,7 +238,7 @@ TextStyle btnStyle = TextStyle(
 
 // Search text style start
 TextStyle searchTextStyle = TextStyle(
- // color: bgColor.withOpacity(0.6),
+  // color: bgColor.withOpacity(0.6),
   fontSize: 16.0,
   fontFamily: 'Poppins',
   fontWeight: FontWeight.bold,

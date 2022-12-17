@@ -4,12 +4,13 @@ import 'package:ev_feul/custom_widget/custom_button.dart';
 import 'package:ev_feul/custom_widget/custom_text_blue.dart';
 
 import 'package:ev_feul/custom_widget/custom_text_normal.dart';
-import 'package:ev_feul/tabs/tabspage.dart';
+import 'package:ev_feul/tabs/home_scrrem.dart';
 import 'package:ev_feul/user/screens/registernow_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/strings.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/material.dart';
+
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -29,10 +30,19 @@ class _SignInState extends State<SignIn> {
   var emailController=TextEditingController(text: "");
   var passController=TextEditingController(text: "");
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+      ),
 
       body: Form(
         key: formKey,
@@ -140,17 +150,16 @@ class _SignInState extends State<SignIn> {
                         },
                       ),
                       const SizedBox(height: 10,),
+
                       Align(
                           alignment: Alignment.topRight,
                           child: const CustomTextBlue(Strings.forgotPass)),
                       const SizedBox(height: 10,),
+
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: CustomButton(Strings.save, onClick: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) =>  TabsPage(selectedIndex: 0)),
-                          );
+                         save(context);
                          /* if (formKey.currentState!.validate()){
                             Navigator.push(
                               context,
@@ -187,5 +196,16 @@ class _SignInState extends State<SignIn> {
         ),
       )
     );
+  }
+
+  void save(BuildContext context) {
+    print("HI");
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Dashboard()),
+            (Route<dynamic> route) => route.isFirst);
+/*    MaterialPageRoute(builder: (context) => Dashboard());*/
   }
 }

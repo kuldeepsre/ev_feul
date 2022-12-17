@@ -26,10 +26,10 @@ class TabNavigationItem {
           icon: Image.asset("assets/images/battery.png",),
          title: const Text("Swap Station",),
   ),
-        TabNavigationItem(
+/*        TabNavigationItem(
           page:  Profile(),
           icon: Image.asset("assets/images/battery.png",),
           title: const Text("Swap Station",),
-        ),
+        ),*/
       ];
 }

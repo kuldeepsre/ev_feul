@@ -85,6 +85,7 @@ class Strings {
   static const forgotPass="Forgot Password?";
 
   static const noAccount="Don’t Have An Account?";
+  static const account="Already Have An Account ?";
 
   static const registerNow=" Register Now";
 
