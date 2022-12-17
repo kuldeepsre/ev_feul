@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:ev_feul/model/register_response.dart';
+import 'package:http/http.dart' as http;
+
 abstract class Services {
 
   
@@ -5,63 +10,46 @@ abstract class Services {
 class FetchService extends Services {
 
 
-/*
   @override
-  Future<AddinfoResponse>  addinfoData(String username, String phone, String caddress, String ccity, String cstate, String ccountry, String cpin, String paddress, String pcity, String pstate, String pcountry, String ppin, String phonedetails, String maintenancepoint, String area, String aadharnumber, String dlnumber, String aadhar, String drivinglicencse, String photo) async {
-    var postUri = Uri.parse("http://49.50.77.81:8181/Petrollermodeladd/");
+  Future<RegisterResponse>  saveRagister(String ev_number,String password,
+      String confirm_password,String owner_name,
+      String phone,String address,String id_proof,String ev_rc_copy,String vehicle_photo,String email
+  ) async {
+    var postUri = Uri.parse("http://evfuel.afmerp.com/api/register");
     Map<String, String> headers = {
       "Accept": "application/json",
       "Content-Type":"multipart/form-data"
     };
-    http.MultipartRequest request = new http.MultipartRequest("POST", postUri);
+    http.MultipartRequest request = http.MultipartRequest("POST", postUri);
     var meterImage;
-    if (aadhar != null) {
-      meterImage = await http.MultipartFile.fromPath("aadhar",aadhar);
+    if (ev_rc_copy != null) {
+      meterImage = await http.MultipartFile.fromPath("ev_rc_copy",ev_rc_copy);
       request.files.add(meterImage);
-    }  if (drivinglicencse != null) {
-      meterImage = await http.MultipartFile.fromPath("drivinglicencse",drivinglicencse);
+    }  if (id_proof != null) {
+      meterImage = await http.MultipartFile.fromPath("id_proof",id_proof);
       request.files.add(meterImage);
-    }  if (photo != null) {
-      meterImage = await http.MultipartFile.fromPath("photo",photo);
+    }  if (vehicle_photo != null) {
+      meterImage = await http.MultipartFile.fromPath("vehicle_photo",vehicle_photo);
       request.files.add(meterImage);
     }    request.headers.addAll(headers);
-    request.fields["username"] =username;
-    request.fields["secretid"] =Constants.id.toString();
+    request.fields["ev_number"] =ev_number;
+    request.fields["password"] =password;
+    request.fields["confirm_password"] =confirm_password;
+    request.fields["owner_name"] =owner_name;
     request.fields["phone"] =phone;
-    request.fields["caddress"] =caddress;
-    request.fields["ccity"] =ccity;
-    request.fields["cstate"] =cstate;
-    request.fields["ccountry"] =ccountry;
-    request.fields["cpin"] =cpin;
-    request.fields["paddress"] =paddress;
-    request.fields["pstate"] =pstate;
-    request.fields["pstate"] =pstate;
-    request.fields["pcountry"] =pcountry;
-    request.fields["ppin"] =ppin;
-    request.fields["pcity"] =pcity;
-    request.fields["aadharnumber"] =aadharnumber;
-    request.fields["dlnumber"] =dlnumber;
-    request.fields["maintenancepoint"] =maintenancepoint;
-    request.fields["phonedetails"] ="phonedetails";
-
-    request.fields["area"] =area;
+    request.fields["address"] =address;
     http.StreamedResponse response2 = await request.send();
     var tesr = await response2.stream.toBytes();
     final Map<String, dynamic> data = json.decode(String.fromCharCodes(tesr).toString());
-
     if(response2.statusCode==200)
     {
-      Constants.mobile=data['phone'];
-      Constants.maintenancepoint=data['maintenancepoint'];
-      Constants.id=data['id'];
-      Constants.name=data['username'];
+
     }
     else{
-      return AddinfoResponse.fromJson(data);
+      return RegisterResponse.fromJson(data);
     }
-    return AddinfoResponse.fromJson(data);
+    return RegisterResponse.fromJson(data);
   }
 
-*/
 
 }

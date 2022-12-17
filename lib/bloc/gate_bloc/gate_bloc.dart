@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:ev_feul/services/services.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:meta/meta.dart';
@@ -9,22 +10,22 @@ class GateBloc extends Bloc<GateEvent, GateState> {
   GateBloc(GateInitial gateInitial) : super(GateInitial()) {
     on<GateEvent>((event, emit) async {
 
-    /*  if (event is EventList) {
+      if (event is AddInfo) {
         emit(GateLoading());
-        final service = new GateFetchService();
+        final service = new FetchService();
         var res =
-        await service.getEventData(event.command);
-        if (res.statusCode==200) {
-          emit(EventDropDownLoaded(eventlist: res.result));
-        }else if(res.statusCode==401) {
-          emit(UserTokenExpired(
-              title: "Token Expired", message:"Token has been expired!"));
+        await service.saveRagister(event.ev_number,event.password,event.confirm_password,event.owner_name,event.phone,event.address,event.id_proof,event.ev_rc_copy,event.vehicle_photo,event.email);
+        if (res.status==200) {
+          emit(DataSaved(message: "Data Saved Successfully", title: 'Register Screen'));
+        }else if(res.status==401) {
+          emit(DataFailed(
+              title: "Error", message:"server error"));
         }
         else{
           emit(DataFailed(
               title: "Error", message:"server error"));
         }
-      }*/
+      }
 
     });
   }
