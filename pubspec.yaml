@@ -54,6 +54,9 @@ dev_dependencies:
   carousel_slider: ^4.0.0
   data_table_2: ^2.1.1
   flutter_svg: ^1.0.2
+  image_picker: ^0.8.4+11
+  file_picker: ^4.2.0
+
 flutter:
 
   uses-material-design: true

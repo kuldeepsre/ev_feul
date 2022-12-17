@@ -162,3 +162,9 @@ class CallForVehicalPickup3Request extends GateEvent {
   final List<dynamic> postData;
   CallForVehicalPickup3Request({required this.postData});
 }
+class AddInfo extends GateEvent {
+  final String username,phone,caddress,ccity,cstate,ccountry,cpin,paddress,
+      pcity,pstate,pcountry,ppin,phonedetails,
+      maintenancepoint,area,aadharnumber,dlnumber,aadhar,drivinglicencse,photo;
+  AddInfo({required this.username,required this.phone,required this.caddress,required this.ccity,required this.cstate,required this.ccountry,required this.cpin,required this.paddress,required this.pcity,required this.pstate,required this.pcountry, required this.ppin,required this.phonedetails,required this.maintenancepoint,required this.area, required this.aadharnumber,required this.dlnumber, required this.aadhar, required this.drivinglicencse,required this.photo,});
+}
