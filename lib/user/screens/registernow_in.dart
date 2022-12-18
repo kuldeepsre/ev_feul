@@ -93,11 +93,22 @@ class _GateWidgetState extends State<Gate2Widget> {
         .size;
     return SafeArea(
       child: Scaffold(
-
           backgroundColor: Colors.white,
           body: BlocListener<GateBloc, GateState>(
             listener: (context, state) {
+              if(state is DataSaved){
 
+                CustomDialogs.showDialogMessage(
+                    context, state.message, state.title);
+                Future.delayed(Duration(seconds: 3), () {
+                  gateBloc.add(GateEventInitial());
+                });
+
+              }
+              if(state is DataFailed){
+                CustomDialogs.showDialogForError(
+                    context, state.message, state.title);
+              }
             },
             child: BlocBuilder(
               bloc: gateBloc,
@@ -106,28 +117,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                   return const Center(child: CustomLoader());
 
                 }
-                if(state is DataSaved){
-                  CustomDialogs().showErrorDialog(
-                      msg: Strings.successMessage,
-                      title: Strings.dataSaved,
-                      onClick: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => SignIn()),
-                                (route) => false
-                        );
 
-                      });
-                }
-                if(state is DataFailed){
-                  CustomDialogs().showErrorDialog(
-                      msg: Strings.successMessage,
-                      title: Strings.dataSaved,
-                      onClick: () {
-
-
-                      });
-                }
                 return  Stack(
 
                   children: [
@@ -169,44 +159,8 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 children: [
+
                                   TextFormField(
-                                    controller: ownerController,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: ColorUtils.textFill,
-
-
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: ColorUtils.btnBlue)),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: ColorUtils.btnBlue,
-                                              width: 0.5) //This is Ignored,
-
-                                      ),
-
-                                      labelStyle: TextStyle(
-                                          color: ColorUtils.bgText),
-                                      hintText: "",
-                                      labelText: "Owner Name",
-                                      hintStyle: const TextStyle(color: Colors.white),
-                                    ),
-
-                                    autocorrect: true,
-                                    style:
-                                    listTextStyle,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "Please Enter Owner Name";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-
-                                  ),
-                                  const SizedBox(height: 20,),  TextFormField(
                                     controller: evController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
@@ -311,7 +265,15 @@ class _GateWidgetState extends State<Gate2Widget> {
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "Please enter confirm password";
-                                      } else {
+                                      }
+                                      if(value !=passController.text){
+                                        return "Password Not Match";
+
+                                      }
+                                      else if(value.length<5) {
+                                        return "Please enter 6 alphanumeric characters";
+                                      }
+                                      else{
                                         return null;
                                       }
                                     },
@@ -321,6 +283,44 @@ class _GateWidgetState extends State<Gate2Widget> {
                                     },
                                   ),
                                   const SizedBox(height: 10,),
+                                  TextFormField(
+                                    controller: ownerController,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: ColorUtils.textFill,
+
+
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: ColorUtils.btnBlue)),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: ColorUtils.btnBlue,
+                                              width: 0.5) //This is Ignored,
+
+                                      ),
+
+                                      labelStyle: TextStyle(
+                                          color: ColorUtils.bgText),
+                                      hintText: "",
+                                      labelText: "Owner Name",
+                                      hintStyle: const TextStyle(color: Colors.white),
+                                    ),
+
+                                    autocorrect: true,
+                                    style:
+                                    listTextStyle,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please Enter Owner Name";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+
+                                  ),
+                                  const SizedBox(height: 20,),
                                   TextFormField(
                                     controller: idController,
                                     readOnly: true,
@@ -816,7 +816,6 @@ class _GateWidgetState extends State<Gate2Widget> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-
                       trailing: GestureDetector(
                           onTap: () {
                             Navigator.of(context, rootNavigator: true).pop(
@@ -864,7 +863,6 @@ class _GateWidgetState extends State<Gate2Widget> {
                           },
                           child: Text("Pick From Gallery")),
                     ),
-
                     Divider(thickness: 1,),
                     Padding(
                       padding: const EdgeInsets.symmetric(

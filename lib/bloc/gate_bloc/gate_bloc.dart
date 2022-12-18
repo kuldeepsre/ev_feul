@@ -19,7 +19,7 @@ class GateBloc extends Bloc<GateEvent, GateState> {
           emit(DataSaved(message: "Data Saved Successfully", title: 'Register Screen'));
         }else if(res.status==401) {
           emit(DataFailed(
-              title: "Error", message:"server error"));
+              title: "Error", message:"$res"));
         }
         else{
           emit(DataFailed(

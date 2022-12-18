@@ -25,12 +25,15 @@ class FetchService extends Services {
     if (ev_rc_copy != null) {
       meterImage = await http.MultipartFile.fromPath("ev_rc_copy",ev_rc_copy);
       request.files.add(meterImage);
+      print("${ev_rc_copy.split('/').last}");
     }  if (id_proof != null) {
       meterImage = await http.MultipartFile.fromPath("id_proof",id_proof);
       request.files.add(meterImage);
+      print("${id_proof.split('/').last}");
     }  if (vehicle_photo != null) {
       meterImage = await http.MultipartFile.fromPath("vehicle_photo",vehicle_photo);
       request.files.add(meterImage);
+      print("${vehicle_photo}");
     }    request.headers.addAll(headers);
     request.fields["ev_number"] =ev_number;
     request.fields["password"] =password;
@@ -38,14 +41,17 @@ class FetchService extends Services {
     request.fields["owner_name"] =owner_name;
     request.fields["phone"] =phone;
     request.fields["address"] =address;
+    request.fields["email"] =email;
     http.StreamedResponse response2 = await request.send();
     var tesr = await response2.stream.toBytes();
     final Map<String, dynamic> data = json.decode(String.fromCharCodes(tesr).toString());
+    print(data.entries);
     if(response2.statusCode==200)
     {
 
     }
     else{
+      print(jsonEncode(tesr));
       return RegisterResponse.fromJson(data);
     }
     return RegisterResponse.fromJson(data);
