@@ -12,9 +12,7 @@ class ColorUtils {
   static Color blueColor = "#0180CD".toColor();
   static Color boarderBlue = "#00008B".toColor();
   static Color btnBlue = "##0180CD".toColor();
-
   static var devider= "#00008B".toColor();
-
   static var fillColor="#F4F4F4".toColor();
   static var whiteColor="#FFFFFF".toColor();
   static var yelloColor="#FFD76F".toColor();

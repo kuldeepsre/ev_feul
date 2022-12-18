@@ -1,3 +1,4 @@
+import 'package:ev_feul/custom_widget/colored_status_bar.dart';
 import 'package:ev_feul/user/screens/plan_list.dart';
 import 'package:ev_feul/user/screens/subscriptions.dart';
 import 'package:ev_feul/user/screens/swap_history.dart';
@@ -7,18 +8,19 @@ import 'package:ev_feul/utils/custom_dialog.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'dashboard_screen.dart';
 
-class MyStatefulWidget extends StatefulWidget {
+class MainDashboard extends StatefulWidget {
 
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _MainDashboardState createState() => _MainDashboardState();
 }
 
 //3
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _MainDashboardState extends State<MainDashboard> {
 
   //set initial value
   int _selectedPage = 0;
@@ -35,7 +37,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     const SwapHistory(),
   ];
 
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,overlays: [SystemUiOverlay.top]);
+  }
   Widget build(BuildContext context) {
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,overlays: [SystemUiOverlay.top]);
+
     return SafeArea(
       child: WillPopScope(
         onWillPop: () => CustomDialogs.onBackPressed(context),
@@ -46,6 +56,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
           //header
           appBar: AppBar(
+
 
             flexibleSpace:  Container(
               decoration: BoxDecoration(
@@ -83,6 +94,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                     child: Image.asset("assets/images/screen_bg_2.png",fit: BoxFit.fill,)),
                 Padding(
                   padding: const EdgeInsets.only(top: 60.0),

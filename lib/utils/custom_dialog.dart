@@ -1,3 +1,4 @@
+import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/navigation_service.dart';
 import 'package:ev_feul/utils/route_constants.dart';
 import 'package:ev_feul/utils/text_style.dart';
@@ -89,10 +90,10 @@ class CustomDialogs {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             contentPadding: EdgeInsets.only(top: 10.0),
-            content: Container(
+            content: SizedBox(
               width: 300.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -105,14 +106,14 @@ class CustomDialogs {
                     children: <Widget>[
                       Text(
                         title,
-                        style: TextStyle(fontSize: 24.0),
+                        style: const TextStyle(fontSize: 24.0),
                       ),
                     ],
                   ),
                   SizedBox(
                     height: 5.0,
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.grey,
                     height: 4.0,
                   ),
@@ -129,7 +130,13 @@ class CustomDialogs {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                 /*     Navigator.pop(context);*/
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  SignIn()),
+                              (Route<dynamic> route) => route.isFirst);
                     },
                     child: Container(
                       padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -256,7 +263,7 @@ class CustomDialogs {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.grey,
                     height: 4.0,
                   ),

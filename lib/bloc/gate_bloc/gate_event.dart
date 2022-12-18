@@ -168,3 +168,9 @@ class AddInfo extends GateEvent {
     required this.phone,required this.address,required this.id_proof,required this.vehicle_photo,required this.email});
 
 }
+
+class LoginSubmit  extends GateEvent{
+  final String email, password;
+
+  LoginSubmit({required this.email, required this.password});
+}

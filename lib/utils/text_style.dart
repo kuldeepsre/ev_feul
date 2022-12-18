@@ -287,7 +287,7 @@ class GlobleConstant {
   static var callforvehical="CALL FOR VEHICLE";
   static var drop="DROP";
 
-  static var appname="Guest Management ";
+  static var appname="Ev Fuel ";
 
 
   static var event_id="";

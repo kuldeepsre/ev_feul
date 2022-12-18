@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/register_response.dart';
+import 'package:ev_feul/utils/Constants.dart';
+import 'package:ev_feul/utils/utils.dart';
 import 'package:http/http.dart' as http;
 
 abstract class Services {
@@ -58,4 +61,26 @@ class FetchService extends Services {
   }
 
 
+
+  @override
+  Future<LoginData> saveLogin (
+  String email, String password) async {
+    var res = await Utils.postApiCall(Constants.LOGIN_API_URL, {
+      'ev_number': email,
+      "password": password,
+
+    });
+
+
+    var jsonresult = json.decode(res.body);
+    LoginData  loginResponse=LoginData.fromJson(jsonresult);
+    if(loginResponse.status==200)
+
+    {
+      Constants.userId=loginResponse.success!.userId.toString();
+
+    }
+    return loginResponse;
+
+  }
 }

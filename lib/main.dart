@@ -3,9 +3,19 @@ import 'package:ev_feul/user/screens/registernow_in.dart';
 import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/text_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor:CupertinoColors.quaternaryLabel, // navigation bar color
+    statusBarColor: Colors.transparent, // status bar color
+  ));
+
   runApp(const MyApp());
 }
 
@@ -15,6 +25,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor:CupertinoColors.quaternaryLabel, // navigation bar color
+      statusBarColor: Colors.black12, // status bar color
+    ));
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

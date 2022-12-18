@@ -11,7 +11,7 @@ class Constants {
 
   //static const IP = "192.168.1.11";
  static const IP = "192.168.43.40";
-  static const BASE_URL = "http://${IP}:1020/api/";
+  static const BASE_URL = "http://evfuel.afmerp.com/api/";
   static const BASE_URL_IMAGE = "http://${IP}:1020/";
   static const LOGIN_API_URL = BASE_URL + "login";
   static const LOGOUT_API_URL = BASE_URL + "common/userLogout";//{username}
@@ -43,7 +43,7 @@ class Constants {
     "Accept": "application/json",
     'Content-Type': 'application/json; charset=UTF-8',
     'connection': 'keep-alive',
-    "app_key": "caeb1afaaeb9598a22a17d27ad3120a9754b5170b253b81da576404212052441",
-    "token": user_token
+
+
   };
 }

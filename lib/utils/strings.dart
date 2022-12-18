@@ -89,5 +89,5 @@ class Strings {
 
   static const registerNow=" Register Now";
 
-  static const login="Log In Now";
+  static const login="LogIn Now";
 }

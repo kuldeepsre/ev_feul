@@ -44,7 +44,6 @@ class _GateScreenState extends State<RegisterNow> {
 
 class Gate2Widget extends StatefulWidget {
   const Gate2Widget({Key? key}) : super(key: key);
-
   @override
   _GateWidgetState createState() => _GateWidgetState();
 }

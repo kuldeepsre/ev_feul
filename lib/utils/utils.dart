@@ -17,16 +17,15 @@ class Utils {
   }
   static Future<http.Response> postApiCall(String url, var body) {
     var dt = jsonEncode(body);
-    print(dt);
-    Constants.headers['token'] = Constants.user_token;
+
     return http.post(Uri.parse(url), headers: Constants.headers, body: dt);
   }
 
     void showInSnackBar(
       String message, GlobalKey<ScaffoldState> _scaffoldKey, bool isSuccess) {
     _scaffoldKey.currentState!.showSnackBar(
-      new SnackBar(
-        content: new Text(
+      SnackBar(
+        content: Text(
           message,
           style: TextStyle(color: isSuccess ? Colors.grey : Colors.red),
         ),
