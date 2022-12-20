@@ -88,10 +88,15 @@ class ParkingDataData extends GateEvent {
 
   ParkingDataData({required this.master_name});
 }
-class DeleteDeriver extends GateEvent {
+class GetSubscriptionList extends GateEvent {
   final String id;
 
-  DeleteDeriver({required this.id});
+  GetSubscriptionList({required this.id});
+}
+class GetPlanList extends GateEvent {
+  final String id;
+
+  GetPlanList({required this.id});
 }
 
 class GuestButtonClick extends GateEvent {

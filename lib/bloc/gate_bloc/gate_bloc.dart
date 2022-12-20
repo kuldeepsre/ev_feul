@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:ev_feul/model/login_response.dart';
+import 'package:ev_feul/model/my_plan_response.dart';
+import 'package:ev_feul/model/subscreptions_response.dart';
 import 'package:ev_feul/services/services.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -42,7 +45,30 @@ class GateBloc extends Bloc<GateEvent, GateState> {
               title: "Error", message:"server error"));
         }
       }
-
+      if (event is GetSubscriptionList) {
+        emit(GateLoading());
+        final gateData = FetchService();
+        var res = await gateData.getSubscriptionList(event.id);
+        if (res.status==200) {
+          emit(SearchDataLoaded(subscriptionList: res.success!));
+        }
+        else {
+          emit(UserTokenExpired(
+              title: "Token !!", message:"Token has been Expired"));
+        }
+      }
+      if (event is GetPlanList) {
+        emit(GateLoading());
+        final gateData = FetchService();
+        var res = await gateData.getPlanList(event.id);
+        if (res.status==200) {
+          emit(PlanDataLoaded(planList: res.success!));
+        }
+        else {
+          emit(UserTokenExpired(
+              title: "Token !!", message:"Token has been Expired"));
+        }
+      }
     });
   }
 }

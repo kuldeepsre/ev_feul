@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static Widget verticalDivider = const VerticalDivider(thickness: 2,);
+
+
   Constants._();
   static var staticDashBloc;
   static bool isTabularView = true;
@@ -12,8 +14,12 @@ class Constants {
   //static const IP = "192.168.1.11";
  static const IP = "192.168.43.40";
   static const BASE_URL = "http://evfuel.afmerp.com/api/";
+
+
   static const BASE_URL_IMAGE = "http://${IP}:1020/";
   static const LOGIN_API_URL = BASE_URL + "login";
+  static const POST_SUBSCRIPTIONS_DATA = BASE_URL + "subscription-list";
+  static const POST_PLAN_LIST = BASE_URL + "plan-list";
   static const LOGOUT_API_URL = BASE_URL + "common/userLogout";//{username}
   static const USER_LIST_API_URL = BASE_URL + "User/getUserList";
   static String POST_GET_PARKING_DATA=BASE_URL+"common/getparking";

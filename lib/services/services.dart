@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:ev_feul/model/login_response.dart';
+import 'package:ev_feul/model/my_plan_response.dart';
 import 'package:ev_feul/model/register_response.dart';
+import 'package:ev_feul/model/subscreptions_response.dart';
 import 'package:ev_feul/utils/Constants.dart';
 import 'package:ev_feul/utils/utils.dart';
 import 'package:http/http.dart' as http;
@@ -82,5 +84,53 @@ class FetchService extends Services {
     }
     return loginResponse;
 
+  }
+
+
+  @override
+  Future<SubscriptionsPlanResponse> getSubscriptionList(
+      String commond) async {
+    var res = await Utils.postApiCall(
+        Constants.POST_SUBSCRIPTIONS_DATA,
+        {"user_id":"$commond"});
+    var json = jsonDecode(res.body);
+
+    try {
+      SubscriptionsPlanResponse  fcnaDetailResponse =
+      SubscriptionsPlanResponse .fromJson(json);
+      return fcnaDetailResponse;
+    } catch (e) {
+      print(e);
+      return SubscriptionsPlanResponse .fromJson({
+        'result': null,
+        'statusCode': 0,
+        'success': false,
+        'systemMsg': "Api not found!",
+        'userMsg': "Please check Api",
+      });
+    }
+  }
+  @override
+  Future<MyPlanResponse> getPlanList(
+      String commond) async {
+    var res = await Utils.postApiCall(
+        Constants.POST_PLAN_LIST,
+        {"user_id":"$commond"});
+    var json = jsonDecode(res.body);
+
+    try {
+      MyPlanResponse  fcnaDetailResponse =
+      MyPlanResponse .fromJson(json);
+      return fcnaDetailResponse;
+    } catch (e) {
+      print(e);
+      return MyPlanResponse .fromJson({
+        'result': null,
+        'statusCode': 0,
+        'success': false,
+        'systemMsg': "Api not found!",
+        'userMsg': "Please check Api",
+      });
+    }
   }
 }

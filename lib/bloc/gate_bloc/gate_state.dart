@@ -24,7 +24,16 @@ class DataDelete extends GateState {
 
   DataDelete({required this.title, required this.message});
 }
+class SearchDataLoaded extends GateState {
+  final List<SuccessData> subscriptionList;
 
+  SearchDataLoaded({required this.subscriptionList});
+}
+class PlanDataLoaded extends GateState {
+  PlanResponse planList;
+
+  PlanDataLoaded({required this.planList});
+}
 class DataFailed extends GateState {
   final String title, message;
 

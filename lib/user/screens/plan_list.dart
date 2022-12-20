@@ -1,5 +1,7 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
+import 'package:ev_feul/model/my_plan_response.dart';
+import 'package:ev_feul/utils/Constants.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,6 +43,10 @@ class _GateWidgetState extends State<Gate2Widget> {
   var FullNameController = TextEditingController();
   var DateController = TextEditingController();
   var AddressController = TextEditingController();
+
+  PlanResponse ? planList;
+
+  var differenceInDays=0;
   @override
   void initState() {
     super.initState();
@@ -48,8 +54,8 @@ class _GateWidgetState extends State<Gate2Widget> {
     isLogin = false;
 
     final gateBloc = BlocProvider.of<GateBloc>(context);
-    gateBloc.add(ParkingDataData(master_name: "parking_allotment"));
-    gateBloc.add(ParkingGetListData(parking_allotment: " "));
+    //   gateBloc.add(SaveFamily(data: list));
+    gateBloc.add(GetPlanList(id: Constants.userId));
   }
 
   @override
@@ -66,7 +72,20 @@ class _GateWidgetState extends State<Gate2Widget> {
 
         body: BlocListener<GateBloc, GateState>(
           listener: (context, state) {
+            if (state is PlanDataLoaded) {
+              setState(() {
+                //  plist.clear();
+                planList = state.planList;
+                DateTime dateTimeCreatedAt = DateTime.parse('${planList!.validDateTill}');
+                DateTime dateTimeNow = DateTime.now();
+                differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
 
+
+              });
+
+
+
+            }
           },
           child: BlocBuilder(
             bloc: gateBloc,
@@ -74,6 +93,7 @@ class _GateWidgetState extends State<Gate2Widget> {
               if (state is GateLoading) {
                 return const Center(child: CustomLoader());
               }
+
               return Stack(
                 children: [
                   SizedBox(
@@ -82,12 +102,13 @@ class _GateWidgetState extends State<Gate2Widget> {
                   SingleChildScrollView(
                     child: Column(
                       children:  <Widget>[
-                        Center(child: Text("My Plans",textScaleFactor: 1,style:sideMenuStyle,)),
 
                         const SizedBox(height: 30,),
+                        Center(child: Text("My Plans",textScaleFactor: 1,style:sideMenuStyle,)),
+
                         Card(
                           elevation: 15,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(15),
                                   topRight: Radius.circular(15)),
@@ -99,13 +120,12 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 30),
                                 child: Column(
                                   children: [
-
-                                    ListView.builder(
+                                   planList!.planName!.isNotEmpty? ListView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      itemCount: 6,
+                                      itemCount: 1,
                                       itemBuilder: (context, i){
-                                        return           Padding(
+                                        return  Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                                           child: Stack(
                                             clipBehavior: Clip.none,
@@ -130,8 +150,8 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                           borderRadius: BorderRadius.circular(1)   ,
                                                           gradient: LinearGradient(
                                                             colors: [
-                                                             i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
-                                                             i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+                                                              i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+                                                              i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
 
 
                                                             ],
@@ -142,7 +162,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                         padding: const EdgeInsets.all(8.0),
                                                         child: Column(
                                                           children: [
-                                                            Center(child: Text("Package Name: Platinum",textScaleFactor: 1,style:sideMenuStyle,)),
+                                                            Center(child: Text("Package Name: ${planList!.planName.toString()}",textScaleFactor: 1,style:sideMenuStyle,)),
                                                           ],
                                                         ),
                                                       ),
@@ -153,7 +173,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                     Center(child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
-                                                        Text("10 Batteries Consumed",textScaleFactor: 1,style:sideMenuBlack,),
+                                                        Text("${planList!.totalSwap.toString()} Batteries Consumed",textScaleFactor: 1,style:sideMenuBlack,),
 
                                                       ],
 
@@ -183,8 +203,8 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                     child:  Center(
                                                       child: Padding(
                                                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                                        child: const Text(
-                                                          "Subscribe Now",
+                                                        child:  Text(
+                                                          "Expired in 15 days ${differenceInDays.toString()}",
                                                           textAlign: TextAlign.center,
                                                           textScaleFactor: 1,
                                                           style: TextStyle(
@@ -207,7 +227,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           ),
                                         );
                                       },
-                                    ),
+                                    ):Text(""),
                                   ],
                                 ),
                               )

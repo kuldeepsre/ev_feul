@@ -4,19 +4,14 @@ import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_button.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
 import 'package:ev_feul/custom_widget/custom_text_blue.dart';
-
 import 'package:ev_feul/custom_widget/custom_text_normal.dart';
-import 'package:ev_feul/tabs/home_scrrem.dart';
-import 'package:ev_feul/user/screens/home.dart';
 import 'package:ev_feul/user/screens/registernow_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/custom_dialog.dart';
 import 'package:ev_feul/utils/strings.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'drawermenunav.dart';
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -24,7 +19,6 @@ class SignIn extends StatefulWidget {
   @override
   _GateScreenState createState() => _GateScreenState();
 }
-
 class _GateScreenState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
@@ -36,7 +30,6 @@ class _GateScreenState extends State<SignIn> {
 }
 class Gate2Widget extends StatefulWidget {
   const Gate2Widget({Key? key}) : super(key: key);
-
   @override
   _GateWidgetState createState() => _GateWidgetState();
 }
@@ -58,7 +51,6 @@ class _GateWidgetState extends State<Gate2Widget> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final gateBloc = BlocProvider.of<GateBloc>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
 
@@ -102,7 +94,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                             child: Image.asset("assets/images/loginlogo.png",fit: BoxFit.fill,),
                           ),
                         ),
-                        const SizedBox(height: 20,),
+                       const SizedBox(height: 20,),
                         Text(
                           "Login Now".toUpperCase(),
                           textScaleFactor: 1,
@@ -191,12 +183,10 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 },
                               ),
                               const SizedBox(height: 10,),
-
                               Align(
                                   alignment: Alignment.topRight,
                                   child: const CustomTextBlue(Strings.forgotPass)),
                               const SizedBox(height: 10,),
-
                               SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 child: CustomButton(Strings.login, onClick: () {
