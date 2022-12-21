@@ -92,6 +92,10 @@ class GetSubscriptionList extends GateEvent {
   final String id;
 
   GetSubscriptionList({required this.id});
+}class SubscriptionButton extends GateEvent {
+  final String id,subscription_id;
+
+  SubscriptionButton({required this.id,required this.subscription_id});
 }
 class GetPlanList extends GateEvent {
   final String id;

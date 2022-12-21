@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Dashboard',textScaleFactor: 1,style: headingStyle,),
-        Text('Welcome User',textScaleFactor: 1,style: subheadingStyle,),
+        Text('Welcome ${GlobleConstant.loginResponse!.success!.userData!.ownerName}}',textScaleFactor: 1,style: subheadingStyle,),
         SizedBox(height: 10,),
         Text('Nearest Swap Stations',textScaleFactor: 1,style: subheadingStyle,),
         ListView.builder(

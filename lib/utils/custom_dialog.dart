@@ -1,3 +1,4 @@
+import 'package:ev_feul/user/screens/first_screen.dart';
 import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/navigation_service.dart';
 import 'package:ev_feul/utils/route_constants.dart';
@@ -434,8 +435,13 @@ class CustomDialogs {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          Navigator.pop(context);
 
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreenMain()),
+                          );
+                         // Phoenix.rebirth(context);
                           // if (res.success) {
                           //   storage.deleteAll();
                           //   Navigator.push(

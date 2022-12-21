@@ -13,6 +13,9 @@ import 'package:flutter/services.dart';
 import 'dashboard_screen.dart';
 
 class MainDashboard extends StatefulWidget {
+  int selectedPage;
+   MainDashboard({Key? key,required this.selectedPage}) : super(key: key);
+
 
 
   @override
@@ -165,41 +168,46 @@ class _MainDashboardState extends State<MainDashboard> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 20),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height*.08,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15))   ,gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Colors.white,
+                GestureDetector(
+                  onTap: (){
+                    CustomDialogs.showLogoutConfirmation(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 20),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height*.08,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15))   ,gradient: LinearGradient(
+                          colors: [
+                            Colors.white,
+                            Colors.white,
 
 
-                        ],
-                      )
+                          ],
+                        )
 
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:  [
-                          Image.asset("assets/images/logout.png",color: Colors.green,),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              "Logout",
-                              textScaleFactor: 1,
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 14.0,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:  [
+                            Image.asset("assets/images/logout.png",color: Colors.green,),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                "Logout",
+                                textScaleFactor: 1,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -76,9 +76,6 @@ class _GateWidgetState extends State<Gate2Widget> {
               setState(() {
                 //  plist.clear();
                 planList = state.planList;
-                DateTime dateTimeCreatedAt = DateTime.parse('${planList!.validDateTill}');
-                DateTime dateTimeNow = DateTime.now();
-                differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
 
 
               });
@@ -93,7 +90,6 @@ class _GateWidgetState extends State<Gate2Widget> {
               if (state is GateLoading) {
                 return const Center(child: CustomLoader());
               }
-
               return Stack(
                 children: [
                   SizedBox(
@@ -105,7 +101,7 @@ class _GateWidgetState extends State<Gate2Widget> {
 
                         const SizedBox(height: 30,),
                         Center(child: Text("My Plans",textScaleFactor: 1,style:sideMenuStyle,)),
-
+                        const SizedBox(height: 30,),
                         Card(
                           elevation: 15,
                           shape: const RoundedRectangleBorder(
@@ -120,7 +116,8 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 30),
                                 child: Column(
                                   children: [
-                                   planList!.planName!.isNotEmpty? ListView.builder(
+                                  GlobleConstant.planName!.isNotEmpty?
+                                ListView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
                                       itemCount: 1,
@@ -140,46 +137,44 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                         topLeft: Radius.circular(1),
                                                         topRight: Radius.circular(1)),
                                                     side: BorderSide(width:1, color: Colors.white)),
-                                                child: Column(
-                                                  children: [
-
-                                                    Container(
-
-
-                                                      decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(1)   ,
-                                                          gradient: LinearGradient(
-                                                            colors: [
-                                                              i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
-                                                              i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
 
 
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(1)   ,
+                                                            gradient: LinearGradient(
+                                                              colors: [
+                                                                i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+                                                                i%2==0? ColorUtils.greenbtn: ColorUtils.btnBlue,
+
+
+                                                              ],
+                                                            )
+
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Column(
+                                                            children: [
+                                                              Center(child: Text("Package Name: ${GlobleConstant.planName}",textScaleFactor: 1,style:sideMenuStyle,)),
                                                             ],
-                                                          )
-
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Column(
-                                                          children: [
-                                                            Center(child: Text("Package Name: ${planList!.planName.toString()}",textScaleFactor: 1,style:sideMenuStyle,)),
-                                                          ],
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(height: 2,),
-
-
-                                                    Center(child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Text("${planList!.totalSwap.toString()} Batteries Consumed",textScaleFactor: 1,style:sideMenuBlack,),
-
-                                                      ],
-
-                                                    )),
-                                                    SizedBox(height: 32,),
-                                                  ],
+                                                      const SizedBox(height: 20,),
+                                                      Center(child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Text("${GlobleConstant.totalSwap} Batteries Consumed",textScaleFactor: 1,style:sideMenuBlack,),
+                                                        ],
+                                                      )),
+                                                      const SizedBox(height: 40,),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                               Positioned(
@@ -204,7 +199,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                       child: Padding(
                                                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                                         child:  Text(
-                                                          "Expired in 15 days ${differenceInDays.toString()}",
+                                                          "Expired in ${GlobleConstant.differenceInDays} days ",
                                                           textAlign: TextAlign.center,
                                                           textScaleFactor: 1,
                                                           style: TextStyle(
@@ -227,7 +222,11 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           ),
                                         );
                                       },
-                                    ):Text(""),
+                                    )
+                                   :Center(child: Padding(
+                                     padding: const EdgeInsets.all(8.0),
+                                     child: Text("No Plans Found !!!"),
+                                   ))
                                   ],
                                 ),
                               )

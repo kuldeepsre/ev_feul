@@ -19,6 +19,7 @@ class Constants {
   static const BASE_URL_IMAGE = "http://${IP}:1020/";
   static const LOGIN_API_URL = BASE_URL + "login";
   static const POST_SUBSCRIPTIONS_DATA = BASE_URL + "subscription-list";
+  static const POST_SUBSCRIPTIONS_ADD_DATA = BASE_URL + "subscription-add";
   static const POST_PLAN_LIST = BASE_URL + "plan-list";
   static const LOGOUT_API_URL = BASE_URL + "common/userLogout";//{username}
   static const USER_LIST_API_URL = BASE_URL + "User/getUserList";

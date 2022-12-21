@@ -12,10 +12,9 @@ part 'gate_state.dart';
 class GateBloc extends Bloc<GateEvent, GateState> {
   GateBloc(GateInitial gateInitial) : super(GateInitial()) {
     on<GateEvent>((event, emit) async {
-
       if (event is AddInfo) {
         emit(GateLoading());
-        final service = new FetchService();
+        final service = FetchService();
         var res =
         await service.saveRagister(event.ev_number,event.password,event.confirm_password,event.owner_name,event.phone,event.address,event.id_proof,event.ev_rc_copy,event.vehicle_photo,event.email);
         if (res.status==200) {
@@ -45,6 +44,22 @@ class GateBloc extends Bloc<GateEvent, GateState> {
               title: "Error", message:"server error"));
         }
       }
+      if (event is SubscriptionButton) {
+        emit(GateLoading());
+        final service = FetchService();
+        var res =
+        await service.saveSubscription(event.id,event.subscription_id);
+        if (res.status==200) {
+          emit(PlanSaved(message: "Plan Succ", title: 'Subscription Screen'));
+        }else if(res.status==401) {
+          emit(DataFailed(
+              title: "Login Screen", message:"Invalid Credentials"));
+        }
+        else{
+          emit(DataFailed(
+              title: "Error", message:"server error"));
+        }
+      }
       if (event is GetSubscriptionList) {
         emit(GateLoading());
         final gateData = FetchService();
@@ -54,7 +69,7 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         }
         else {
           emit(UserTokenExpired(
-              title: "Token !!", message:"Token has been Expired"));
+              title: "Subscription Plan Screen", message:"Plan already  Subscribed"));
         }
       }
       if (event is GetPlanList) {
@@ -62,6 +77,7 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         final gateData = FetchService();
         var res = await gateData.getPlanList(event.id);
         if (res.status==200) {
+
           emit(PlanDataLoaded(planList: res.success!));
         }
         else {

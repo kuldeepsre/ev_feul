@@ -61,7 +61,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        MainDashboard()),
+                        MainDashboard(selectedPage:0)),
                     (Route<dynamic> route) => route.isFirst);
           }
           if(state is DataFailed){

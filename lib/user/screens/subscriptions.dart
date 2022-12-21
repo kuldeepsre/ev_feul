@@ -8,6 +8,8 @@ import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'drawermenunav.dart';
+
 class SubscriptionPlan extends StatefulWidget {
   const SubscriptionPlan({Key? key}) : super(key: key);
 
@@ -49,8 +51,8 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
     return BlocListener<GateBloc, GateState>(
       listener: (context, state) {
         if (state is UserTokenExpired) {
-          CustomDialogs.showDialogRedirctLogin(
-              context, state.message, state.title);
+          CustomDialogs.showDialogMessage(
+              context,"Subscription Screen", "Plan already  Subscribed");
         }
 
         if (state is SearchDataLoaded) {
@@ -58,6 +60,15 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
             //  plist.clear();
             subscriptionList = state.subscriptionList;
           });
+        }
+        if (state is SubscriptionPlan) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                       MainDashboard(selectedPage:2)),
+                  (Route<dynamic> route) => route.isFirst);
+
         }
       },
       child: BlocBuilder(
@@ -74,7 +85,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                     "assets/images/bg.png",
                     fit: BoxFit.fill,
                   )),
-              SingleChildScrollView(
+                  SingleChildScrollView(
                 child: Column(
                   children: [
                     const SizedBox(
@@ -88,7 +99,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                     )),
                     ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: subscriptionList.length,
                         itemBuilder: (BuildContext context, int index) {
                           var model = subscriptionList[index];
@@ -207,10 +218,10 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                             textScaleFactor: 1,
                                             style: sideMenuBlack,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 20,
                                           ),
-                                         Icon(Icons.list)
+                                         const Icon(Icons.list)
                                         ],
                                       )),
                                       const SizedBox(
@@ -225,10 +236,89 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                         vertical: 5.0, horizontal: 50),
                                     child: GestureDetector(onTap: (){
 
-                                      /*final gateBloc = BlocProvider.of<GateBloc>(context);
-    //   gateBloc.add(SaveFamily(data: list));
-    gateBloc.add(GetSubscriptionList(id: Constants.userId));*/
+                                       if(model.userStatus!="subscribed"||model.userStatus!.isNotEmpty) {
+                                         showDialog(
+                                          context: context,
+                                          builder: (BuildContext dialogContext) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                                              //contentPadding: EdgeInsets.only(top: 08.0),
+                                              content: Container(
+                                                width: 300.0,
+                                                height: 152,
+                                                child: Column(
+                                                  // mainAxisSize: MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    const Text(
+                                                      "SUBSCRIBE NOW",
+                                                      style: TextStyle(fontSize: 22.0),
+                                                    ),
+                                                    const Divider(
+                                                      color: Colors.grey,
+                                                      height: 4.0,
+                                                    ),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                                                      child: TextField(
+                                                        decoration: InputDecoration(
+                                                          hintText: "Are you sure that you want to subscribe plan ?",
+                                                          border: InputBorder.none,
+                                                        ),
+                                                        readOnly: true,
+                                                        maxLines: 2,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 08,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Spacer(),
+                                                        ElevatedButton(
+                                                          onPressed: () async {
+                                                            Navigator.pop(context);
+                                                            //Navigator.pop(context);
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                              primary: ColorUtils.app_primary_color),
+                                                          child: Text(
+                                                            "Cancel",
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 08,
+                                                        ),
+                                                        ElevatedButton(
+                                                          onPressed: () async {
+                                                            Navigator.pop(context);
+                                                            final gateBloc = BlocProvider.of<GateBloc>(context);
+                                                            gateBloc.add(SubscriptionButton(id: Constants.userId,subscription_id:model.subscriptionId.toString()));
 
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                              primary: ColorUtils.app_primary_color),
+                                                          child: const Text(
+                                                            "Ok",
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 08,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          });
+                                       }
+                                       else{
+                                             CustomDialogs.showDialogMessage(
+                                             context,"Subscription Screen", "Plan already  Subscribed");
+                                       }
                                     },
                                       child: Container(
                                         height:
@@ -242,11 +332,11 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                                 ColorUtils.greenbtn,
                                               ],
                                             )),
-                                        child: Center(
+                                        child: const Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal: 8.0),
-                                            child: const Text(
+                                            child: Text(
                                               "Subscribe Now",
                                               textAlign: TextAlign.center,
                                               textScaleFactor: 1,

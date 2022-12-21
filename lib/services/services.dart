@@ -4,7 +4,9 @@ import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/my_plan_response.dart';
 import 'package:ev_feul/model/register_response.dart';
 import 'package:ev_feul/model/subscreptions_response.dart';
+import 'package:ev_feul/model/subscription_response.dart';
 import 'package:ev_feul/utils/Constants.dart';
+import 'package:ev_feul/utils/text_style.dart';
 import 'package:ev_feul/utils/utils.dart';
 import 'package:http/http.dart' as http;
 
@@ -79,9 +81,27 @@ class FetchService extends Services {
     if(loginResponse.status==200)
 
     {
-      Constants.userId=loginResponse.success!.userId.toString();
+      Constants.userId=loginResponse.success!.userData!.id.toString();
+      GlobleConstant.loginResponse=loginResponse;
 
     }
+    return loginResponse;
+
+  }
+  @override
+  Future<SubscriptionResponse> saveSubscription (
+  String userId, String subscriptionId) async {
+    var res = await Utils.postApiCall(Constants.POST_SUBSCRIPTIONS_ADD_DATA, {
+      'user_id': userId,
+      "subscription_id":subscriptionId,
+
+    });
+
+
+    var jsonresult = json.decode(res.body);
+
+    SubscriptionResponse  loginResponse=SubscriptionResponse.fromJson(jsonresult);
+
     return loginResponse;
 
   }
@@ -115,12 +135,26 @@ class FetchService extends Services {
       String commond) async {
     var res = await Utils.postApiCall(
         Constants.POST_PLAN_LIST,
-        {"user_id":"$commond"});
+        {"user_id":"${Constants.userId}"});
     var json = jsonDecode(res.body);
 
     try {
       MyPlanResponse  fcnaDetailResponse =
       MyPlanResponse .fromJson(json);
+      if(fcnaDetailResponse.status==200)
+        {
+          GlobleConstant.planName=fcnaDetailResponse.success!.planName.toString();
+          GlobleConstant.totalSwap=fcnaDetailResponse.success!.totalSwap.toString();
+          DateTime dateTimeCreatedAt = DateTime.parse('${fcnaDetailResponse.success!.validDateTill}');
+          DateTime dateTimeNow = DateTime.now();
+          GlobleConstant.differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays.toString();
+
+        }
+      else{
+        GlobleConstant.planName="";
+        GlobleConstant.totalSwap="";
+        GlobleConstant.differenceInDays="";
+      }
       return fcnaDetailResponse;
     } catch (e) {
       print(e);

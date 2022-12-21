@@ -10,14 +10,16 @@ class UserTokenExpired extends GateState {
 
   UserTokenExpired({required this.title, required this.message});
 }
-
 class GateLoading extends GateState {}
 class SuggestionLoading extends GateState {}
-
 class DataSaved extends GateState {
   final String title, message;
 
   DataSaved({required this.title, required this.message});
+}class PlanSaved extends GateState {
+  final String title, message;
+
+  PlanSaved({required this.title, required this.message});
 }
 class DataDelete extends GateState {
   final String title, message;

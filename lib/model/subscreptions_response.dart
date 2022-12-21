@@ -25,6 +25,7 @@ class SubscriptionsPlanResponse {
 }
 
 class SuccessData {
+  int? subscriptionId;
   String? planName;
   String? planPrice;
   String? description;
@@ -34,7 +35,8 @@ class SuccessData {
   String? userStatus;
 
   SuccessData(
-      {this.planName,
+      {this.subscriptionId,
+        this.planName,
         this.planPrice,
         this.description,
         this.validityDays,
@@ -43,24 +45,26 @@ class SuccessData {
         this.userStatus});
 
   SuccessData.fromJson(Map<String, dynamic> json) {
+    subscriptionId = json['subscription_id'];
     planName = json['plan_name'];
     planPrice = json['plan_price'];
     description = json['description'];
     validityDays = json['validity_days'];
     freeSwap = json['free_swap'];
     ratePerSwap = json['rate_per_swap'];
-    userStatus = json['user_status'];
+    userStatus = json['user_status']??"";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['subscription_id'] = this.subscriptionId;
     data['plan_name'] = this.planName;
     data['plan_price'] = this.planPrice;
     data['description'] = this.description;
     data['validity_days'] = this.validityDays;
     data['free_swap'] = this.freeSwap;
     data['rate_per_swap'] = this.ratePerSwap;
-    data['user_status'] = this.userStatus;
+    data['user_status'] = this.userStatus??"";
     return data;
   }
 }

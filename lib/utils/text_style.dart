@@ -1,3 +1,4 @@
+import 'package:ev_feul/model/login_response.dart';
 import 'package:flutter/material.dart';
 
 import 'color_utils.dart';
@@ -310,6 +311,14 @@ class GlobleConstant {
   static var count="";
   static String familyname="";
   static String newGuestName="";
+
+  static String ? differenceInDays;
+
+  static String? totalSwap;
+
+  static String? planName;
+
+  static LoginData ?loginResponse;
 
 
 
