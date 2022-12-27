@@ -131,7 +131,6 @@ class CustomDialogs {
                   ),
                   InkWell(
                     onTap: () {
-                 /*     Navigator.pop(context);*/
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

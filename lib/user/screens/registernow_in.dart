@@ -96,12 +96,12 @@ class _GateWidgetState extends State<Gate2Widget> {
           body: BlocListener<GateBloc, GateState>(
             listener: (context, state) {
               if(state is DataSaved){
-
-                CustomDialogs.showDialogMessage(
-                    context, state.message, state.title);
-                Future.delayed(Duration(seconds: 3), () {
-                  gateBloc.add(GateEventInitial());
-                });
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            SignIn()),
+                        (Route<dynamic> route) => route.isFirst);
 
               }
               if(state is DataFailed){
