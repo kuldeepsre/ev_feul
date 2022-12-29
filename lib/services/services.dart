@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:location/location.dart';
+
 import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/my_plan_response.dart';
 import 'package:ev_feul/model/near_response.dart';
@@ -10,7 +10,10 @@ import 'package:ev_feul/utils/constants.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:ev_feul/utils/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
+import '../model/user_history_response.dart';
+/*import 'package:location/location.dart';*/
 abstract class Services {
 
   
@@ -134,13 +137,15 @@ class FetchService extends Services {
   @override
   Future<NearLocationsResponse> getNearList(
       double latitude,double longitude,) async {
-    Location location = new Location();
-    LocationData _pos = await location.getLocation();
-    double ? lat=_pos.latitude;
-    double? long=_pos.longitude;
+  /*  Location location = new Location();
+    LocationData pos = await location.getLocation();*/
+     Position position;
+    position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    double ? lat=position.latitude;
+    double? long=position.longitude;
     var res = await Utils.postApiCall(
         Constants.POST_NEAR_LIST_DATA,
-        {"user_id":Constants.userId,"latitude":lat.toString(),"longitude":long.toString()});
+        {"user_id":Constants.userId,"latitude":position.latitude,"longitude":position.longitude});
     var json = jsonDecode(res.body);
 
     try {
@@ -187,6 +192,28 @@ class FetchService extends Services {
     } catch (e) {
       print(e);
       return MyPlanResponse .fromJson({
+        'result': null,
+        'statusCode': 0,
+        'success': false,
+        'systemMsg': "Api not found!",
+      });
+    }
+  } @override
+  Future<UserHistoryResponse> getUserHistory(
+      String commond) async {
+    var res = await Utils.postApiCall(
+        Constants.POST_USER_HISTORY_LIST,
+        {"user_id":"${Constants.userId}"});
+    var json = jsonDecode(res.body);
+
+    try {
+      UserHistoryResponse  fcnaDetailResponse =
+      UserHistoryResponse .fromJson(json);
+
+      return fcnaDetailResponse;
+    } catch (e) {
+      print(e);
+      return UserHistoryResponse .fromJson({
         'result': null,
         'statusCode': 0,
         'success': false,

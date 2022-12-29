@@ -39,6 +39,10 @@ class PlanDataLoaded extends GateState {
   PlanResponse planList;
 
   PlanDataLoaded({required this.planList});
+}class UserHistoryDataLoaded extends GateState {
+  List<History> histList;
+
+  UserHistoryDataLoaded({required this.histList});
 }
 class DataFailed extends GateState {
   final String title, message;

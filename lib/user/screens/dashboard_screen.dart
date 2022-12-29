@@ -2,9 +2,12 @@ import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
 import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
+import 'package:ev_feul/utils/constants.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import '../mannage_patroller.dart';
@@ -13,7 +16,6 @@ class DashboardScreen extends StatefulWidget {
   @override
   _GateScreenState createState() => _GateScreenState();
 }
-
 class _GateScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,8 @@ class _GateWidgetState extends State<Gate2Widget> {
   List<Data> nearlist=[];
 
   String finaladdress="";
+
+
   @override
   void initState() {
     super.initState();
@@ -120,7 +124,8 @@ class _GateWidgetState extends State<Gate2Widget> {
                                   itemBuilder: (context, i){
                                     var model=nearlist[i];
 
-                                    getAddress(model);
+
+
                                        return  Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 3.0),
                                       child: Card(
@@ -166,7 +171,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                 ),
                                                 ListTile(
                                                   leading: const Icon(Icons.add_location,color: Colors.yellow,),
-                                                  title: Text("$finaladdress",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                                  title: Text("Na",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                 ),
                                                 GestureDetector(
                                                   onTap: (){
@@ -204,11 +209,25 @@ class _GateWidgetState extends State<Gate2Widget> {
   }
 
   Future _getLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
 
-    double ? lat=0.0;
-    double? long=0.0;
-    final gateBloc = BlocProvider.of<GateBloc>(context);
-    gateBloc.add(NearByList(lat:lat,long:long));
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print('Location permissions are denied');
+      }else if(permission == LocationPermission.deniedForever){
+        print("'Location permissions are permanently denied");
+      }else{
+        print("GPS Location service is granted");
+        double ? lat=0.0;
+        double? long=0.0;
+        final gateBloc = BlocProvider.of<GateBloc>(context);
+        gateBloc.add(NearByList(lat:lat,long:long));
+      }
+    }else{
+      print("GPS Location permission granted.");
+    }
+
 
   }
 
@@ -220,7 +239,11 @@ class _GateWidgetState extends State<Gate2Widget> {
     placemarkFromCoordinates(lat!,long!);
 
      finaladdress = "${addresses.first.name}" + "${addresses.first.administrativeArea}"+ "${addresses.first.postalCode}";
+      print("finaladdress  $finaladdress");
 
+  setState(() {
+    finaladdress;
+  });
   }
 
   }

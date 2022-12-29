@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:meta/meta.dart';
 
+import '../../model/user_history_response.dart';
+
 part 'gate_event.dart';
 part 'gate_state.dart';
 class GateBloc extends Bloc<GateEvent, GateState> {
@@ -92,6 +94,19 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         if (res.status==200) {
 
           emit(PlanDataLoaded(planList: res.success!));
+        }
+        else {
+          emit(UserTokenExpired(
+              title: "Token !!", message:"Token has been Expired"));
+        }
+      }
+      if (event is UserHistoryList) {
+        emit(GateLoading());
+        final gateData = FetchService();
+        var res = await gateData.getUserHistory(event.id);
+        if (res.status==200) {
+
+          emit(UserHistoryDataLoaded(histList: res.success!.history!));
         }
         else {
           emit(UserTokenExpired(

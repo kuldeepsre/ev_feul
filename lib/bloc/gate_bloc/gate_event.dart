@@ -105,6 +105,10 @@ class GetPlanList extends GateEvent {
   final String id;
 
   GetPlanList({required this.id});
+}class UserHistoryList extends GateEvent {
+  final String id;
+
+  UserHistoryList({required this.id});
 }
 
 class GuestButtonClick extends GateEvent {

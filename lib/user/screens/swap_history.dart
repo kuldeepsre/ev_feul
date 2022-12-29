@@ -1,10 +1,14 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
+import 'package:ev_feul/model/user_history_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../utils/constants.dart';
+import '../../utils/date_time_util.dart';
 
 
 
@@ -41,6 +45,8 @@ class _GateWidgetState extends State<Gate2Widget> {
   var FullNameController = TextEditingController();
   var DateController = TextEditingController();
   var AddressController = TextEditingController();
+
+  List<History> histList=[];
   @override
   void initState() {
     super.initState();
@@ -48,8 +54,9 @@ class _GateWidgetState extends State<Gate2Widget> {
     isLogin = false;
 
     final gateBloc = BlocProvider.of<GateBloc>(context);
-    gateBloc.add(ParkingDataData(master_name: "parking_allotment"));
-    gateBloc.add(ParkingGetListData(parking_allotment: " "));
+
+    //   gateBloc.add(SaveFamily(data: list));
+    gateBloc.add(UserHistoryList(id: Constants.userId));
   }
 
   @override
@@ -66,7 +73,10 @@ class _GateWidgetState extends State<Gate2Widget> {
 
         body: BlocListener<GateBloc, GateState>(
           listener: (context, state) {
-
+            if(state is UserHistoryDataLoaded)
+              {
+                histList=   state.histList;
+              }
           },
           child: BlocBuilder(
             bloc: gateBloc,
@@ -82,10 +92,12 @@ class _GateWidgetState extends State<Gate2Widget> {
                   SingleChildScrollView(
                     child: Column(
                       children:  <Widget>[
-                        SizedBox(height: 30,),
+                        const SizedBox(height: 30,),
+                        Text("Records History",textScaleFactor:1,style: sideMenu14Style,),
+                        const SizedBox(height: 12,),
                         Card(
                           elevation: 15,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(15),
                                   topRight: Radius.circular(15)),
@@ -128,11 +140,13 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           ),
                                         ),
                                       ),
+                                      histList.isNotEmpty?
                                       ListView.separated(
                                         shrinkWrap: true,
-                                        itemCount: 100,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: histList.length,
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemBuilder: (context, index) {
+                                          var model=histList[index];
                                           return Container(
 
                                             color:( index%2==0)?Colors.white:ColorUtils.even,
@@ -142,11 +156,18 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
 
                                                 children: [
-                                                  Text("24 Nov 22",style: buttonBlackTextStyle,),
-                                                  Text("#786542",style: buttonBlackTextStyle,),
-                                                  Text("24 Nov 22",style: buttonBlackTextStyle,),
-                                                  Text("#786542",style: buttonBlackTextStyle,),
-
+                                                  SizedBox(
+                                                      width: MediaQuery.of(context).size.width*.20,
+                                                      child: Text("${model.recDate!.isNotEmpty?DateTimeUtils.convertUtcToLocalDate(model.recDate.toString()):"NA"}",style: buttonBlackTextStyle,)),
+                                                  SizedBox(
+                                                      width: MediaQuery.of(context).size.width*.20,
+                                                      child: Text("${model.batterySerialNo}",style: buttonBlackTextStyle,)),
+                                                  SizedBox(
+                                                      width: MediaQuery.of(context).size.width*.20,
+                                                      child: Text("${model.swapDate!.isNotEmpty?DateTimeUtils.convertUtcToLocalDate(model.swapDate.toString()):"NA"}",style: buttonBlackTextStyle,)),
+                                                  SizedBox(
+                                                      width: MediaQuery.of(context).size.width*.20,
+                                                      child: Text("${model.address}",softWrap: true,style: buttonBlackTextStyle,)),
 
 
                                                 ],
@@ -156,8 +177,11 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           ;
                                         },
                                         separatorBuilder: (context, index) {
-                                          return Divider(thickness: 0.5,);
+                                          return const Divider(thickness: 0.5,);
                                         },
+                                      ):const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text("No History Found",textScaleFactor: 1,),
                                       ),
                                     ],
                                   ),
