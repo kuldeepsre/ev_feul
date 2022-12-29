@@ -1,15 +1,22 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
+import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:geocoding/geocoding.dart';
 import '../mannage_patroller.dart';
 
 
-import 'package:location/location.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:geolocator/geolocator.dart';
+
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -43,6 +50,10 @@ class _GateWidgetState extends State<Gate2Widget> {
   var FullNameController = TextEditingController();
   var DateController = TextEditingController();
   var AddressController = TextEditingController();
+
+  List<Data> nearlist=[];
+
+  String finaladdress="";
   @override
   void initState() {
     super.initState();
@@ -67,6 +78,11 @@ class _GateWidgetState extends State<Gate2Widget> {
         backgroundColor: Colors.white,
         body: BlocListener<GateBloc, GateState>(
           listener: (context, state) {
+
+            if(state is NearListLoaded)
+              {
+                nearlist=  state.nearlist;
+              }
           },
           child: BlocBuilder(
             bloc: gateBloc,
@@ -90,9 +106,10 @@ class _GateWidgetState extends State<Gate2Widget> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Welcome ${GlobleConstant.newGuestName}',textScaleFactor: 1,style: subheadingStyle,),
+                          child: Text('Welcome to ${ GlobleConstant.loginResponse!.success!.userData!.ownerName}',textScaleFactor: 1,style: subheadingStyle,),
                         ),
-                         Card(
+                        nearlist.isNotEmpty? 
+                        Card(
                           elevation: 15,
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
@@ -110,9 +127,12 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemCount: 6,
+                                  itemCount: nearlist.length,
                                   itemBuilder: (context, i){
-                                    return  Padding(
+                                    var model=nearlist[i];
+
+                                    getAddress(model);
+                                       return  Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 3.0),
                                       child: Card(
                                         elevation: 7,
@@ -139,9 +159,9 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    const Expanded(
+                                                     Expanded(
                                                       flex: 2,
-                                                        child: Text("AKS Swap Station",softWrap: true,textScaleFactor: 1,style:TextStyle(
+                                                        child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:TextStyle(
                                                       color: Colors.lightBlue,
                                                       fontSize: 14,
                                                       fontWeight:FontWeight.bold,
@@ -150,21 +170,20 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                         color: Colors.yellow,
                                                         child: Padding(
                                                           padding: const EdgeInsets.symmetric(vertical: 2.0),
-                                                          child: Center(child: Text("1.5",softWrap: true,textScaleFactor: 1,style:sideMenuStyle,)),
+                                                          child: Center(child: Text("${model.distance} KM",softWrap: true,textScaleFactor: 1,style:listItemSubTitleStyle,)),
                                                         ))),
 
                                                   ],
                                                 ),
                                                 ListTile(
-
                                                   leading: Icon(Icons.add_location,color: Colors.yellow,),
-                                                  title: Text("iThum Tower a, Noida Sector 62, Uttar Pradesh. (201301)",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                                  title: Text("$finaladdress",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                 ),
                                                 GestureDetector(
                                                   onTap: (){
                                                     Navigator.push(
                                                       context,
-                                                      MaterialPageRoute(builder: (context) =>  ManagePatrollerPage(patrollerId:GlobleConstant.save)),
+                                                      MaterialPageRoute(builder: (context) =>  ManagePatrollerPage(patrollerId:model.id.toString())),
                                                     );
                                                   },
                                                   child: ListTile(
@@ -185,7 +204,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                             ),
                           ),
 
-                        ),
+                        ):Text("")
 
                       ],
                     ),
@@ -199,14 +218,25 @@ class _GateWidgetState extends State<Gate2Widget> {
   }
 
   Future _getLocation() async {
-    Location location = new Location();
-    LocationData _pos = await location.getLocation();
-    double ? lat=_pos.latitude;
-    double? long=_pos.longitude;
+
+    double ? lat=0.0;
+    double? long=0.0;
     final gateBloc = BlocProvider.of<GateBloc>(context);
-    gateBloc.add(NearByList(lat:lat!,long:long!));
+    gateBloc.add(NearByList(lat:lat,long:long));
+
+  }
+
+  Future<void> getAddress(Data model) async {
+
+    double? lat=double.tryParse(model.latitude.toString());
+    double? long=double.tryParse(model.longitude.toString());
+    List<Placemark> addresses = await
+    placemarkFromCoordinates(lat!,long!);
+
+     finaladdress = "${addresses.first.name}" + "${addresses.first.administrativeArea}"+ "${addresses.first.postalCode}";
+
+  }
 
   }
 
 
-}

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:location/location.dart';
 import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/my_plan_response.dart';
 import 'package:ev_feul/model/near_response.dart';
@@ -134,9 +134,13 @@ class FetchService extends Services {
   @override
   Future<NearLocationsResponse> getNearList(
       double latitude,double longitude,) async {
+    Location location = new Location();
+    LocationData _pos = await location.getLocation();
+    double ? lat=_pos.latitude;
+    double? long=_pos.longitude;
     var res = await Utils.postApiCall(
         Constants.POST_NEAR_LIST_DATA,
-        {"user_id":Constants.userId,"latitude ":latitude,"longitude ":longitude});
+        {"user_id":Constants.userId,"latitude":lat.toString(),"longitude":long.toString()});
     var json = jsonDecode(res.body);
 
     try {

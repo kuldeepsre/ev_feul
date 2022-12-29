@@ -63,7 +63,7 @@ dev_dependencies:
   flutter_polyline_points: ^0.2.4
   location: ^4.4.0
   geolocator: ^9.0.2
-
+  geocoding: ^2.0.4
 
 flutter:
 
