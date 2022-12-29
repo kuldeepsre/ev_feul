@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/my_plan_response.dart';
+import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/model/register_response.dart';
 import 'package:ev_feul/model/subscreptions_response.dart';
 import 'package:ev_feul/model/subscription_response.dart';
-import 'package:ev_feul/utils/Constants.dart';
+import 'package:ev_feul/utils/constants.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:ev_feul/utils/utils.dart';
 import 'package:http/http.dart' as http;
@@ -122,6 +123,29 @@ class FetchService extends Services {
     } catch (e) {
       print(e);
       return SubscriptionsPlanResponse .fromJson({
+        'result': null,
+        'statusCode': 0,
+        'success': false,
+        'systemMsg': "Api not found!",
+        'userMsg': "Please check Api",
+      });
+    }
+  }
+  @override
+  Future<NearLocationsResponse> getNearList(
+      double latitude,double longitude,) async {
+    var res = await Utils.postApiCall(
+        Constants.POST_NEAR_LIST_DATA,
+        {"user_id":Constants.userId,"latitude ":latitude,"longitude ":longitude});
+    var json = jsonDecode(res.body);
+
+    try {
+      NearLocationsResponse  fcnaDetailResponse =
+      NearLocationsResponse .fromJson(json);
+      return fcnaDetailResponse;
+    } catch (e) {
+      print(e);
+      return NearLocationsResponse.fromJson({
         'result': null,
         'statusCode': 0,
         'success': false,

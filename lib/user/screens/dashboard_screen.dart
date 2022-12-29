@@ -6,8 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../mannage_patroller.dart';
 
 
+import 'package:location/location.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -46,10 +48,10 @@ class _GateWidgetState extends State<Gate2Widget> {
     super.initState();
     _validate = false;
     isLogin = false;
-
+    _getLocation();
     final gateBloc = BlocProvider.of<GateBloc>(context);
     gateBloc.add(ParkingDataData(master_name: "parking_allotment"));
-    gateBloc.add(ParkingGetListData(parking_allotment: " "));
+
   }
 
   @override
@@ -88,7 +90,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Welcome User',textScaleFactor: 1,style: subheadingStyle,),
+                          child: Text('Welcome ${GlobleConstant.newGuestName}',textScaleFactor: 1,style: subheadingStyle,),
                         ),
                          Card(
                           elevation: 15,
@@ -158,11 +160,18 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                   leading: Icon(Icons.add_location,color: Colors.yellow,),
                                                   title: Text("iThum Tower a, Noida Sector 62, Uttar Pradesh. (201301)",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                 ),
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context) =>  ManagePatrollerPage(patrollerId:GlobleConstant.save)),
+                                                    );
+                                                  },
+                                                  child: ListTile(
 
-                                                ListTile(
-
-                                                  leading: Icon(Icons.directions,color: Colors.green,),
-                                                  title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                                    leading: const Icon(Icons.directions,color: Colors.green,),
+                                                    title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -187,6 +196,16 @@ class _GateWidgetState extends State<Gate2Widget> {
             },
           ),
         ));
+  }
+
+  Future _getLocation() async {
+    Location location = new Location();
+    LocationData _pos = await location.getLocation();
+    double ? lat=_pos.latitude;
+    double? long=_pos.longitude;
+    final gateBloc = BlocProvider.of<GateBloc>(context);
+    gateBloc.add(NearByList(lat:lat!,long:long!));
+
   }
 
 

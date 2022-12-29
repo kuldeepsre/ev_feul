@@ -47,17 +47,10 @@ class _MainDashboardState extends State<MainDashboard> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,overlays: [SystemUiOverlay.top]);
   }
   Widget build(BuildContext context) {
-    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,overlays: [SystemUiOverlay.top]);
-
     return SafeArea(
       child: WillPopScope(
         onWillPop: () => CustomDialogs.onBackPressed(context),
-
         child: Scaffold(
-
-
-
-          //header
           appBar: AppBar(
 
 
@@ -87,13 +80,10 @@ class _MainDashboardState extends State<MainDashboard> {
             ),
             elevation: 0.0,
           ),
-
-          //body -> content of page selected
-          //fired via sidemenu @ tabs (refer: onTap)
           body: _pageOptions[ _selectedPage ],
-
           drawer: Drawer(
-            child:     Stack(
+            child:
+            Stack(
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -216,7 +206,6 @@ class _MainDashboardState extends State<MainDashboard> {
               ],
             ),
           ),
-
           bottomNavigationBar: BottomNavigationBar(
             //currentIndex -> tab index value
             currentIndex: _selectedPage,
@@ -252,23 +241,23 @@ class _MainDashboardState extends State<MainDashboard> {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Home'),
+                label: 'Home',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.grid_view_rounded),
-                title: Text('Subscription Plan'),
+                label:'Subscription Plan',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.battery_charging_full_sharp),
-                title: Text('Swap Station'),
+                label:'Swap Station',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.list,),
-                title: Text('My Plan',textScaleFactor:1,),
+                label: 'My Plan',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.history_sharp,),
-                title: Text('Swap History',textScaleFactor:1,),
+                label:'Swap History',
               ),
             ],
           ),

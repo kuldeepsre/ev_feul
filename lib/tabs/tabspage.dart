@@ -42,19 +42,19 @@ class _TabsPageState extends State<TabsPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label:'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view_rounded),
-            title: Text('Subscription Plan'),
+            label: 'Subscription Plan',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text('My Plan'),
+            label: 'My Plan',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history_sharp,),
-            title: Text('Swap History',textScaleFactor:1,),
+            label: 'Swap History',
           ),
         ],
         currentIndex: _selectedIndex,

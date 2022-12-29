@@ -8,8 +8,8 @@ import 'package:ev_feul/custom_widget/custom_loader.dart';
 import 'package:ev_feul/custom_widget/custom_text_blue.dart';
 import 'package:ev_feul/custom_widget/custom_text_normal.dart';
 import 'package:ev_feul/custom_widget/custom_text_white_normal.dart';
-import 'package:ev_feul/tabs/home_scrrem.dart';
-import 'package:ev_feul/tabs/tabspage.dart';
+
+
 import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/custom_dialog.dart';

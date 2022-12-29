@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/my_plan_response.dart';
+import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/model/subscreptions_response.dart';
 import 'package:ev_feul/services/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,6 +67,18 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         var res = await gateData.getSubscriptionList(event.id);
         if (res.status==200) {
           emit(SearchDataLoaded(subscriptionList: res.success!));
+        }
+        else {
+          emit(UserTokenExpired(
+              title: "Subscription Plan Screen", message:"Plan already  Subscribed"));
+        }
+      }
+      if (event is NearByList) {
+        emit(GateLoading());
+        final gateData = FetchService();
+        var res = await gateData.getNearList(event.lat,event.long);
+        if (res.status==200) {
+          emit(NearListLoaded(nearlist: res.success!.data!));
         }
         else {
           emit(UserTokenExpired(

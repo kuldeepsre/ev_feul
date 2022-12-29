@@ -172,8 +172,8 @@ class _LoginWidgetState extends State<LoginNow> {
                               // do something with text
                             },
                           ),
-                          const SizedBox(height: 20,),
-                          const CustomTextBold(Strings.forgotPass),
+                        /*  const SizedBox(height: 20,),
+                          const CustomTextBold(Strings.forgotPass),*/
                           SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: CustomButton(Strings.save, onClick: () {

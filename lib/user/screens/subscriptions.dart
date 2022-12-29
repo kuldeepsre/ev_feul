@@ -1,7 +1,7 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
 import 'package:ev_feul/model/subscreptions_response.dart';
-import 'package:ev_feul/utils/Constants.dart';
+import 'package:ev_feul/utils/constants.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/custom_dialog.dart';
 import 'package:ev_feul/utils/text_style.dart';
