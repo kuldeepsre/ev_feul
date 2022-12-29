@@ -203,7 +203,7 @@ class FetchService extends Services {
       String commond) async {
     var res = await Utils.postApiCall(
         Constants.POST_USER_HISTORY_LIST,
-        {"user_id":"${Constants.userId}"});
+        {"user_id":Constants.userId});
     var json = jsonDecode(res.body);
 
     try {

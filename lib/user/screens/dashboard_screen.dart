@@ -99,8 +99,13 @@ class _GateWidgetState extends State<Gate2Widget> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Welcome to ${ GlobleConstant.loginResponse!.success!.userData!.ownerName}',textScaleFactor: 1,style: subheadingStyle,),
+                          child: Text('Welcome to Dashboard',textScaleFactor: 1,style: subheadingStyle,),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(' ${ GlobleConstant.loginResponse!.success!.userData!.ownerName}',textScaleFactor: 1,style: listTextStyle,),
+                        ),
+
                         nearlist.isNotEmpty? 
                         Card(
                           elevation: 15,
@@ -134,10 +139,11 @@ class _GateWidgetState extends State<Gate2Widget> {
                                         child: Container(
 
                                           decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(const Radius.circular(5))   ,  gradient: LinearGradient(
+                                              borderRadius: const BorderRadius.all(Radius.circular(5))   ,  gradient: LinearGradient(
                                             colors: [
                                               ColorUtils.card1ln,
-                                              ColorUtils.card2ln,
+                                              ColorUtils.grayColor,
+
 
                                             ],
                                           )
