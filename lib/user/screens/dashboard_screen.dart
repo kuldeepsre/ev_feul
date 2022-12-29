@@ -121,12 +121,12 @@ class _GateWidgetState extends State<Gate2Widget> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 10,),
+                                const SizedBox(height: 10,),
                                 Text('Nearest Swap Stations',textScaleFactor: 1,style: sideMenuBlack,),
 
                                 ListView.builder(
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: nearlist.length,
                                   itemBuilder: (context, i){
                                     var model=nearlist[i];
@@ -140,7 +140,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                         child: Container(
 
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(Radius.circular(5))   ,  gradient: LinearGradient(
+                                              borderRadius: const BorderRadius.all(const Radius.circular(5))   ,  gradient: LinearGradient(
                                             colors: [
                                               ColorUtils.card1ln,
                                               ColorUtils.card2ln,
@@ -161,7 +161,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                   children: [
                                                      Expanded(
                                                       flex: 2,
-                                                        child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:TextStyle(
+                                                        child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:const TextStyle(
                                                       color: Colors.lightBlue,
                                                       fontSize: 14,
                                                       fontWeight:FontWeight.bold,
@@ -176,7 +176,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                   ],
                                                 ),
                                                 ListTile(
-                                                  leading: Icon(Icons.add_location,color: Colors.yellow,),
+                                                  leading: const Icon(Icons.add_location,color: Colors.yellow,),
                                                   title: Text("$finaladdress",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                 ),
                                                 GestureDetector(
@@ -187,7 +187,6 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                     );
                                                   },
                                                   child: ListTile(
-
                                                     leading: const Icon(Icons.directions,color: Colors.green,),
                                                     title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                   ),
@@ -203,9 +202,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                               ],
                             ),
                           ),
-
-                        ):Text("")
-
+                        ):const Text("")
                       ],
                     ),
                   )
