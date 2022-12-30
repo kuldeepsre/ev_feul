@@ -78,7 +78,7 @@ class GateBloc extends Bloc<GateEvent, GateState> {
       if (event is NearByList) {
         emit(GateLoading());
         final gateData = FetchService();
-        var res = await gateData.getNearList(event.lat,event.long);
+        var res = await gateData.getNearList();
         if (res.status==200) {
           emit(NearListLoaded(nearlist: res.success!.data!));
         }

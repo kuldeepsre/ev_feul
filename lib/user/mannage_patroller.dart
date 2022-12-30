@@ -9,7 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
+
+import 'package:geocoding/geocoding.dart';
 int count = 0;
 bool checkDistance = false;
 var totalDistance = 0.0;
@@ -17,8 +20,9 @@ double totalDurations =0.0;
 
 class ManagePatrollerPage extends StatefulWidget {
   String patrollerId;
+  String lat,long;
 
-  ManagePatrollerPage({Key? key, required this.patrollerId}) : super(key: key);
+  ManagePatrollerPage({Key? key, required this.patrollerId,required this.lat,required this.long}) : super(key: key);
 
   @override
   _PatrollerFormState createState() => _PatrollerFormState();
@@ -30,7 +34,7 @@ class _PatrollerFormState extends State<ManagePatrollerPage> {
     return BlocProvider(
       create: (BuildContext context) =>
           GateBloc(GateInitial()),
-      child: _PatrollerFormStateWidget(),
+      child: const _PatrollerFormStateWidget(),
     );
   }
 }
@@ -52,7 +56,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   static  double CAMERA_ZOOM = 12;
   static double CAMERA_TILT = 90;
   static double CAMERA_BEARING = 0;
- LatLng mapPosition = LatLng(23.8021939,86.3642084);
+ LatLng mapPosition = const LatLng(23.8021939,86.3642084);
   var _darkTheme = false;
 
   //LiveTrakingResponse? liveTrakingResponse;
@@ -107,22 +111,22 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
 
   List<LatLng> polylineCoordinates = [];
   List<LatLng> polylineCoordinates2 = [];
-  Set<Marker> _markers = Set<Marker>();
-  Set<Polyline> _polylines = Set<Polyline>();
-  Set<Polyline> _polylines1 = Set<Polyline>();
-  Set<Polyline> _polylines2 = Set<Polyline>();
-  Set<Polyline> _historicalPolygon = Set<Polyline>();
+  Set<Marker> _markers = <Marker>{};
+  Set<Polyline> _polylines = <Polyline>{};
+  Set<Polyline> _polylines1 = <Polyline>{};
+  Set<Polyline> _polylines2 = <Polyline>{};
+  Set<Polyline> _historicalPolygon = <Polyline>{};
 
-  Set<Polygon> _polygons = Set<Polygon>();
+  Set<Polygon> _polygons = <Polygon>{};
 
-  Set<Circle> mCircle = Set.from([
+  Set<Circle> mCircle = {
     Circle(
-      circleId: CircleId("id1"),
-      center: LatLng(0, 0),
+      circleId: const CircleId("id1"),
+      center: const LatLng(0, 0),
       strokeColor: ColorUtils.app_primary_color,
       radius: 12,
     ),
-  ]);
+  };
 
   initPanelController() {
     print('initPanelController -- start');
@@ -150,7 +154,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
 
    /* patrollerSaveBloc
         .add(LatLongListdata(username_lastlnt: Constants.liveid.toString()));*/
-    _validate = false;
+       _validate = false;
   }
 
   @override
@@ -173,10 +177,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-               ColorUtils.blue2,
+               ColorUtils.boarderBlue,
                 ColorUtils.blue2,
               ],
-              stops: [0.6, 1.0],
+              stops: const [0.6, 1.0],
             ),
           ),
         ),
@@ -189,7 +193,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                 Navigator.pop(context);
               },
               child: Row(
-                children: [
+                children: const [
                   Icon(
                     Icons.arrow_back_ios,
                     color:Colors.black,
@@ -207,15 +211,15 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                 ],
               ),
             ),
-            Text(
-              "Patroller Tracking",
+            const Text(
+              "Live Tracking",
               textScaleFactor: 1,
 
             ),
-            Text(" "),
+            const Text(" "),
           ],
         ),
-        actions: [],
+        actions: const [],
       ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -484,7 +488,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
           bloc: patrollerSaveBloc,
           builder: (BuildContext context, GateState state) {
             if (state is GateLoading) {
-              return Container(
+              return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Center(
                   heightFactor: .5,
@@ -496,12 +500,12 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
               );
             }
             return Scaffold(
-              body: Container(
+              body: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: SlidingUpPanel(
                   controller: pc,
-                  maxHeight: MediaQuery.of(context).size.height * .30,
-                  minHeight: MediaQuery.of(context).size.height * .17,
+                  maxHeight: MediaQuery.of(context).size.height * .29,
+                  minHeight: MediaQuery.of(context).size.height * .10,
                   //color: Colors.amber,
                   isDraggable: true,
 
@@ -512,9 +516,9 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                   body: _body(),
                   panelBuilder: (sc) => _panel(sc),
                   backdropOpacity: 1,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(18.0),
-                      topRight: Radius.circular(18.0)),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: const Radius.circular(18.0),
+                      topRight: const Radius.circular(18.0)),
                   onPanelSlide: (double pos) => setState(() {
                     _fabHeight = pos * (_panelHeightOpen + _initFabHeight);
                   }),
@@ -604,8 +608,9 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     return Stack(
       children: [
         Container(
+          color: Colors.transparent,
           margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .19),
+              EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .16),
           child: GoogleMap(
             //onLongPress: _addMarker,
 
@@ -635,17 +640,17 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
             child: Column(
               children: [
                 Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Colors.transparent,
-                        borderRadius: BorderRadius.all(Radius.circular(6))),
-                    margin: EdgeInsets.only(top: 250, bottom: 20, right: 10),
+                        borderRadius: const BorderRadius.all(const Radius.circular(6))),
+                    margin: const EdgeInsets.only(top: 250, bottom: 20, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
                           onTap: () {
-                            print(count);
+
                             setState(() {
                               {
                                 if (count == 0) {
@@ -671,17 +676,17 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         InkWell(
                             onTap: () {
-                           //   _getMyLocation();
+                           _getMyLocation();
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   top: 6.0, bottom: 6.0, right: 6, left: 6),
-                              child: Container(
+                              child: SizedBox(
                                   width: 32,
                                   height: 32,
                                   child: Image.asset(
@@ -704,7 +709,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     // Origin is not set OR Origin/Destination are both set
     // Set origin
     BitmapDescriptor patroller_start = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
+      const ImageConfiguration(),
       "assets/images/bikegreen.png",
     );
     setState(() {
@@ -747,7 +752,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     if (showPanelUpDown || (pc.isAttached && pc.isPanelClosed)) {
       return Container(
           //color: Colors.amber,
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           height: 25,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -772,7 +777,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
             ],
           ));
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -785,8 +790,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
             Container(
               child: ListView(
                 physics: (pc.isAttached && pc.isPanelOpen)
-                    ? ScrollPhysics()
-                    : NeverScrollableScrollPhysics(),
+                    ? const ScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
                 //shrinkWrap: true,
                 controller: sc,
                 children: <Widget>[
@@ -824,6 +829,40 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     } else {
       pc.close();
     }
+  }
+
+  _getMyLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var lat = position.latitude;
+    var long = position.longitude;
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    Placemark place = placemarks[0];
+    mCircle = {
+      Circle(
+        circleId: const CircleId("current Location"),
+        center: LatLng(lat, long),
+        strokeWidth: 2,
+        strokeColor: ColorUtils.green1,
+        radius: 100,
+      ),
+    };
+    sourceAddress =
+    "${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
+    _markers.add(Marker(
+        markerId: const MarkerId('Current Locations'),
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        infoWindow: InfoWindow(title: '${sourceAddress}')));
+    zoomVal = 16;
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(lat, long), zoom: 15),
+      ),
+    );
+    pc.close();
+   // polylineCoordinates.add(LatLng(widget.la, -122.08832357078792));
+    
   }
 /*  getOnOpensheetItems() {
     return !isHistoricalView

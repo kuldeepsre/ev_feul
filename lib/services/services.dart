@@ -136,17 +136,17 @@ class FetchService extends Services {
   }
   @override
   Future<NearLocationsResponse> getNearList(
-      double latitude,double longitude,) async {
-  /*  Location location = new Location();
-    LocationData pos = await location.getLocation();*/
+   ) async {
+
      Position position;
     position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    double ? lat=position.latitude;
-    double? long=position.longitude;
+
     var res = await Utils.postApiCall(
         Constants.POST_NEAR_LIST_DATA,
         {"user_id":Constants.userId,"latitude":position.latitude,"longitude":position.longitude});
     var json = jsonDecode(res.body);
+
+    print(json);
 
     try {
       NearLocationsResponse  fcnaDetailResponse =

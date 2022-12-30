@@ -53,8 +53,7 @@ class _GateWidgetState extends State<Gate2Widget> {
     _validate = false;
     isLogin = false;
     _getLocation();
-    final gateBloc = BlocProvider.of<GateBloc>(context);
-    gateBloc.add(ParkingDataData(master_name: "parking_allotment"));
+
 
   }
 
@@ -93,17 +92,14 @@ class _GateWidgetState extends State<Gate2Widget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
 
                       children:  <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Dashboard',textScaleFactor: 1,style: headingStyle,),
-                        ),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text('Welcome to Dashboard',textScaleFactor: 1,style: subheadingStyle,),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(' ${ GlobleConstant.loginResponse!.success!.userData!.ownerName}',textScaleFactor: 1,style: listTextStyle,),
+                          child: Text(' ${ GlobleConstant.loginResponse!.success!.userData!.ownerName}',textScaleFactor: 1,style: subheadingStyle,),
                         ),
 
                         nearlist.isNotEmpty? 
@@ -177,13 +173,13 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                 ),
                                                 ListTile(
                                                   leading: const Icon(Icons.add_location,color: Colors.yellow,),
-                                                  title: Text("Na",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                                  title: Text("${model.address}",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                 ),
                                                 GestureDetector(
                                                   onTap: (){
                                                     Navigator.push(
                                                       context,
-                                                      MaterialPageRoute(builder: (context) =>  ManagePatrollerPage(patrollerId:model.id.toString())),
+                                                      MaterialPageRoute(builder: (context) =>  ManagePatrollerPage(patrollerId:model.id.toString(),lat: model.latitude.toString(),long:model.longitude.toString())),
                                                     );
                                                   },
                                                   child: ListTile(
@@ -228,29 +224,20 @@ class _GateWidgetState extends State<Gate2Widget> {
         double ? lat=0.0;
         double? long=0.0;
         final gateBloc = BlocProvider.of<GateBloc>(context);
-        gateBloc.add(NearByList(lat:lat,long:long));
+        gateBloc.add(NearByList());
       }
-    }else{
+    }
+    else{
       print("GPS Location permission granted.");
+
+      final gateBloc = BlocProvider.of<GateBloc>(context);
+      gateBloc.add(NearByList());
     }
 
 
   }
 
-  Future<void> getAddress(Data model) async {
 
-    double? lat=double.tryParse(model.latitude.toString());
-    double? long=double.tryParse(model.longitude.toString());
-    List<Placemark> addresses = await
-    placemarkFromCoordinates(lat!,long!);
-
-     finaladdress = "${addresses.first.name}" + "${addresses.first.administrativeArea}"+ "${addresses.first.postalCode}";
-      print("finaladdress  $finaladdress");
-
-  setState(() {
-    finaladdress;
-  });
-  }
 
   }
 

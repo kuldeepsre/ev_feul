@@ -49,8 +49,9 @@ class Data {
   String? longitude;
   String? ownerName;
   String? distance;
+  String? address;
 
-  Data({this.id, this.latitude, this.longitude, this.ownerName, this.distance});
+  Data({this.id, this.latitude, this.longitude, this.ownerName, this.distance ,this.address});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -58,6 +59,7 @@ class Data {
     longitude = json['longitude'];
     ownerName = json['owner_name'];
     distance = json['distance'];
+    address = json['address'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +69,7 @@ class Data {
     data['longitude'] = longitude;
     data['owner_name'] = ownerName;
     data['distance'] = distance;
+    data['address'] = address;
     return data;
   }
 }

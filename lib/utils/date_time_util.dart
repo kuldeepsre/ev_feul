@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class DateTimeUtils {
   static convertUtcToLocalDate(String date) {
     var dateValue =
-        new DateFormat("yyyy-MM-ddTHH:mm:ss").parseUTC(date).toLocal();
+        new DateFormat("yyyy-MM-dd").parseUTC(date).toLocal();
     String formattedDate = DateFormat("dd MMM yyyy").format(dateValue);
     return formattedDate;
   }

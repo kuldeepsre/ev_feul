@@ -88,9 +88,9 @@ class ParkingDataData extends GateEvent {
 
   ParkingDataData({required this.master_name});
 }class NearByList extends GateEvent {
-  final double lat,long;
 
-  NearByList({required this.lat,required this.long});
+
+  NearByList();
 }
 class GetSubscriptionList extends GateEvent {
   final String id;

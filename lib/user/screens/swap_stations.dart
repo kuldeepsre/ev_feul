@@ -1,12 +1,18 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
+import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:geolocator/geolocator.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+
+import '../mannage_patroller.dart';
 
 
 class SwapStation extends StatefulWidget {
@@ -41,15 +47,16 @@ class _GateWidgetState extends State<Gate2Widget> {
   var FullNameController = TextEditingController();
   var DateController = TextEditingController();
   var AddressController = TextEditingController();
+
+  List<Data> nearlist=[];
+
   @override
   void initState() {
     super.initState();
     _validate = false;
     isLogin = false;
+    _getLocation();
 
-    final gateBloc = BlocProvider.of<GateBloc>(context);
-    gateBloc.add(ParkingDataData(master_name: "parking_allotment"));
-    gateBloc.add(ParkingGetListData(parking_allotment: " "));
   }
 
   @override
@@ -66,7 +73,10 @@ class _GateWidgetState extends State<Gate2Widget> {
 
         body: BlocListener<GateBloc, GateState>(
           listener: (context, state) {
-
+            if(state is NearListLoaded)
+            {
+              nearlist=  state.nearlist;
+            }
           },
           child: BlocBuilder(
             bloc: gateBloc,
@@ -82,32 +92,38 @@ class _GateWidgetState extends State<Gate2Widget> {
                   SingleChildScrollView(
                     child: Column(
                       children:  <Widget>[
-
+                        SizedBox(height: 30,),
                         Center(child: Text("Swap Stations",textScaleFactor: 1,style:sideMenuStyle,)),
                         SizedBox(height: 30,),
 
                         ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 6,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: nearlist.length,
                           itemBuilder: (context, i){
+                            var model=nearlist[i];
+
+
+
                             return  Padding(
-                              padding: const EdgeInsets.all(1.0),
+                              padding: const EdgeInsets.symmetric(vertical: 3.0),
                               child: Card(
-                                elevation: 5,
+                                elevation: 7,
                                 shadowColor: Colors.white,
                                 child: Container(
+
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5))   ,  gradient: LinearGradient(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5))   ,  gradient: LinearGradient(
                                     colors: [
                                       ColorUtils.card1ln,
-                                      ColorUtils.card2ln,
+                                      ColorUtils.grayColor,
+
 
                                     ],
                                   )
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 3),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,32 +133,37 @@ class _GateWidgetState extends State<Gate2Widget> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Expanded(
-                                               flex: 2,
-                                                child: Text("AKS Swap Station",softWrap: true,textScaleFactor: 1,style:TextStyle(
-                                              color: Colors.lightBlue,
-                                              fontSize: 14,
-                                              fontWeight:FontWeight.bold,
-                                            ),)),
+                                            Expanded(
+                                                flex: 2,
+                                                child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:const TextStyle(
+                                                  color: Colors.lightBlue,
+                                                  fontSize: 14,
+                                                  fontWeight:FontWeight.bold,
+                                                ),)),
                                             Expanded(child: Card(
                                                 color: Colors.yellow,
                                                 child: Padding(
                                                   padding: const EdgeInsets.symmetric(vertical: 2.0),
-                                                  child: Center(child: Text("1.5",softWrap: true,textScaleFactor: 1,style:sideMenuStyle,)),
+                                                  child: Center(child: Text("${model.distance} KM",softWrap: true,textScaleFactor: 1,style:listItemSubTitleStyle,)),
                                                 ))),
 
                                           ],
                                         ),
                                         ListTile(
-
-                                          leading: Icon(Icons.add_location,color: Colors.yellow,),
-                                          title: Text("iThum Tower a, Noida Sector 62, Uttar Pradesh. (201301)",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                          leading: const Icon(Icons.add_location,color: Colors.yellow,),
+                                          title: Text("${model.address}",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                         ),
-
-                                        ListTile(
-
-                                          leading: Icon(Icons.directions,color: Colors.green,),
-                                          title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                        GestureDetector(
+                                          onTap: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) =>  ManagePatrollerPage(patrollerId:model.id.toString(),lat: model.latitude.toString(),long:model.longitude.toString())),
+                                            );
+                                          },
+                                          child: ListTile(
+                                            leading: const Icon(Icons.directions,color: Colors.green,),
+                                            title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -162,6 +183,33 @@ class _GateWidgetState extends State<Gate2Widget> {
             },
           ),
         ));
+  }
+
+  Future _getLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print('Location permissions are denied');
+      }else if(permission == LocationPermission.deniedForever){
+        print("'Location permissions are permanently denied");
+      }else{
+        print("GPS Location service is granted");
+        double ? lat=0.0;
+        double? long=0.0;
+        final gateBloc = BlocProvider.of<GateBloc>(context);
+        gateBloc.add(NearByList());
+      }
+    }
+    else{
+      print("GPS Location permission granted.");
+
+      final gateBloc = BlocProvider.of<GateBloc>(context);
+      gateBloc.add(NearByList());
+    }
+
+
   }
 
 

@@ -116,7 +116,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 30),
                                 child: Column(
                                   children: [
-                                  GlobleConstant.planName!.isNotEmpty?
+                                planList!=null?
                                 ListView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
