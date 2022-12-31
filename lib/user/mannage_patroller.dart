@@ -2,6 +2,8 @@
 
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/utils/color_utils.dart';
+import 'package:ev_feul/utils/constants.dart';
+import 'package:ev_feul/utils/text_style.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,14 +36,26 @@ class _PatrollerFormState extends State<ManagePatrollerPage> {
     return BlocProvider(
       create: (BuildContext context) =>
           GateBloc(GateInitial()),
-      child: const _PatrollerFormStateWidget(),
+      child:  _PatrollerFormStateWidget(
+        lat: widget.lat,
+        long: widget.long,
+        patrollerId: widget.patrollerId,
+
+      ),
     );
   }
 }
 
 class _PatrollerFormStateWidget extends StatefulWidget {
-  const _PatrollerFormStateWidget({Key? key}) : super(key: key);
+  String lat, long, patrollerId;
 
+   _PatrollerFormStateWidget(
+      {Key? key,
+        required this.lat,
+        required this.long,
+        required this.patrollerId,
+        })
+      : super(key: key);
   @override
   _PatrollerFormStateWidgetState createState() =>
       _PatrollerFormStateWidgetState();
@@ -53,10 +67,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   late bool _validate;
 
 
-  static  double CAMERA_ZOOM = 12;
+  static double CAMERA_ZOOM = 12;
   static double CAMERA_TILT = 90;
   static double CAMERA_BEARING = 0;
- LatLng mapPosition = const LatLng(23.8021939,86.3642084);
+  LatLng mapPosition = const LatLng(23.8021939, 86.3642084);
   var _darkTheme = false;
 
   //LiveTrakingResponse? liveTrakingResponse;
@@ -78,7 +92,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   double dynamicSlideUpPanelHeightClosePercentage = 0.2;
   bool pannelstatus = true;
   double zoomVal = 18;
-  double sourceLat = 30.7352102, sourceLng = 76.6934878, desLat = 0, desLng = 0;
+  double sourceLat = 30.7352102,
+      sourceLng = 76.6934878,
+      desLat = 0,
+      desLng = 0;
   CameraPosition? initialCameraPosition;
 
   //     zoom: CAMERA_ZOOM,
@@ -89,7 +106,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   // target: LatLng(23.5385134, 87.3512902));
   String? name;
 
-  String? sourceAddress = "NA", lastAddress = "NA";
+  String? sourceAddress = "NA",
+      lastAddress = "NA";
 
   String? lastdate;
   String? time;
@@ -128,6 +146,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     ),
   };
 
+  double distance = 0.0;
+
   initPanelController() {
     print('initPanelController -- start');
     print(pc.isAttached);
@@ -149,12 +169,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   @override
   void initState() {
     super.initState();
-
-    final patrollerSaveBloc = BlocProvider.of<GateBloc>(context);
-
-   /* patrollerSaveBloc
-        .add(LatLongListdata(username_lastlnt: Constants.liveid.toString()));*/
-       _validate = false;
+    _getMyLocation();
+    _validate = false;
   }
 
   @override
@@ -177,7 +193,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-               ColorUtils.boarderBlue,
+                ColorUtils.blue1,
                 ColorUtils.blue2,
               ],
               stops: const [0.6, 1.0],
@@ -196,14 +212,14 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                 children: const [
                   Icon(
                     Icons.arrow_back_ios,
-                    color:Colors.black,
+                    color: Colors.white,
                     size: 14,
                   ),
                   Text(
                     "Back",
                     textScaleFactor: 1,
                     style: TextStyle(
-                        color:Colors.black,
+                        color: Colors.white,
                         fontSize: 14,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400),
@@ -350,7 +366,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
               _markers.clear();
 
 
-              *//* GlobleConstant.totaldistance*//*
+              */ /* GlobleConstant.totaldistance*/ /*
               _polylines.clear();
               polylineCoordinates.clear();
               polylineCoordinates2.clear();
@@ -489,7 +505,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
           builder: (BuildContext context, GateState state) {
             if (state is GateLoading) {
               return SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
                 child: Center(
                   heightFactor: .5,
                   child: CircularProgressIndicator(
@@ -501,27 +520,37 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
             }
             return Scaffold(
               body: SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: SlidingUpPanel(
                   controller: pc,
-                  maxHeight: MediaQuery.of(context).size.height * .29,
-                  minHeight: MediaQuery.of(context).size.height * .10,
+                  maxHeight: MediaQuery
+                      .of(context)
+                      .size
+                      .height * .29,
+                  minHeight: MediaQuery
+                      .of(context)
+                      .size
+                      .height * .10,
                   //color: Colors.amber,
                   isDraggable: true,
 
                   //To Stop Panel closing while sliding down other containers
                   parallaxEnabled: false,
-                //  collapsed: getOnBottomSheetCloseItems(),
+                  //  collapsed: getOnBottomSheetCloseItems(),
                   parallaxOffset: .5,
                   body: _body(),
                   panelBuilder: (sc) => _panel(sc),
                   backdropOpacity: 1,
                   borderRadius: const BorderRadius.only(
-                      topLeft: const Radius.circular(18.0),
-                      topRight: const Radius.circular(18.0)),
-                  onPanelSlide: (double pos) => setState(() {
-                    _fabHeight = pos * (_panelHeightOpen + _initFabHeight);
-                  }),
+                      topLeft: Radius.circular(18.0),
+                      topRight: Radius.circular(18.0)),
+                  onPanelSlide: (double pos) =>
+                      setState(() {
+                        _fabHeight = pos * (_panelHeightOpen + _initFabHeight);
+                      }),
                   onPanelOpened: () {
                     setState(() {
                       if (pannelstatus) {
@@ -575,8 +604,9 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   // final Set<Marker> _markers = {};
 
   MapType _currentMapType = MapType.terrain;
+
   getSourceLocation(double lat, double long) async {
-   /* List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    /* List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
     Placemark place = placemarks[0];
     sourceAddress =
         "${place.street}, ${place.name}, ${place.administrativeArea}, ${place.country}";
@@ -596,7 +626,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   // void _onCameraMove(CameraPosition position) {
   //   _lastMapPosition = position.target;
   // }
-    _onMapCreated(GoogleMapController controller) {
+  _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     //showPinsOnMap();
     setState(() {
@@ -610,10 +640,12 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         Container(
           color: Colors.transparent,
           margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .16),
+          EdgeInsets.only(bottom: MediaQuery
+              .of(context)
+              .size
+              .height * .16),
           child: GoogleMap(
             //onLongPress: _addMarker,
-
             markers: Set<Marker>.of(_markers),
             polylines: _polylines,
             myLocationEnabled: false,
@@ -642,15 +674,15 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                 Container(
                     decoration: const BoxDecoration(
                         color: Colors.transparent,
-                        borderRadius: const BorderRadius.all(const Radius.circular(6))),
-                    margin: const EdgeInsets.only(top: 250, bottom: 20, right: 10),
+                        borderRadius: BorderRadius.all(Radius.circular(6))),
+                    margin: const EdgeInsets.only(
+                        top: 250, bottom: 20, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
                           onTap: () {
-
                             setState(() {
                               {
                                 if (count == 0) {
@@ -681,7 +713,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                         ),
                         InkWell(
                             onTap: () {
-                           _getMyLocation();
+                              _getMyLocation();
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -723,7 +755,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
       _destination = null;
 
       // Reset info
-    //  _info = null;
+      //  _info = null;
     });
 
 /*    setState(() async {
@@ -751,7 +783,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   Widget _closeIconRow() {
     if (showPanelUpDown || (pc.isAttached && pc.isPanelClosed)) {
       return Container(
-          //color: Colors.amber,
+        //color: Colors.amber,
           padding: const EdgeInsets.all(0),
           height: 25,
           child: Row(
@@ -771,12 +803,15 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                       size: 30),
                   */
                 icon: pc.isAttached && pc.isPanelOpen
-                    ? Image.asset("assets/images/icons/downarrow.png")
-                    : Image.asset("assets/images/icons/uparrow.png"),
+                    ? const Icon(Icons.keyboard_arrow_down_outlined)
+                    : const Icon(Icons.keyboard_arrow_up),
               ),
+
+
             ],
           ));
-    } else {
+    }
+    else {
       return const SizedBox();
     }
   }
@@ -796,14 +831,14 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                 controller: sc,
                 children: <Widget>[
                   _closeIconRow(),
-                 /* showMenuContainer
+                  showMenuContainer
                       ?
                   getOnOpensheetItems()
-                      : Center(
-                          child: Text(
-                              "Tap the arrow to see the Patroller's info",
-                              style: TextStyle(
-                                  fontSize: 8, color: Colors.black26))),*/
+                      : const Center(
+                      child: const Text(
+                          "Tap the arrow to see the Patroller's info",
+                          style: TextStyle(
+                              fontSize: 8, color: Colors.black26))),
                 ],
               ),
             ),
@@ -813,7 +848,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
 
   onChangeSlideUpPanelStatus() {
     print(
-        'onChangeSlideUpPanelStatus - $_panelHeightOpen - ${MediaQuery.of(context).size.height} - $dynamicSlideUpPanelHeightOpenPercentage');
+        'onChangeSlideUpPanelStatus - $_panelHeightOpen - ${MediaQuery
+            .of(context)
+            .size
+            .height} - $dynamicSlideUpPanelHeightOpenPercentage');
 
     setState(() {
       showMenuContainer = !showMenuContainer;
@@ -848,974 +886,117 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
       ),
     };
     sourceAddress =
-    "${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
+    "${place.name},${place.street},${place.subLocality},${place.subThoroughfare},${place.subAdministrativeArea}, ${place.administrativeArea}, ${place
+        .country}";
     _markers.add(Marker(
         markerId: const MarkerId('Current Locations'),
         position: LatLng(lat, long),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        infoWindow: InfoWindow(title: '${sourceAddress}')));
-    zoomVal = 16;
+        infoWindow: InfoWindow(title: '$sourceAddress')));
+    zoomVal = 8;
+
+    pc.close();
+
+    double ? latitude = double.tryParse(widget.lat.toString());
+    double ? longitude = double.tryParse(widget.long.toString());
+
+    List<Placemark> placemarks2 = await placemarkFromCoordinates(latitude!, longitude!);
+    Placemark place2 = placemarks2[0];
+    var _destinationAddress =
+    "${place2.name},${place2.street},${place2.subLocality},${place2.subThoroughfare},${place2.subAdministrativeArea}, ${place2.administrativeArea}, ${place2
+        .country}";
+    BitmapDescriptor patrollerLastAddress =
+    await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(48, 48)),
+      "assets/images/bikegreen.png",
+    );
+    _markers.add(Marker(
+      markerId: const MarkerId('End Point'),
+      position: LatLng(latitude!, longitude!),
+      icon: BitmapDescriptor.defaultMarker,
+      infoWindow: InfoWindow(
+        title: "$_destinationAddress",
+      ),
+    ));
+    polylineCoordinates.add(LatLng(lat, long));
+    polylineCoordinates.add(LatLng(latitude, longitude));
+    Polyline polyline = Polyline(
+      polylineId: const PolylineId('poly }'),
+      points: polylineCoordinates,
+      color: Colors.lightBlue,
+      jointType: JointType.round,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      width: 1,
+      visible: true,
+    );
+    _polylines.add(polyline);
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: LatLng(lat, long), zoom: 15),
       ),
     );
-    pc.close();
-   // polylineCoordinates.add(LatLng(widget.la, -122.08832357078792));
-    
+
+    double  roundDistanceMeter = Geolocator.distanceBetween(lat, long, latitude, longitude);
+    double distanceInKiloMeters = roundDistanceMeter / 1000;
+
+    distance =
+    double.parse((distanceInKiloMeters).toStringAsFixed(2));
   }
-/*  getOnOpensheetItems() {
-    return !isHistoricalView
-        ? Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Visibility(
-                visible: checkDistance,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .45,
-                        child: Row(
-                          children: [
-                            Text(
-                              "Total Distance",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: getFontSize(
-                                  12,
-                                ),
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 1.50,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "${GlobleConstant.totaldistance==null?0:GlobleConstant.totaldistance} km",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: getFontSize(
-                                  12,
-                                ),
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 1.50,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * .45,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Duration",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: getFontSize(
-                                  12,
-                                ),
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 1.50,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "${(GlobleConstant.duartions==null?0:(GlobleConstant.duartions))} mints",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: getFontSize(
-                                  12,
-                                ),
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 1.50,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${Constants.name}",
-                          style: TextStyle(
-                            color: ColorConstant.bluegray400,
-                            fontSize: getFontSize(
-                              12,
-                            ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            height: 1.50,
-                          ),
-                        ),
-                        Text(
-                          "",
-                          style: TextStyle(
-                            color: ColorConstant.black900,
-                            fontSize: getFontSize(
-                              13,
-                            ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            height: 1.38,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHistoricalView = true;
-                            });
-                          },
-                          child: Row(
-                            children: [
 
-                              SizedBox(
-                                width: 12,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Timer? timer;
-                                  callLIVE();
-                                  timer = Timer(
-                                    const Duration(seconds: 60),
-                                    () {
-                                      callLIVE();
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * .22,
-                                  height:
-                                      MediaQuery.of(context).size.width * .08,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstant.cyan600,
-                                    borderRadius: BorderRadius.circular(
-                                      getHorizontalSize(
-                                        50.00,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "LIVE",
-                                      textScaleFactor: 1,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Roboto'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * .22,
-                                height: MediaQuery.of(context).size.width * .08,
-                                decoration: BoxDecoration(
-                                  color: ColorConstant.gray403,
-                                  borderRadius: BorderRadius.circular(
-                                    getHorizontalSize(
-                                      50.00,
-                                    ),
-                                  ),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "Historical Track",
-                                  textScaleFactor: 1,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'Roboto'),
-                                )),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: getVerticalSize(
-                  0.50,
-                ),
-                width: getHorizontalSize(
-                  336.00,
-                ),
-                decoration: BoxDecoration(
-                  color: ColorConstant.gray402,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                  *//*  SvgPicture.asset(
-                      ImageConstant.imgVector4,
-                      fit: BoxFit.fill,
-                    ),*//*
-                    SizedBox(
-                      width: 12,
-                    ),
+  getOnOpensheetItems() {
 
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      ImageConstant.imgVector5,
-                      fit: BoxFit.fill,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Last Address",
-                          textScaleFactor: 1,
-                          style: TextStyle(
-                            color: ColorConstant.bluegray400,
-                            fontSize: getFontSize(
-                              12,
-                            ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            height: 1.50,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * .80,
-                              child: Text(
-                                "${Constants.startAddress == null ? "Last address is not coming" : Constants.startAddress}",
-                                softWrap: true,
-                                textScaleFactor: 1,
-                                style: TextStyle(
-                                  color: ColorConstant.black900,
-                                  fontSize: getFontSize(
-                                    12,
-                                  ),
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.38,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              *//*
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  ImageConstant.imgVector5,
-                  fit: BoxFit.fill,
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-
-                    Text(
-                      "Last Address",
-                      textScaleFactor: 1,
-                      style: TextStyle(
-                        color: ColorConstant.bluegray400,
-                        fontSize: getFontSize(
-                          12,
-                        ),
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
-                        height: 1.50,
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width*.80,
-                      child: Wrap(
-                      children: [
-                        Text(
-                          //"${Constants.maintenancepoint==null?"NA":Constants.maintenancepoint}",
-                          sourceAddress!,
-                          softWrap: true,
-                          textScaleFactor: 1,
-                          style: TextStyle(
-                            color: ColorConstant.black900,
-                            fontSize: getFontSize(
-                              12,
-                            ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            height: 1.38,
-                          ),
-                        ),
-                      ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-*//*
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      ImageConstant.imgVector6,
-                      fit: BoxFit.fill,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "On: ${starttime == null ? "" : starttime}",
-                          textScaleFactor: 1,
-                          style: TextStyle(
-                            color: ColorConstant.black900,
-                            fontSize: getFontSize(
-                              12,
-                            ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            height: 1.50,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Visibility(
-                          visible: checkDistance,
-                          child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .45,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "Total Distance",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: getFontSize(
-                                            12,
-                                          ),
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w500,
-                                          height: 1.50,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${GlobleConstant.totaldistance==null?0:GlobleConstant.totaldistance} km",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: getFontSize(
-                                            12,
-                                          ),
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w500,
-                                          height: 1.50,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .45,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Duration",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: getFontSize(
-                                            12,
-                                          ),
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w500,
-                                          height: 1.50,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${(GlobleConstant.duartions==null?0:(GlobleConstant.duartions))} mints",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: getFontSize(
-                                            12,
-                                          ),
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w500,
-                                          height: 1.50,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "${Constants.name}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: getFontSize(
-                              12,
-                            ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            height: 1.50,
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: getVerticalSize(
-                  0.50,
-                ),
-                width: getHorizontalSize(
-                  336.00,
-                ),
-                decoration: BoxDecoration(
-                  color: ColorConstant.gray402,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .80,
-                        child: ListTile(
-                          onTap: () async {
-                            await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2015),
-                              lastDate: DateTime(2025),
-                            ).then((selectedDate) {
-                              if (selectedDate != null) {
-                                setState(() {
-                                  _date = DateTimeUtils.checkTMontFormate(
-                                      selectedDate.toString().split('.').first);
-                                  datetime = selectedDate;
-                                });
-                              }
-                            });
-                          },
-                          title: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Track @ Map",
-                                textScaleFactor: 1,
-                                style: TextStyle(
-                                  color: _darkTheme
-                                      ? ColorConstant.whiteA700
-                                      : ColorConstant.black900,
-                                  fontSize: 11,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "${_date == null ? "" : _date.toString().split(" ").first}",
-                                    textScaleFactor: 1,
-                                    style: TextStyle(
-                                      color: _darkTheme
-                                          ? ColorConstant.whiteA700
-                                          : ColorConstant.black900,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.date_range,
-                                    size: 18.0,
-                                    color: _darkTheme
-                                        ? ColorConstant.whiteA700
-                                        : ColorConstant.black900
-                                            .withOpacity(.54),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * .80,
-                                child: Divider(
-                                  thickness: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showPanelUpDown = false;
-                          print("datetime $datetime");
-
-                          if (datetime == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: ColorConstant.gray403,
-                              content: Text(
-                                "Please select date first",
-                                textScaleFactor: 1,
-                                style: TextStyle(color: ColorConstant.black900),
-                              ),
-                            ));
-                          } else {
-                            final patrollerSaveBloc =
-                                BlocProvider.of<AddPatrolllerBloc>(context);
-                            patrollerSaveBloc.add(PatrollerRouteData(
-                                patrollerid: Constants.liveid.toString(),
-                                datetime:
-                                    datetime.toString().split(" ").first));
-                          }
-                        },
-                        child: CircleAvatar(
-                          radius: 22,
-                          backgroundColor: ColorConstant.gray403,
-                          child: Text(
-                            "GO",
-                            textScaleFactor: 1,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              )
-            ],
-          );
-  }
-  getOnBottomSheetCloseItems() {
-    return Container(
-      margin: EdgeInsets.only(top: 40),
-      child: Row(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Visibility(
-                  visible: checkDistance,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * .45,
-                          child: Row(
-                            children: [
-                              Text(
-                                "Total Distance",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getFontSize(
-                                    12,
-                                  ),
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.50,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "${GlobleConstant.totaldistance==null?0:GlobleConstant.totaldistance} km",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getFontSize(
-                                    12,
-                                  ),
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * .45,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "Duration",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getFontSize(
-                                    12,
-                                  ),
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.50,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "${GlobleConstant.duartions==null?0:(GlobleConstant.duartions)} mints",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getFontSize(
-                                    12,
-                                  ),
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "${Constants.name}",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: getFontSize(
-                      12,
-                    ),
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isHistoricalView = true;
-                      pc.open();
+                Text("Name",textScaleFactor: 1,style: listItemTitleStyle,),
+                const SizedBox(width: 10,),
+                Text(GlobleConstant.loginResponse!.success!.userData!.ownerName.toString())
 
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          await FlutterPhoneDirectCaller.callNumber(
-                              "+91 ${Constants.mobile}");
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 1,
-                                  color: ColorConstant.whiteA700,
-                                  spreadRadius: 1)
-                            ],
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundColor: ColorConstant.circleyello,
-                            child: Image.asset(
-                              "assets/images/pCall.png",
-                              width: 18,
-                              height: 18,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Timer? timer;
-                            callLIVE();
-                          timer = Timer(
-                            const Duration(seconds: 60),
-                                () {
-                              callLIVE();
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * .22,
-                          height: MediaQuery.of(context).size.width * .08,
-                          decoration: BoxDecoration(
-                            color: ColorConstant.cyan600,
-                            borderRadius: BorderRadius.circular(
-                              getHorizontalSize(
-                                50.00,
-                              ),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "LIVE",
-                              textScaleFactor: 1,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Roboto'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * .22,
-                        height: MediaQuery.of(context).size.width * .08,
-                        decoration: BoxDecoration(
-                          color: ColorConstant.cyan600,
-                          borderRadius: BorderRadius.circular(
-                            getHorizontalSize(
-                              50.00,
-                            ),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Historical Track",
-                            textScaleFactor: 1,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Roboto'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ]),
+          const SizedBox(width: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Email",textScaleFactor: 1,style: listItemTitleStyle,),
+                const SizedBox(width: 10,),
+                Text(GlobleConstant.loginResponse!.success!.userData!.email.toString())
+
+              ]),
+          const SizedBox(width: 10,),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+
+              children: [
+
+                Text("Phone",textScaleFactor: 1,style: listItemTitleStyle,),
+                const SizedBox(width: 10,),
+                Text(GlobleConstant.loginResponse!.success!.userData!.phone.toString())
+
+              ]),
+          const SizedBox(width: 10,),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+
+              children: [
+
+                Text("Total Distance",textScaleFactor: 1,style: listItemTitleStyle,),
+                const SizedBox(width: 10,),
+                Text("$distance KM")
+
+              ]),
+          const SizedBox(width: 10,),
+
+
         ],
       ),
     );
   }
-  Future<void> callLIVE() async {
-    final patrollerSaveBloc = BlocProvider.of<AddPatrolllerBloc>(context);
-    var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
-    print(formattedDate);
-    patrollerSaveBloc.add(LiveListdata(
-        ccode: Constants.liveid.toString(),
-        fields: "${formattedDate.toString()}"));
-    // 2016-01-25
-    *//*final patrollerSaveBloc =
-    BlocProvider.of<AddPatrolllerBloc>(context);
-    patrollerSaveBloc.add(PatrollerRouteData(
-        patrollerid: Constants.liveid.toString(),
-        datetime:formattedDate));
-*//*
-    pc.close();
-  }
-  _getMyLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    var lat = position.latitude;
-    var long = position.longitude;
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-    Placemark place = placemarks[0];
-    mCircle = Set.from([
-      Circle(
-        circleId: CircleId("current Location"),
-        center: LatLng(lat, long),
-        strokeWidth: 2,
-        strokeColor: ColorConstant.btncolor,
-        radius: 100,
-      ),
-    ]);
-    sourceAddress =
-        "${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
-    _markers.add(Marker(
-        markerId: MarkerId('Current Locations'),
-        position: LatLng(lat, long),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        infoWindow: InfoWindow(title: '${sourceAddress}')));
-    zoomVal = 16;
-    mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(lat, long), zoom: 15),
-      ),
-    );
-    pc.close();
-  }
-  Future<void> callPolygone(List<LatLng> polylineCoordinates2, int i) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        polylineCoordinates2[0].latitude, polylineCoordinates2[0].longitude);
-    Placemark place = placemarks[0];
-    String Address =
-        "${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.subLocality}, ${place.country}";
-    List<Placemark> EndAddress = await placemarkFromCoordinates(
-        polylineCoordinates2[polylineCoordinates2.length - 1].latitude,
-        polylineCoordinates2[polylineCoordinates2.length - 1].longitude);
-    Placemark EndAddressplace = EndAddress[0];
-    String endaddress =
-        "${EndAddressplace.subAdministrativeArea}, ${EndAddressplace.administrativeArea},  ${place.subLocality},${EndAddressplace.country}";
-    _markers.add(Marker(
-      markerId: MarkerId('Start Point $i'),
-      position: polylineCoordinates2[0],
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-      infoWindow: InfoWindow(title: Address, snippet: time),
-    ));
-    _markers.add(Marker(
-      markerId: MarkerId('End Point $i'),
-      position: polylineCoordinates2[polylineCoordinates2.length - 1],
-      icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(
-        title: endaddress,
-      ),
-    ));
-    Polyline polyline = Polyline(
-      polylineId: PolylineId('poly $i}'),
-      points: polylineCoordinates2,
-      color: ColorConstant.btncolor,
-      jointType: JointType.round,
-      startCap: Cap.roundCap,
-      endCap: Cap.roundCap,
-      width: 5,
-      visible: true,
-    );
-    _polylines.add(polyline);
-    pc.close();
-  }*/
-  }
+
+}

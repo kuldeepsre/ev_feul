@@ -86,7 +86,7 @@ class FetchService extends Services {
 
     {
       Constants.userId=loginResponse.success!.userData!.id.toString();
-      GlobleConstant.loginResponse=loginResponse;
+         GlobleConstant.loginResponse=loginResponse;
 
     }
     return loginResponse;
