@@ -94,14 +94,21 @@ class FetchService extends Services {
 
     http.StreamedResponse response2 = await request.send();
     var tesr = await response2.stream.toBytes();
+
     final Map<String, dynamic> data = json.decode(String.fromCharCodes(tesr).toString());
-    print(data.entries);
+
+
+    // Read response
+
     if(response2.statusCode==200)
     {
-      
-    GlobleConstant.ownerName=  data.entries.contains("owner_name").toString();
 
-
+      var dataw = LoginData.fromJson(data);
+      print(dataw);
+      GlobleConstant.ownerName=dataw.success!.userData!.ownerName!;
+      GlobleConstant.profilePhoto=dataw.success!.userData!.profilePhoto!;
+      GlobleConstant.email=dataw.success!.userData!.email!;
+      GlobleConstant.address=dataw.success!.userData!.address!;
     }
     else{
       print(jsonEncode(tesr));

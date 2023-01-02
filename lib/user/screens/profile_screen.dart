@@ -132,8 +132,8 @@ class _GateWidgetState extends State<Gate2Widget> {
                                   backgroundColor: Colors.white,
                                   radius: 50,
                                   child:_image == null
-                                      ? Image.asset(
-                                          "assets/images/user_icon.png",
+                                      ? Image.network(
+                                          GlobleConstant.profilePhoto.toString(),
                                           fit: BoxFit.fill,
                                         )
                                       : CircleAvatar(
