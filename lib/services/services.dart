@@ -85,7 +85,6 @@ class FetchService extends Services {
       request.files.add(meterImage);
 
     }
-
     request.fields["owner_name"] =owner_name;
     request.fields["user_id"] =Constants.userId;
     request.fields["phone"] =phone;

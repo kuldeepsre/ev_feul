@@ -1,10 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
-
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
-import 'package:ev_feul/user/screens/sign_in.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/custom_dialog.dart';
 import 'package:ev_feul/utils/text_style.dart';
@@ -13,12 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../custom_widget/custom_button.dart';
-
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
-
   @override
   _GateScreenState createState() => _GateScreenState();
 }
