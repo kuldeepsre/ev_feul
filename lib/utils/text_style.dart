@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ev_feul/model/login_response.dart';
 import 'package:flutter/material.dart';
 
@@ -319,6 +321,18 @@ class GlobleConstant {
   static String? planName;
 
   static LoginData ?loginResponse;
+
+  static String ownerName="";
+
+  static String password="";
+
+  static String phone="";
+
+  static String address="";
+
+  static String email='';
+
+  static String ?profilePhoto;
 
 
 

@@ -67,6 +67,48 @@ class FetchService extends Services {
     }
     return RegisterResponse.fromJson(data);
   }
+  @override
+  Future<RegisterResponse>  saveProfile(String owner_name,
+      String phone,String address,String id_proof,String email
+  ) async {
+
+
+    var postUri = Uri.parse("http://evfuel.afmerp.com/api/profile-update");
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Content-Type":"multipart/form-data"
+    };
+    http.MultipartRequest request = http.MultipartRequest("POST", postUri);
+    var meterImage;
+    if (id_proof != null) {
+      meterImage = await http.MultipartFile.fromPath("profile_photo",id_proof);
+      request.files.add(meterImage);
+
+    }
+
+    request.fields["owner_name"] =owner_name;
+    request.fields["user_id"] =Constants.userId;
+    request.fields["phone"] =phone;
+    request.fields["address"] =address;
+    request.fields["email"] =email;
+
+    http.StreamedResponse response2 = await request.send();
+    var tesr = await response2.stream.toBytes();
+    final Map<String, dynamic> data = json.decode(String.fromCharCodes(tesr).toString());
+    print(data.entries);
+    if(response2.statusCode==200)
+    {
+      
+    GlobleConstant.ownerName=  data.entries.contains("owner_name").toString();
+
+
+    }
+    else{
+      print(jsonEncode(tesr));
+      return RegisterResponse.fromJson(data);
+    }
+    return RegisterResponse.fromJson(data);
+  }
 
 
 
@@ -86,6 +128,13 @@ class FetchService extends Services {
 
     {
       Constants.userId=loginResponse.success!.userData!.id.toString();
+      GlobleConstant.ownerName=loginResponse.success!.userData!.ownerName.toString();
+
+      GlobleConstant.phone=loginResponse.success!.userData!.phone.toString();
+      GlobleConstant.address=loginResponse.success!.userData!.address.toString();
+      GlobleConstant.profilePhoto=loginResponse.success!.userData!.profilePhoto;
+
+      GlobleConstant.email	=loginResponse.success!.userData!.email.toString();
          GlobleConstant.loginResponse=loginResponse;
 
     }

@@ -1,5 +1,7 @@
 import 'package:ev_feul/custom_widget/colored_status_bar.dart';
+import 'package:ev_feul/tabs/profileScreen.dart';
 import 'package:ev_feul/user/screens/plan_list.dart';
+import 'package:ev_feul/user/screens/profile_screen.dart';
 import 'package:ev_feul/user/screens/subscriptions.dart';
 import 'package:ev_feul/user/screens/swap_history.dart';
 import 'package:ev_feul/user/screens/swap_stations.dart';
@@ -38,6 +40,7 @@ class _MainDashboardState extends State<MainDashboard> {
     const SwapStation(),
     const PlanList(),
     const SwapHistory(),
+    const Profile(),
   ];
 
 
@@ -155,6 +158,17 @@ class _MainDashboardState extends State<MainDashboard> {
                           Navigator.pop(context)
                         },
                       ),
+                      ListTile(
+
+                        leading: const Icon(Icons.history,color: Colors.white,),
+                        title: Text('Profile',textScaleFactor: 1,style:sideMenuStyle,),
+                        onTap: () => {
+                          setState(() {
+                            _selectedPage = 5;
+                          }),
+                          Navigator.pop(context)
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -163,7 +177,7 @@ class _MainDashboardState extends State<MainDashboard> {
                     CustomDialogs.showLogoutConfirmation(context);
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 20),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
@@ -235,6 +249,9 @@ class _MainDashboardState extends State<MainDashboard> {
                 if(index == 4){
                   _selectedTitle = 'Landscape';
                 }
+                if(index == 5){
+                  _selectedTitle = 'Profile';
+                }
               });
             },
 
@@ -258,6 +275,10 @@ class _MainDashboardState extends State<MainDashboard> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.history_sharp,),
                 label:'Swap History',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle_rounded,),
+                label:'Profile',
               ),
             ],
           ),

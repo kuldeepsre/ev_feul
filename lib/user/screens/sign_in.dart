@@ -182,10 +182,10 @@ class _GateWidgetState extends State<Gate2Widget> {
                                   // do something with text
                                 },
                               ),
-                              const SizedBox(height: 10,),
+                      /*        const SizedBox(height: 10,),
                               Align(
                                   alignment: Alignment.topRight,
-                                  child: const CustomTextBlue(Strings.forgotPass)),
+                                  child: const CustomTextBlue(Strings.forgotPass)),*/
                               const SizedBox(height: 10,),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width,

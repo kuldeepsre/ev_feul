@@ -184,6 +184,11 @@ class AddInfo extends GateEvent {
   AddInfo( {required this.ev_number, required this.password,required this.confirm_password,required this.ev_rc_copy,required this.owner_name,
     required this.phone,required this.address,required this.id_proof,required this.vehicle_photo,required this.email});
 
+}class UploadeProfile extends GateEvent {
+  final String  owner_name,phone,address,id_proof,email;
+  UploadeProfile( { required this.owner_name,
+    required this.phone,required this.address,required this.id_proof,required this.email});
+
 }
 
 class LoginSubmit  extends GateEvent{

@@ -31,6 +31,22 @@ class GateBloc extends Bloc<GateEvent, GateState> {
               title: "Error", message:"server error"));
         }
       }
+      if (event is UploadeProfile) {
+        emit(GateLoading());
+        final service = FetchService();
+        var res =
+        await service.saveProfile(event.owner_name,event.phone,event.address,event.id_proof,event.email);
+        if (res.status==200) {
+          emit(DataSaved(message: "Data Saved Successfully", title: 'Register Screen'));
+        }else if(res.status==401) {
+          emit(DataFailed(
+              title: "Error", message:"$res"));
+        }
+        else{
+          emit(DataFailed(
+              title: "Error", message:"server error"));
+        }
+      }
       if (event is LoginSubmit) {
         emit(GateLoading());
         final service = FetchService();

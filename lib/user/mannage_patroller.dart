@@ -241,7 +241,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
       resizeToAvoidBottomInset: false,
       body: BlocListener<GateBloc, GateState>(
         listener: (context, state) async {
-/*          if (state is UserTokenExpired) {}
+              /*          if (state is UserTokenExpired) {}
           if (state is PatrollertpDataSaved) {
             CustomDialogs.showDialogMessageSiteProgressPhoto(context,
                 "OTP verification successfully added !!! ", "Patroller OTP");
@@ -912,7 +912,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     );
     _markers.add(Marker(
       markerId: const MarkerId('End Point'),
-      position: LatLng(latitude!, longitude!),
+      position: LatLng(latitude, longitude),
       icon: BitmapDescriptor.defaultMarker,
       infoWindow: InfoWindow(
         title: "$_destinationAddress",
@@ -936,10 +936,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         CameraPosition(target: LatLng(lat, long), zoom: 15),
       ),
     );
-
     double  roundDistanceMeter = Geolocator.distanceBetween(lat, long, latitude, longitude);
     double distanceInKiloMeters = roundDistanceMeter / 1000;
-
     distance =
     double.parse((distanceInKiloMeters).toStringAsFixed(2));
   }

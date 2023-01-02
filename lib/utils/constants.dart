@@ -11,6 +11,8 @@ class Constants {
 
 
 
+
+
   Constants._();
   static var staticDashBloc;
   static bool isTabularView = true;
