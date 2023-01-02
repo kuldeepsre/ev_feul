@@ -50,9 +50,9 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
     final gateBloc = BlocProvider.of<GateBloc>(context);
     return BlocListener<GateBloc, GateState>(
       listener: (context, state) {
-        if (state is UserTokenExpired) {
-          CustomDialogs.showDialogMessage(
-              context,"Subscription Screen", "Plan already  Subscribed");
+        if (state is DataFailed) {
+          CustomDialogs.showDialogForError(
+              context,"Plan already  Subscribed", "Subscriptions Plan");
         }
 
         if (state is SearchDataLoaded) {
@@ -241,7 +241,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                           context: context,
                                           builder: (BuildContext dialogContext) {
                                             return AlertDialog(
-                                              shape: RoundedRectangleBorder(
+                                              shape: const RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.all(Radius.circular(16.0))),
                                               //contentPadding: EdgeInsets.only(top: 08.0),
                                               content: Container(
@@ -276,7 +276,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
-                                                        Spacer(),
+                                                        const Spacer(),
                                                         ElevatedButton(
                                                           onPressed: () async {
                                                             Navigator.pop(context);
@@ -284,7 +284,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                                           },
                                                           style: ElevatedButton.styleFrom(
                                                               primary: ColorUtils.app_primary_color),
-                                                          child: Text(
+                                                          child: const Text(
                                                             "Cancel",
                                                           ),
                                                         ),
@@ -325,7 +325,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
                                             MediaQuery.of(context).size.height * .06,
                                         decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.all(Radius.circular(15)),
+                                                const BorderRadius.all(Radius.circular(15)),
                                             gradient: LinearGradient(
                                               colors: [
                                                 ColorUtils.greenbtn,

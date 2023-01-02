@@ -158,6 +158,7 @@ class FetchService extends Services {
 
 
     var jsonresult = json.decode(res.body);
+    print(jsonresult);
 
     SubscriptionResponse  loginResponse=SubscriptionResponse.fromJson(jsonresult);
 

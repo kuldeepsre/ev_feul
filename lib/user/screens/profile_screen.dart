@@ -125,10 +125,14 @@ class _GateWidgetState extends State<Gate2Widget> {
                                   backgroundColor: Colors.white,
                                   radius: 50,
                                   child:_image == null
-                                      ? Image.network(
-                                          GlobleConstant.profilePhoto.toString(),
-                                          fit: BoxFit.fill,
-                                        )
+                                      ? ClipOval(
+                                        child: Image.network(
+                                            GlobleConstant.profilePhoto.toString(),
+                                            fit: BoxFit.fill,
+                                            width: 45,
+                                            height: 45,
+                                          ),
+                                      )
                                       : CircleAvatar(
                                           backgroundColor: Colors.white,
                                           radius: 50,
