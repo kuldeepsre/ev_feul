@@ -52,7 +52,7 @@ class _SubscriptionPlanState extends State<Gate2Widget> {
       listener: (context, state) {
         if (state is DataFailed) {
           CustomDialogs.showDialogForError(
-              context,"Plan already  Subscribed", "Subscriptions Plan");
+              context,"Plan already  subscribed", "Subscriptions Plan");
         }
 
         if (state is SearchDataLoaded) {
