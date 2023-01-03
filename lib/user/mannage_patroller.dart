@@ -25,9 +25,7 @@ double totalDurations =0.0;
 class ManagePatrollerPage extends StatefulWidget {
   String patrollerId;
   String lat,long;
-
   ManagePatrollerPage({Key? key, required this.patrollerId,required this.lat,required this.long}) : super(key: key);
-
   @override
   _PatrollerFormState createState() => _PatrollerFormState();
 }
@@ -701,9 +699,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     double.parse((distanceInKiloMeters).toStringAsFixed(2));
   }
 
-  getOnOpensheetItems() {
-
-    return Padding(
+     getOnOpensheetItems() async {
+      return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
