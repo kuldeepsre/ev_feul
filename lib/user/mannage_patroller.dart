@@ -1,9 +1,11 @@
 
 
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
+import 'package:ev_feul/model/lat_long_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/constants.dart';
 import 'package:ev_feul/utils/text_style.dart';
+import 'package:cron/cron.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -148,6 +150,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
 
   double distance = 0.0;
 
+  List<LiveData> liveList=[];
+
   initPanelController() {
     print('initPanelController -- start');
     print(pc.isAttached);
@@ -170,6 +174,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   void initState() {
     super.initState();
     _getMyLocation();
+    background();
     _validate = false;
   }
 
@@ -241,264 +246,18 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
       resizeToAvoidBottomInset: false,
       body: BlocListener<GateBloc, GateState>(
         listener: (context, state) async {
-              /*          if (state is UserTokenExpired) {}
-          if (state is PatrollertpDataSaved) {
-            CustomDialogs.showDialogMessageSiteProgressPhoto(context,
-                "OTP verification successfully added !!! ", "Patroller OTP");
+          if(state is LiveDataLoaded){
+            setState(() {
+
+              liveList=  state.liveList;
+
+              widget.lat=liveList[0].latitude.toString();
+              widget.long=liveList[0].longitude.toString();
+              _getMyLocation();
+
+
+            });
           }
-          if (state is LiveDataLoaded) {
-            list = state.historicalresponse;
-            _markers.clear();
-            _polylines.clear();
-            polylineCoordinates.clear();
-            polylineCoordinates2.clear();
-            if (list.isNotEmpty) {
-              _markers.clear();
-              _polylines.clear();
-              polylineCoordinates.clear();
-              polylineCoordinates2.clear();
-
-              List<Placemark> placemarks =
-                  await placemarkFromCoordinates(list[0].lat!, list[0].lng!);
-
-              Placemark startAddress = placemarks[0];
-              String start =
-                  "${startAddress.subAdministrativeArea}, ${startAddress.administrativeArea}, ${startAddress.country},${startAddress.locality}";
-              _markers.add(Marker(
-                  markerId: MarkerId('EndPaoint'),
-                  position: LatLng(list[0].lat!, list[0].lng!),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueGreen),
-                  infoWindow: InfoWindow(title: '${start}')));
-
-              // mCircle = Set.from([
-              //   Circle(
-              //     circleId: CircleId("StartPoint"),
-              //     strokeColor:ColorConstant.btncolor ,
-              //     strokeWidth: 1,
-              //     center: LatLng(list[0].lat!, list[0].lng!),
-              //     radius: 30,
-              //   ),
-              //
-              // ]);
-              mCircle = Set.from([
-                Circle(
-                  circleId: CircleId("EndPainf"),
-                  strokeColor: ColorConstant.btncolor,
-                  strokeWidth: 1,
-                  center: LatLng(
-                      list[list.length - 1].lat!, list[list.length - 1].lng!),
-                  radius: 30,
-                ),
-              ]);
-
-              List<Placemark> EndAddress = await placemarkFromCoordinates(
-                  list[list.length - 1].lat!, list[list.length - 1].lng!);
-              Placemark endplace = EndAddress[0];
-              String EndPoint =
-                  "${endplace.subAdministrativeArea}, ${endplace.administrativeArea}, ${endplace.country}";
-              BitmapDescriptor endIcon = await BitmapDescriptor.fromAssetImage(
-                ImageConfiguration(size: Size(48, 48)),
-                "assets/images/bikegreen.png",
-              );
-              _markers.add(Marker(
-                  markerId: MarkerId('EndPaoint'),
-                  position: LatLng(
-                      list[list.length - 1].lat!, list[list.length - 1].lng!),
-                  icon: endIcon,
-                  infoWindow: InfoWindow(title: '${EndPoint}')));
-              _markers.add(Marker(
-                  markerId: MarkerId('tt'),
-                  position: LatLng(list[0].lat!, list[0].lng!),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueGreen),
-                  infoWindow: InfoWindow(title: '${startAddress}')));
-              for (int i = 0; i <= list.length - 1; i++) {
-                polylineCoordinates.add(LatLng(list[i].lat!, list[i].lng!));
-              }
-              Polyline polyline = Polyline(
-                polylineId: PolylineId('poly'),
-                points: polylineCoordinates,
-                color: Colors.blue,
-                startCap: Cap.roundCap,
-                endCap: Cap.roundCap,
-                width: 5,
-                visible: true,
-              );
-              _polylines.add(polyline);
-              mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                  LatLng(
-                      list[list.length - 1].lat!, list[list.length - 1].lng!),
-                  18));
-              pc.close();
-
-              //  getSourceLocation(sourceLat, sourceLng).toString();
-              //   getLastLocation(desLat, desLng).toString();
-            } else {
-              mCircle = Set.from([
-                Circle(
-                  circleId: CircleId("id1"),
-                  center: LatLng(0, 0),
-                  strokeColor: ColorUtils.app_primary_color,
-                  radius: 0,
-                ),
-              ]);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: ColorConstant.gray403,
-                content: Text(
-                  "Live Tracking data not found !!!",
-                  textScaleFactor: 1,
-                  style: TextStyle(color: ColorConstant.black900),
-                ),
-              ));
-            }
-          }
-          if (state is PatrollerRouteLoaded) {
-            historicalList = state.historicalresponse;
-
-            checkDistance = true;
-
-            _markers.clear();
-            _polylines.clear();
-            polylineCoordinates.clear();
-            polylineCoordinates2.clear();
-            if (historicalList.isNotEmpty) {
-              _markers.clear();
-
-
-              */ /* GlobleConstant.totaldistance*/ /*
-              _polylines.clear();
-              polylineCoordinates.clear();
-              polylineCoordinates2.clear();
-              dynamic one = 0;
-              List<Placemark> placemarks = await placemarkFromCoordinates(
-                  historicalList[0].lat!, historicalList[0].lng!);
-              mCircle = Set.from([
-                Circle(
-                  circleId: CircleId("StartPoint"),
-                  strokeColor: ColorConstant.btncolor,
-                  strokeWidth: 1,
-                  center:
-                      LatLng(historicalList[0].lat!, historicalList[0].lng!),
-                  radius: 30,
-                ),
-              ]);
-              Placemark place = placemarks[0];
-              String routeStartAdd =
-                  "${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
-
-              List<Placemark> EndAddress = await placemarkFromCoordinates(
-                  historicalList[historicalList.length - 1].lat!,
-                  historicalList[historicalList.length - 1].lng!);
-              Placemark endplace = EndAddress[0];
-              String EndPoint =
-                  "${endplace.subAdministrativeArea}, ${endplace.administrativeArea}, ${endplace.country}";
-              BitmapDescriptor endIcon = await BitmapDescriptor.fromAssetImage(
-                ImageConfiguration(size: Size(48, 48)),
-                "assets/images/bikegreen.png",
-              );
-              _markers.add(Marker(
-                  markerId: MarkerId('PStartPont'),
-                  position:
-                      LatLng(historicalList[0].lat!, historicalList[0].lng!),
-                  icon: BitmapDescriptor.defaultMarker,
-                  infoWindow: InfoWindow(title: '${routeStartAdd}')));
-              bool islinebrake = false;
-              for (int i = 0; i < historicalList.length; i++) {
-                var time1;
-                if (i == 0) {
-                  polylineCoordinates2.add(
-                      LatLng(historicalList[i].lat!, historicalList[i].lng!));
-                  time1 = historicalList[i].starttime;
-                  one = DateTimeUtils.checkTimeFormate(time1.toString());
-                } else {
-                  var time2 = historicalList[i].starttime!;
-                  dynamic two =
-                      DateTimeUtils.checkTimeFormate(time2.toString());
-                  var first = one;
-                  var last = two;
-                  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-                  var _date = dateFormat.format(DateTime.now());
-                  DateTime a = DateTime.parse('$_date $first:00');
-                  DateTime b = DateTime.parse('$_date $last:00');
-                  time1 = historicalList[i].starttime;
-                  one = DateTimeUtils.checkTimeFormate(time1.toString());
-                  // print("islinebrake  >.. ");
-
-                  if (b.difference(a).inMinutes >= 10) {
-                    islinebrake = true;
-                    print("islinebrake ");
-                  }
-                  if (islinebrake) {
-                    time1 = historicalList[i].starttime;
-                    callPolygone(polylineCoordinates2, i);
-                    islinebrake = false;
-                    polylineCoordinates2 = [];
-                  } else {
-                    polylineCoordinates2.add(
-                        LatLng(historicalList[i].lat!, historicalList[i].lng!));
-                  }
-                }
-              }
-              if (polylineCoordinates2.length > 0) {
-                callPolygone(polylineCoordinates2, -1); // change here -1
-              }
-              mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                  LatLng(historicalList[0].lat!, historicalList[0].lng!), 18));
-            } else {
-              GlobleConstant.totaldistance="0";
-              GlobleConstant.duartions="0";
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: ColorConstant.gray403,
-                content: Text(
-                  "Historical data not found !!!",
-                  textScaleFactor: 1,
-                  style: TextStyle(color: ColorConstant.black900),
-                ),
-              ));
-            }
-          }
-          if (state is LiveLastLatLongLoaded) {
-            _markers.clear();
-            _polylines.clear();
-            polylineCoordinates.clear();
-            polylineCoordinates2.clear();
-            lastlatlongList = state.lastlatresponse;
-            if (lastlatlongList.isNotEmpty) {
-              Constants.startAddress = lastlatlongList[0].address;
-              date = lastlatlongList[0].starttime;
-              Constants.phone = lastlatlongList[0].phone;
-              starttime = DateTimeUtils.checkTMontFormate(
-                  date.toString().split('.').first);
-              BitmapDescriptor patrollerLastAddress =
-                  await BitmapDescriptor.fromAssetImage(
-                ImageConfiguration(size: Size(48, 48)),
-                "assets/images/bikegreen.png",
-              );
-              _markers.add(Marker(
-                markerId: MarkerId('PatrollerDetails'),
-                position:
-                    LatLng(lastlatlongList[0].lat!, lastlatlongList[0].lng!),
-                icon: patrollerLastAddress,
-                infoWindow: InfoWindow(title: '${lastlatlongList[0].address}'),
-              ));
-              mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                  LatLng(lastlatlongList[0].lat!, lastlatlongList[0].lng!),
-                  18));
-              mCircle = Set.from([
-                Circle(
-                  circleId: CircleId("StartPoint"),
-                  strokeColor: ColorConstant.btncolor,
-                  strokeWidth: 1,
-                  center:
-                      LatLng(lastlatlongList[0].lat!, lastlatlongList[0].lng!),
-                  radius: 30,
-                ),
-              ]);
-            } else {
-              Constants.starttime = "";
-            }
-          }*/
         },
         child: BlocBuilder(
           bloc: patrollerSaveBloc,
@@ -895,7 +654,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         infoWindow: InfoWindow(title: '$sourceAddress')));
     zoomVal = 8;
 
-    pc.close();
+
 
     double ? latitude = double.tryParse(widget.lat.toString());
     double ? longitude = double.tryParse(widget.long.toString());
@@ -995,6 +754,14 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         ],
       ),
     );
+  }
+
+  void background() {
+    final cron = Cron();
+    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+      final gateBloc = BlocProvider.of<GateBloc>(context);
+         gateBloc.add(GetLiveData(id: widget.patrollerId));
+    });
   }
 
 }

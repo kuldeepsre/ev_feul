@@ -33,21 +33,27 @@ class EventList extends GateEvent {
   final String command;
 
   EventList({required this.command});
-}class EventMasterList extends GateEvent {
+}
+
+class EventMasterList extends GateEvent {
   final String command;
   final String event_id;
 
-  EventMasterList({required this.command,required this.event_id});
+  EventMasterList({required this.command, required this.event_id});
 }
+
 class AddParkingList extends GateEvent {
   final List<dynamic> postData;
+
   AddParkingList({required this.postData});
 }
+
 class SearchList extends GateEvent {
   final String command;
 
   SearchList({required this.command});
 }
+
 class EventCommonData extends GateEvent {
   final String command;
 
@@ -59,53 +65,72 @@ class SearchListDetails extends GateEvent {
 
   SearchListDetails({required this.command});
 }
+
 class ListReports extends GateEvent {
   final String command;
 
   ListReports({required this.command});
 }
+
 class ParkingGetListData extends GateEvent {
   final String parking_allotment;
 
   ParkingGetListData({required this.parking_allotment});
-}class SearchSuggestions extends GateEvent {
-  final String selected,gateType;
-
-  SearchSuggestions({required this.selected,required this.gateType});
 }
+
+class SearchSuggestions extends GateEvent {
+  final String selected, gateType;
+
+  SearchSuggestions({required this.selected, required this.gateType});
+}
+
 class SearchSuggestionsFamily extends GateEvent {
-  final String selected,gateType;
+  final String selected, gateType;
 
-  SearchSuggestionsFamily({required this.selected,required this.gateType});
+  SearchSuggestionsFamily({required this.selected, required this.gateType});
 }
+
 class CommonListData extends GateEvent {
   final String selected;
 
   CommonListData({required this.selected});
 }
+
 class ParkingDataData extends GateEvent {
   final String master_name;
 
   ParkingDataData({required this.master_name});
-}class NearByList extends GateEvent {
+}
 
-
+class NearByList extends GateEvent {
   NearByList();
 }
+
 class GetSubscriptionList extends GateEvent {
   final String id;
 
   GetSubscriptionList({required this.id});
-}class SubscriptionButton extends GateEvent {
-  final String id,subscription_id;
-
-  SubscriptionButton({required this.id,required this.subscription_id});
 }
+
+class SubscriptionButton extends GateEvent {
+  final String id, subscription_id;
+
+  SubscriptionButton({required this.id, required this.subscription_id});
+}
+
 class GetPlanList extends GateEvent {
   final String id;
 
   GetPlanList({required this.id});
-}class UserHistoryList extends GateEvent {
+}
+
+class GetLiveData extends GateEvent {
+  final String id;
+
+  GetLiveData({required this.id});
+}
+
+class UserHistoryList extends GateEvent {
   final String id;
 
   UserHistoryList({required this.id});
@@ -116,16 +141,19 @@ class GuestButtonClick extends GateEvent {
 
   GuestButtonClick({required this.data});
 }
+
 class AddEvetButtonClick extends GateEvent {
   final List<dynamic> data;
 
   AddEvetButtonClick({required this.data});
 }
+
 class SaveFamily extends GateEvent {
   final List<dynamic> data;
 
   SaveFamily({required this.data});
 }
+
 class PickupGate1RequestApprove extends GateEvent {
   final List<dynamic> postData;
 
@@ -138,13 +166,16 @@ class CallForVehical1Request extends GateEvent {
 
   CallForVehical1Request({required this.postData});
 }
-class CallForVehical2Request  extends GateEvent {
+
+class CallForVehical2Request extends GateEvent {
   final List<dynamic> postData;
 
-  CallForVehical2Request ({required this.postData});
+  CallForVehical2Request({required this.postData});
 }
+
 class CallForVehical3Request extends GateEvent {
   final List<dynamic> postData;
+
   CallForVehical3Request({required this.postData});
 }
 
@@ -154,13 +185,16 @@ class CallForVehicalGuest1Request extends GateEvent {
 
   CallForVehicalGuest1Request({required this.postData});
 }
+
 class CallForVehicalGuest2Request extends GateEvent {
   final List<dynamic> postData;
 
   CallForVehicalGuest2Request({required this.postData});
 }
+
 class CallForVehicalGuest3Request extends GateEvent {
   final List<dynamic> postData;
+
   CallForVehicalGuest3Request({required this.postData});
 }
 
@@ -170,28 +204,56 @@ class CallForVehicalPickup1Request extends GateEvent {
 
   CallForVehicalPickup1Request({required this.postData});
 }
+
 class CallForVehicalPickup2Request extends GateEvent {
   final List<dynamic> postData;
 
   CallForVehicalPickup2Request({required this.postData});
 }
+
 class CallForVehicalPickup3Request extends GateEvent {
   final List<dynamic> postData;
+
   CallForVehicalPickup3Request({required this.postData});
 }
+
 class AddInfo extends GateEvent {
-  final String ev_number,password,confirm_password,owner_name,phone,address,id_proof,ev_rc_copy,vehicle_photo,email;
-  AddInfo( {required this.ev_number, required this.password,required this.confirm_password,required this.ev_rc_copy,required this.owner_name,
-    required this.phone,required this.address,required this.id_proof,required this.vehicle_photo,required this.email});
+  final String ev_number,
+      password,
+      confirm_password,
+      owner_name,
+      phone,
+      address,
+      id_proof,
+      ev_rc_copy,
+      vehicle_photo,
+      email;
 
-}class UploadeProfile extends GateEvent {
-  final String  owner_name,phone,address,id_proof,email;
-  UploadeProfile( { required this.owner_name,
-    required this.phone,required this.address,required this.id_proof,required this.email});
-
+  AddInfo(
+      {required this.ev_number,
+      required this.password,
+      required this.confirm_password,
+      required this.ev_rc_copy,
+      required this.owner_name,
+      required this.phone,
+      required this.address,
+      required this.id_proof,
+      required this.vehicle_photo,
+      required this.email});
 }
 
-class LoginSubmit  extends GateEvent{
+class UploadeProfile extends GateEvent {
+  final String owner_name, phone, address, id_proof, email;
+
+  UploadeProfile(
+      {required this.owner_name,
+      required this.phone,
+      required this.address,
+      required this.id_proof,
+      required this.email});
+}
+
+class LoginSubmit extends GateEvent {
   final String email, password;
 
   LoginSubmit({required this.email, required this.password});

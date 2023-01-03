@@ -39,7 +39,12 @@ class PlanDataLoaded extends GateState {
   PlanResponse planList;
 
   PlanDataLoaded({required this.planList});
-}class UserHistoryDataLoaded extends GateState {
+}class LiveDataLoaded extends GateState {
+  List<LiveData>  liveList;
+
+  LiveDataLoaded({required this.liveList});
+}
+class UserHistoryDataLoaded extends GateState {
   List<History> histList;
 
   UserHistoryDataLoaded({required this.histList});

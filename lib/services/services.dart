@@ -12,6 +12,7 @@ import 'package:ev_feul/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
+import '../model/lat_long_response.dart';
 import '../model/user_history_response.dart';
 /*import 'package:location/location.dart';*/
 abstract class Services {
@@ -254,7 +255,34 @@ class FetchService extends Services {
         'systemMsg': "Api not found!",
       });
     }
-  } @override
+  }
+    @override
+  Future<LatLongResposne> getLiveList(
+      String ID) async {
+    var res = await Utils.postApiCall(
+        Constants.POST_LIVE_DATA,
+        {"swapstation_id":ID});
+    var json = jsonDecode(res.body);
+
+    try {
+      LatLongResposne  fcnaDetailResponse =
+      LatLongResposne .fromJson(json);
+
+      return fcnaDetailResponse;
+    } catch (e) {
+      print(e);
+      return LatLongResposne .fromJson({
+        'result': null,
+        'statusCode': 0,
+        'success': false,
+        'systemMsg': "Api not found!",
+      });
+    }
+  }
+
+
+
+  @override
   Future<UserHistoryResponse> getUserHistory(
       String commond) async {
     var res = await Utils.postApiCall(

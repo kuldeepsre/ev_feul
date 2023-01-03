@@ -29,6 +29,7 @@ class Constants {
   static const POST_SUBSCRIPTIONS_DATA = BASE_URL + "subscription-list";
   static const POST_SUBSCRIPTIONS_ADD_DATA = BASE_URL + "subscription-add";
   static const POST_PLAN_LIST = BASE_URL + "plan-list";
+  static const POST_LIVE_DATA = BASE_URL + "movement-swapstation";
   static const POST_USER_HISTORY_LIST = BASE_URL + "user-swap-history";
 
   static const POST_NEAR_LIST_DATA = BASE_URL + "nearest-swapstation";
