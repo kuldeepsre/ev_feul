@@ -248,8 +248,9 @@ class _GateWidgetState extends State<Gate2Widget> {
          double? slong=double.tryParse( nearlist[i+1].longitude.toString());
          double distanceInMeters = Geolocator.distanceBetween(
             lat!,long!,slat!,slong!);
-
-         print(distanceInMeters);
+         double roundDistanceInKM =
+         double.parse((distanceInMeters).toStringAsFixed(2));
+         print(roundDistanceInKM);
 
       }
 
