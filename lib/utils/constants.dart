@@ -32,7 +32,7 @@ class Constants {
   static const POST_LIVE_DATA = BASE_URL + "movement-swapstation";
   static const POST_USER_HISTORY_LIST = BASE_URL + "user-swap-history";
 
-  static const POST_NEAR_LIST_DATA = BASE_URL + "nearest-swapstation";
+  static const POST_NEAR_LIST_DATA = "https://evfuel-2cf7c-default-rtdb.firebaseio.com/locationTracking.json";
   static Map<String, String> headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",

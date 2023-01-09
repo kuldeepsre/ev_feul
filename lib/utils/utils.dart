@@ -12,7 +12,7 @@ enum UiDesignItems {
 
 class Utils {
   static Future<http.Response> getApiCall(String url) {
-    Constants.headers['token'] = Constants.user_token;
+
     return http.get(Uri.parse(url), headers: Constants.headers);
   }
   static Future<http.Response> postApiCall(String url, var body) {

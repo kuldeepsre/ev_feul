@@ -75,7 +75,7 @@ class _GateWidgetState extends State<Gate2Widget> {
           listener: (context, state) {
             if(state is NearListLoaded)
             {
-              nearlist=  state.nearlist;
+             // nearlist=  state.nearlist;
             }
           },
           child: BlocBuilder(

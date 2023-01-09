@@ -11,7 +11,6 @@ import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'dashboard_screen.dart';
 
 class MainDashboard extends StatefulWidget {

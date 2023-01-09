@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:meta/meta.dart';
 
+import '../../model/firebase_response.dart';
 import '../../model/lat_long_response.dart';
 import '../../model/user_history_response.dart';
 
@@ -96,13 +97,7 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         emit(GateLoading());
         final gateData = FetchService();
         var res = await gateData.getNearList();
-        if (res.status==200) {
-          emit(NearListLoaded(nearlist: res.success!.data!));
-        }
-        else {
-          emit(UserTokenExpired(
-              title: "Subscription Plan Screen", message:"Plan already  Subscribed"));
-        }
+        emit(NearListLoaded());
       }
       if (event is GetPlanList) {
         emit(GateLoading());

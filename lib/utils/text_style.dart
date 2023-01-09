@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ev_feul/model/firebase_response.dart';
 import 'package:ev_feul/model/login_response.dart';
 import 'package:flutter/material.dart';
 
@@ -333,6 +334,8 @@ class GlobleConstant {
   static String email='';
 
   static String ?profilePhoto;
+
+  static List<FirbaseResponse> list=[];
 
 
 

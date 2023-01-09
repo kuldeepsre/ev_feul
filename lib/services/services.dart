@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ev_feul/model/firebase_response.dart';
 import 'package:ev_feul/model/login_response.dart';
 import 'package:ev_feul/model/my_plan_response.dart';
 import 'package:ev_feul/model/near_response.dart';
@@ -192,26 +193,29 @@ class FetchService extends Services {
     }
   }
   @override
-  Future<NearLocationsResponse> getNearList(
+  Future<FirbaseResponse> getNearList(
    ) async {
 
      Position position;
     position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-    var res = await Utils.postApiCall(
-        Constants.POST_NEAR_LIST_DATA,
-        {"user_id":Constants.userId,"latitude":position.latitude,"longitude":position.longitude});
+    var res = await Utils.getApiCall(
+        Constants.POST_NEAR_LIST_DATA);
     var json = jsonDecode(res.body);
+    var json2 = jsonDecode(res.body);
 
     print(json);
+     GlobleConstant.list = (json2 as List)
+         .map((data) => FirbaseResponse.fromJson(data))
+         .toList();
 
     try {
-      NearLocationsResponse  fcnaDetailResponse =
-      NearLocationsResponse .fromJson(json);
+      FirbaseResponse  fcnaDetailResponse =
+      FirbaseResponse .fromJson(json);
       return fcnaDetailResponse;
     } catch (e) {
       print(e);
-      return NearLocationsResponse.fromJson({
+      return FirbaseResponse.fromJson({
         'result': null,
         'statusCode': 0,
         'success': false,

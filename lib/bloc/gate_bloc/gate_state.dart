@@ -31,9 +31,9 @@ class SearchDataLoaded extends GateState {
 
   SearchDataLoaded({required this.subscriptionList});
 }class NearListLoaded extends GateState {
-  final List<Data> nearlist;
 
-  NearListLoaded({required this.nearlist});
+
+  NearListLoaded();
 }
 class PlanDataLoaded extends GateState {
   PlanResponse planList;

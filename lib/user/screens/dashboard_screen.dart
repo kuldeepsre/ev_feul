@@ -1,5 +1,6 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
+import 'package:ev_feul/model/firebase_response.dart';
 import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/constants.dart';
@@ -7,10 +8,8 @@ import 'package:ev_feul/utils/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geocoding/geocoding.dart';
-import '../mannage_patroller.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
   @override
@@ -42,7 +41,7 @@ class _GateWidgetState extends State<Gate2Widget> {
   var DateController = TextEditingController();
   var AddressController = TextEditingController();
 
-  List<Data> nearlist=[];
+  List<FirbaseResponse> nearlist=[];
 
   String finaladdress="";
 
@@ -73,7 +72,8 @@ class _GateWidgetState extends State<Gate2Widget> {
 
             if(state is NearListLoaded)
               {
-                nearlist=  state.nearlist;
+                callAPi();
+
               }
           },
           child: BlocBuilder(
@@ -118,7 +118,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 const SizedBox(height: 10,),
                                 Text('Nearest Swap Stations',textScaleFactor: 1,style: sideMenuBlack,),
 
-                                ListView.builder(
+                           /*     ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: nearlist.length,
@@ -194,7 +194,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                       ),
                                     );
                                   },
-                                ),
+                                ),*/
                               ],
                             ),
                           ),
@@ -234,6 +234,24 @@ class _GateWidgetState extends State<Gate2Widget> {
       gateBloc.add(NearByList());
     }
 
+
+  }
+
+  Future<void> callAPi() async {
+
+    nearlist= GlobleConstant.list;
+    for(int i=0;i<nearlist.length-1;i++)
+      {
+         double? lat=double.tryParse( nearlist[i].latitude.toString());
+         double? long=double.tryParse( nearlist[i+1].latitude.toString());
+         double? slat=double.tryParse( nearlist[i].longitude.toString());
+         double? slong=double.tryParse( nearlist[i+1].longitude.toString());
+         double distanceInMeters = Geolocator.distanceBetween(
+            lat!,long!,slat!,slong!);
+
+         print(distanceInMeters);
+
+      }
 
   }
 
