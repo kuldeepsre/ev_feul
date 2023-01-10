@@ -261,21 +261,20 @@ class FetchService extends Services {
     }
   }
     @override
-  Future<LatLongResposne> getLiveList(
+  Future<FirbaseResponse> getLiveList(
       String ID) async {
-    var res = await Utils.postApiCall(
-        Constants.POST_LIVE_DATA,
-        {"swapstation_id":ID});
+    var res = await Utils.getApiCall("https://evfuel-2cf7c-default-rtdb.firebaseio.com/locationTracking/$ID.json");
     var json = jsonDecode(res.body);
+    print(json);
 
     try {
-      LatLongResposne  fcnaDetailResponse =
-      LatLongResposne .fromJson(json);
+      FirbaseResponse  fcnaDetailResponse =
+      FirbaseResponse .fromJson(json);
 
       return fcnaDetailResponse;
     } catch (e) {
       print(e);
-      return LatLongResposne .fromJson({
+      return FirbaseResponse .fromJson({
         'result': null,
         'statusCode': 0,
         'success': false,

@@ -1,8 +1,8 @@
 class CommonResponse {
   String? address;
-  int? id;
-  int? latitude;
-  int? longitude;
+  String? id;
+  double? latitude;
+  double? longitude;
   double? distance;
   String? updatedAt;
 
@@ -11,7 +11,7 @@ class CommonResponse {
 
   CommonResponse.fromJson(Map<String, dynamic> json) {
     address = json['address'];
-    id = json['id'];
+    id = json['id'].toString();
     latitude = json['latitude'];
     longitude = json['longitude'];
     updatedAt = json['updated_at'];

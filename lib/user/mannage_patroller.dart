@@ -1,6 +1,7 @@
 
 
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
+import 'package:ev_feul/model/firebase_response.dart';
 import 'package:ev_feul/model/lat_long_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/constants.dart';
@@ -148,7 +149,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
 
   double distance = 0.0;
 
-  List<LiveData> liveList=[];
+  FirbaseResponse ? firbaseResponse;
 
   initPanelController() {
     print('initPanelController -- start');
@@ -246,14 +247,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         listener: (context, state) async {
           if(state is LiveDataLoaded){
             setState(() {
-
-              liveList=  state.liveList;
-
-              widget.lat=liveList[0].latitude.toString();
-              widget.long=liveList[0].longitude.toString();
+              firbaseResponse=  state.firbaseResponse;
+              widget.lat=firbaseResponse!.latitude.toString();
+              widget.long=firbaseResponse!.longitude.toString();
               _getMyLocation();
-
-
             });
           }
         },
@@ -690,7 +687,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     _polylines.add(polyline);
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(lat, long), zoom: 15),
+        CameraPosition(target: LatLng(lat, long), zoom: 7),
       ),
     );
     double  roundDistanceMeter = Geolocator.distanceBetween(lat, long, latitude, longitude);
@@ -728,7 +725,6 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
 
               children: [
-
                 Text("Phone",textScaleFactor: 1,style: listItemTitleStyle,),
                 const SizedBox(width: 10,),
                 Text(GlobleConstant.loginResponse!.success!.userData!.phone.toString())

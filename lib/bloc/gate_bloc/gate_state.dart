@@ -40,9 +40,9 @@ class PlanDataLoaded extends GateState {
 
   PlanDataLoaded({required this.planList});
 }class LiveDataLoaded extends GateState {
-  List<LiveData>  liveList;
+  FirbaseResponse firbaseResponse;
 
-  LiveDataLoaded({required this.liveList});
+  LiveDataLoaded({required this.firbaseResponse});
 }
 class UserHistoryDataLoaded extends GateState {
   List<History> histList;

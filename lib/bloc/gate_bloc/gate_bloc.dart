@@ -116,9 +116,9 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         emit(GateLoading());
         final gateData = FetchService();
         var res = await gateData.getLiveList(event.id);
-        if (res.status==200) {
+        if (res.updatedAt!.isNotEmpty||res.address!.isNotEmpty) {
 
-          emit(LiveDataLoaded(liveList: res.success!.data!));
+          emit(LiveDataLoaded(firbaseResponse: res));
         }
         else {
           emit(UserTokenExpired(
