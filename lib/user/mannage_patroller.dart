@@ -648,12 +648,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         infoWindow: InfoWindow(title: '$sourceAddress')));
     zoomVal = 8;
-
-
-
     double ? latitude = double.tryParse(widget.lat.toString());
     double ? longitude = double.tryParse(widget.long.toString());
-
     List<Placemark> placemarks2 = await placemarkFromCoordinates(latitude!, longitude!);
     Placemark place2 = placemarks2[0];
     var _destinationAddress =
