@@ -731,10 +731,9 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
 
               children: [
-
                 Text("Total Distance",textScaleFactor: 1,style: listItemTitleStyle,),
                 const SizedBox(width: 10,),
-                Text("$distance KM")
+               // Text("$distance KM")
 
               ]),
           const SizedBox(width: 10,),

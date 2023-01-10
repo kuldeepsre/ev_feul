@@ -265,7 +265,6 @@ class FetchService extends Services {
       String ID) async {
     var res = await Utils.getApiCall("https://evfuel-2cf7c-default-rtdb.firebaseio.com/locationTracking/$ID.json");
     var json = jsonDecode(res.body);
-    print(json);
 
     try {
       FirbaseResponse  fcnaDetailResponse =
@@ -273,7 +272,6 @@ class FetchService extends Services {
 
       return fcnaDetailResponse;
     } catch (e) {
-      print(e);
       return FirbaseResponse .fromJson({
         'result': null,
         'statusCode': 0,

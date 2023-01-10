@@ -1,5 +1,6 @@
 import 'package:ev_feul/bloc/gate_bloc/gate_bloc.dart';
 import 'package:ev_feul/custom_widget/custom_loader.dart';
+import 'package:ev_feul/model/firebase_response.dart';
 import 'package:ev_feul/model/near_response.dart';
 import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/text_style.dart';
@@ -12,6 +13,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 
+import '../../model/CommonData.dart';
 import '../mannage_patroller.dart';
 
 
@@ -48,7 +50,8 @@ class _GateWidgetState extends State<Gate2Widget> {
   var DateController = TextEditingController();
   var AddressController = TextEditingController();
 
-  List<Data> nearlist=[];
+  List<FirbaseResponse> nearlist=[];
+  List<CommonResponse> commonList=[];
 
   @override
   void initState() {
@@ -75,7 +78,13 @@ class _GateWidgetState extends State<Gate2Widget> {
           listener: (context, state) {
             if(state is NearListLoaded)
             {
-             // nearlist=  state.nearlist;
+              callAPi();
+            }
+            if(state is LoadedCompeted)
+            {
+              setState(() {
+                commonList;
+              });
             }
           },
           child: BlocBuilder(
@@ -99,9 +108,9 @@ class _GateWidgetState extends State<Gate2Widget> {
                         ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: nearlist.length,
+                          itemCount: commonList.length,
                           itemBuilder: (context, i){
-                            var model=nearlist[i];
+                            var model=commonList[i];
 
 
 
@@ -135,7 +144,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           children: [
                                             Expanded(
                                                 flex: 2,
-                                                child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:const TextStyle(
+                                                child: Text("",softWrap: true,textScaleFactor: 1,style:const TextStyle(
                                                   color: Colors.lightBlue,
                                                   fontSize: 14,
                                                   fontWeight:FontWeight.bold,
@@ -185,6 +194,7 @@ class _GateWidgetState extends State<Gate2Widget> {
         ));
   }
 
+
   Future _getLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
 
@@ -196,8 +206,7 @@ class _GateWidgetState extends State<Gate2Widget> {
         print("'Location permissions are permanently denied");
       }else{
         print("GPS Location service is granted");
-        double ? lat=0.0;
-        double? long=0.0;
+
         final gateBloc = BlocProvider.of<GateBloc>(context);
         gateBloc.add(NearByList());
       }
@@ -209,6 +218,40 @@ class _GateWidgetState extends State<Gate2Widget> {
       gateBloc.add(NearByList());
     }
 
+
+  }
+
+  Future<void> callAPi() async {
+
+    nearlist= GlobleConstant.list;
+    commonList.clear();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var clat = position.latitude;
+    var clong = position.longitude;
+    for(int i=0;i<nearlist.length-1;i++)
+    {
+      if(nearlist[i].latitude==0)
+      {
+
+      }
+      else{
+        double? lat=double.tryParse( nearlist[i].latitude.toString());
+        double? long=double.tryParse( nearlist[i].latitude.toString());
+        double distanceInMeters = Geolocator.distanceBetween(
+            lat!,long!,clat,clong);
+        double distanceInKiloMeters = distanceInMeters / 1000;
+        double roundDistanceInKM =
+        double.parse((distanceInKiloMeters).toStringAsFixed(2));
+        commonList.add(CommonResponse(id:nearlist[i].id,address:nearlist[i].address,latitude:nearlist[i].latitude,longitude:nearlist[i].longitude,distance:roundDistanceInKM,updatedAt: nearlist[i].updatedAt));
+        // commonList.sort();
+        // commonList.sort((a, b) => a.distance!.compareTo(b.distance!));
+
+        final gateBloc = BlocProvider.of<GateBloc>(context);
+        gateBloc.add(AfterLoad());
+      }
+
+    }
 
   }
 
