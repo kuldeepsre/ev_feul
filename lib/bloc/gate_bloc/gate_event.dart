@@ -104,6 +104,8 @@ class ParkingDataData extends GateEvent {
 
 class NearByList extends GateEvent {
   NearByList();
+}class AfterLoad extends GateEvent {
+  AfterLoad();
 }
 
 class GetSubscriptionList extends GateEvent {

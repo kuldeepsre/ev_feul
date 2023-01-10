@@ -34,6 +34,10 @@ class SearchDataLoaded extends GateState {
 
 
   NearListLoaded();
+}class LoadedCompeted extends GateState {
+
+
+  LoadedCompeted();
 }
 class PlanDataLoaded extends GateState {
   PlanResponse planList;

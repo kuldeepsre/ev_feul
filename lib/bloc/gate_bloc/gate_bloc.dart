@@ -99,6 +99,12 @@ class GateBloc extends Bloc<GateEvent, GateState> {
         var res = await gateData.getNearList();
         emit(NearListLoaded());
       }
+      if (event is AfterLoad) {
+        emit(GateLoading());
+        final gateData = FetchService();
+        var res = await gateData.getNearList();
+        emit(LoadedCompeted());
+      }
       if (event is GetPlanList) {
         emit(GateLoading());
         final gateData = FetchService();

@@ -76,7 +76,16 @@ class _GateWidgetState extends State<Gate2Widget> {
 
             if(state is NearListLoaded)
               {
-                callAPi();
+                setState(() {
+                  callAPi();
+                });
+
+              }
+            if(state is LoadedCompeted)
+              {
+                setState(() {
+                 commonList;
+                });
 
               }
           },
@@ -122,7 +131,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                 const SizedBox(height: 10,),
                                 Text('Nearest Swap Stations',textScaleFactor: 1,style: sideMenuBlack,),
 
-                                ListView.builder(
+                               commonList.length>0? ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: commonList.length,
@@ -198,7 +207,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                       ),
                                     );
                                   },
-                                ),
+                                ):Text(""),
                               ],
                             ),
                           ),
@@ -263,7 +272,11 @@ class _GateWidgetState extends State<Gate2Widget> {
            double roundDistanceInKM =
            double.parse((distanceInKiloMeters).toStringAsFixed(2));
            commonList.add(CommonResponse(id:nearlist[i].id,address:nearlist[i].address,latitude:nearlist[i].latitude,longitude:nearlist[i].longitude,distance:roundDistanceInKM,updatedAt: nearlist[i].updatedAt));
-           commonList.sort((a, b) => a.distance!.compareTo(b.distance!));
+          // commonList.sort();
+          // commonList.sort((a, b) => a.distance!.compareTo(b.distance!));
+
+           final gateBloc = BlocProvider.of<GateBloc>(context);
+           gateBloc.add(AfterLoad());
          }
 
          }
