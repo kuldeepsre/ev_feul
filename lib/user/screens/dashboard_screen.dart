@@ -168,13 +168,13 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                     const Expanded(
-                                                      flex: 2,
-                                                        child: Text("",softWrap: true,textScaleFactor: 1,style:TextStyle(
-                                                      color: Colors.lightBlue,
-                                                      fontSize: 14,
-                                                      fontWeight:FontWeight.bold,
-                                                    ),)),
+                                                    Expanded(
+                                                        flex: 2,
+                                                        child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:const TextStyle(
+                                                          color: Colors.lightBlue,
+                                                          fontSize: 14,
+                                                          fontWeight:FontWeight.bold,
+                                                        ),)),
                                                     Expanded(child: Card(
                                                         color: Colors.yellow,
                                                         child: Padding(
@@ -196,6 +196,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                                     );
                                                   },
                                                   child: ListTile(
+                                                    trailing: Text("${model.updatedAt}",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                     leading: const Icon(Icons.directions,color: Colors.green,),
                                                     title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                                   ),
@@ -271,10 +272,14 @@ class _GateWidgetState extends State<Gate2Widget> {
            double distanceInKiloMeters = distanceInMeters / 1000;
            double roundDistanceInKM =
            double.parse((distanceInKiloMeters).toStringAsFixed(2));
-           commonList.add(CommonResponse(id:nearlist[i].id,address:nearlist[i].address,latitude:nearlist[i].latitude,longitude:nearlist[i].longitude,distance:roundDistanceInKM,updatedAt: nearlist[i].updatedAt));
+           commonList.add(CommonResponse(id:nearlist[i].id,address:nearlist[i].address,ownerName:nearlist[i].ownerName,latitude:nearlist[i].latitude,longitude:nearlist[i].longitude,distance:roundDistanceInKM,updatedAt: nearlist[i].updatedAt));
           // commonList.sort();
           // commonList.sort((a, b) => a.distance!.compareTo(b.distance!));
 
+           //commonList.sort((a, b) => a.distance!.compareTo(b.distance!));
+
+           Comparator<CommonResponse> sortById = (a, b) => a.distance!.compareTo(b.distance!);
+           commonList.sort(sortById);
            final gateBloc = BlocProvider.of<GateBloc>(context);
            gateBloc.add(AfterLoad());
          }

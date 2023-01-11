@@ -7,7 +7,8 @@ import 'package:ev_feul/utils/color_utils.dart';
 import 'package:ev_feul/utils/constants.dart';
 import 'package:ev_feul/utils/text_style.dart';
 import 'package:cron/cron.dart';
-
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';                      
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -150,6 +151,9 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   double distance = 0.0;
 
   FirbaseResponse ? firbaseResponse;
+
+  var lat;
+  var long;
 
   initPanelController() {
     print('initPanelController -- start');
@@ -296,7 +300,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                   //  collapsed: getOnBottomSheetCloseItems(),
                   parallaxOffset: .5,
                   body: _body(),
-                  panelBuilder: (sc) => _panel(sc),
+                panelBuilder: (sc) => _panel(sc),
                   backdropOpacity: 1,
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(18.0),
@@ -410,6 +414,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
             zoomControlsEnabled: true,
             myLocationButtonEnabled: true,
             initialCameraPosition: initialCameraPosition!,
+            mapToolbarEnabled: true,
+            buildingsEnabled: true,
             onTap: (LatLng loc) {
               //pinPillPosition = -200;
             },
@@ -478,7 +484,26 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                                   child: Image.asset(
                                     "assets/images/gps.png",
                                   )),
-                            )),
+                            )),   
+                    /*    InkWell(
+                            onTap: () async {
+                              String googleUrl = 'http://maps.google.com/maps?saddr=$lat,$long&daddr=${widget.lat},${widget.long}';
+                              if (await canLaunch(googleUrl)) {
+                              await launch(googleUrl);
+                              } else {
+                              throw 'Could not open the map.';
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 6.0, bottom: 6.0, right: 6, left: 6),
+                              child: SizedBox(
+                                  width: 32,
+                                  height: 32,
+                                  child: Image.asset(
+                                    "assets/images/route.png",
+                                  )),
+                            )),*/
                       ],
                     )),
               ],
@@ -589,7 +614,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                       ?
                   getOnOpensheetItems()
                       : const Center(
-                      child: const Text(
+                      child: Text(
                           "Tap the arrow to see the Patroller's info",
                           style: TextStyle(
                               fontSize: 8, color: Colors.black26))),
@@ -626,8 +651,8 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
   _getMyLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    var lat = position.latitude;
-    var long = position.longitude;
+     lat = position.latitude;
+     long = position.longitude;
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
     Placemark place = placemarks[0];
     mCircle = {
@@ -639,13 +664,18 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         radius: 100,
       ),
     };
+    BitmapDescriptor start =
+    await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(12, 12),),
+      "assets/images/bike.png",
+    );
     sourceAddress =
     "${place.name},${place.street},${place.subLocality},${place.subThoroughfare},${place.subAdministrativeArea}, ${place.administrativeArea}, ${place
         .country}";
     _markers.add(Marker(
         markerId: const MarkerId('Current Locations'),
         position: LatLng(lat, long),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        icon:start ,
         infoWindow: InfoWindow(title: '$sourceAddress')));
     zoomVal = 8;
     double ? latitude = double.tryParse(widget.lat.toString());
@@ -657,17 +687,23 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         .country}";
     BitmapDescriptor patrollerLastAddress =
     await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(48, 48)),
-      "assets/images/bikegreen.png",
+       const ImageConfiguration(size: Size(18, 18),),
+      "assets/images/car.png",
     );
+
     _markers.add(Marker(
       markerId: const MarkerId('End Point'),
       position: LatLng(latitude, longitude),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: patrollerLastAddress,
       infoWindow: InfoWindow(
         title: "$_destinationAddress",
+
       ),
     ));
+    double  roundDistanceMeter = Geolocator.distanceBetween(lat, long, latitude, longitude);
+    double distanceInKiloMeters = roundDistanceMeter / 1000;
+    distance =
+        double.parse((distanceInKiloMeters).toStringAsFixed(2));
     polylineCoordinates.add(LatLng(lat, long));
     polylineCoordinates.add(LatLng(latitude, longitude));
     Polyline polyline = Polyline(
@@ -683,13 +719,10 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
     _polylines.add(polyline);
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(lat, long), zoom: 7),
+        CameraPosition(target: LatLng(lat, long), zoom: 15),
       ),
     );
-    double  roundDistanceMeter = Geolocator.distanceBetween(lat, long, latitude, longitude);
-    double distanceInKiloMeters = roundDistanceMeter / 1000;
-    distance =
-    double.parse((distanceInKiloMeters).toStringAsFixed(2));
+
   }
 
      getOnOpensheetItems() async {
@@ -699,7 +732,7 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+       /*   Row(
             mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text("Name",textScaleFactor: 1,style: listItemTitleStyle,),
@@ -726,14 +759,14 @@ class _PatrollerFormStateWidgetState extends State<_PatrollerFormStateWidget> {
                 Text(GlobleConstant.loginResponse!.success!.userData!.phone.toString())
 
               ]),
-          const SizedBox(width: 10,),
+          const SizedBox(width: 10,),*/
           Row(
               mainAxisAlignment: MainAxisAlignment.start,
 
               children: [
                 Text("Total Distance",textScaleFactor: 1,style: listItemTitleStyle,),
                 const SizedBox(width: 10,),
-               // Text("$distance KM")
+               Text("$distance KM")
 
               ]),
           const SizedBox(width: 10,),

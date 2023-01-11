@@ -144,7 +144,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           children: [
                                             Expanded(
                                                 flex: 2,
-                                                child: Text("",softWrap: true,textScaleFactor: 1,style:const TextStyle(
+                                                child: Text("${model.ownerName.toString().toUpperCase()}",softWrap: true,textScaleFactor: 1,style:const TextStyle(
                                                   color: Colors.lightBlue,
                                                   fontSize: 14,
                                                   fontWeight:FontWeight.bold,
@@ -171,6 +171,7 @@ class _GateWidgetState extends State<Gate2Widget> {
                                           },
                                           child: ListTile(
                                             leading: const Icon(Icons.directions,color: Colors.green,),
+                                            trailing: Text("${model.updatedAt}",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                             title: Text("Get Direction",softWrap: true,textScaleFactor: 1,style:graySubHeadingStyle,),
                                           ),
                                         ),
@@ -243,7 +244,7 @@ class _GateWidgetState extends State<Gate2Widget> {
         double distanceInKiloMeters = distanceInMeters / 1000;
         double roundDistanceInKM =
         double.parse((distanceInKiloMeters).toStringAsFixed(2));
-        commonList.add(CommonResponse(id:nearlist[i].id,address:nearlist[i].address,latitude:nearlist[i].latitude,longitude:nearlist[i].longitude,distance:roundDistanceInKM,updatedAt: nearlist[i].updatedAt));
+        commonList.add(CommonResponse(id:nearlist[i].id,address:nearlist[i].address,ownerName:nearlist[i].ownerName,latitude:nearlist[i].latitude,longitude:nearlist[i].longitude,distance:roundDistanceInKM,updatedAt: nearlist[i].updatedAt));
         // commonList.sort();
         // commonList.sort((a, b) => a.distance!.compareTo(b.distance!));
 

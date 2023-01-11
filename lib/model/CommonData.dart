@@ -5,14 +5,16 @@ class CommonResponse {
   double? longitude;
   double? distance;
   String? updatedAt;
+  String? ownerName;
 
   CommonResponse(
-      {this.address, this.id, this.latitude, this.longitude, this.updatedAt,this.distance});
+      {this.address, this.id, this.latitude, this.longitude, this.updatedAt,this.distance,this.ownerName});
 
   CommonResponse.fromJson(Map<String, dynamic> json) {
     address = json['address'];
     id = json['id'].toString();
     latitude = json['latitude'];
+    ownerName = json['owner_name']??"";
     longitude = json['longitude'];
     updatedAt = json['updated_at'];
     distance = json['distance'];
